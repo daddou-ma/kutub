@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "target": "es2018",
+    "module": "commonjs",
+    "lib": ["es2018", "esnext.asynciterable"],
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "rootDir": "./",
+    "baseUrl": "./",
+    "paths": {
+      "Enums/*": [
+        "./src/enums/*"
+      ],
+      "Inputs/*": [
+        "./src/inputs/*"
+      ],
+      "Interfaces/*": [
+        "./src/interfaces/*"
+      ],
+      "Entities/*": [
+        "src/entities/*"
+      ],
+      "Resolvers/*": [
+        "./src/resolvers/*"
+      ],
+    },
+  }
+}
