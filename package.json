@@ -8,19 +8,27 @@
   "license": "UNLICENSED",
   "private": true,
   "scripts": {
+    "seed:config": "npx ts-node -r tsconfig-paths/register ./node_modules/typeorm-seeding/dist/cli.js config -c prod",
+    "seed:run": "npx ts-node -r tsconfig-paths/register ./node_modules/typeorm-seeding/dist/cli.js seed -c prod",
+    "schema:drop": "npx ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js schema:drop -c prod",
+    "schema:sync": "npx ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js schema:sync -c prod",
     "dev": "npx ts-node -r tsconfig-paths/register src/server.ts",
     "lint": "npx eslint '*/**/*.{js,ts,tsx}' --quiet --fix"
   },
   "dependencies": {
+    "add": "^2.0.6",
     "apollo-server": "^2.22.2",
     "class-validator": "^0.13.1",
+    "faker": "^5.5.2",
     "graphql": "^15.5.0",
     "mysql": "^2.18.1",
     "reflect-metadata": "^0.1.13",
     "sqlite3": "^5.0.2",
     "tsconfig-paths": "^3.9.0",
     "type-graphql": "^1.1.1",
-    "typeorm": "^0.2.31"
+    "typeorm": "^0.2.31",
+    "typeorm-seeding": "^1.6.1",
+    "yarn": "^1.22.10"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.20.0",

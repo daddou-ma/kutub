@@ -7,15 +7,15 @@
   "password": "inspire",
   "database": "inspire",
   "synchronize": true,
-  "entities": [
-    "src/entities/**/*.entity.ts"
-  ]
+  "entities": [ "src/entities/**/*.entity.{ts,js}" ],
+  "factories": [ "src/database/factories/**/*.factory.{ts,js}" ],
+  "seeds": [ "src/database/seeds/**/*.seed.{ts,js}" ]
 }, {
   "name": "dev",
   "type": "sqlite",
   "database": "dev.db",
   "synchronize": true,
   "entities": [
-    "src/entities/**/*.entity.ts"
+    "src/entities/**/*.entity.{ts,js}"
   ]
 }]

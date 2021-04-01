@@ -5,9 +5,14 @@
     "lib": ["es2018", "esnext.asynciterable"],
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
     "rootDir": "./",
     "baseUrl": "./",
     "paths": {
+      "Database/*": [
+        "./src/database/*"
+      ],
       "Enums/*": [
         "./src/enums/*"
       ],
@@ -22,7 +27,7 @@
       ],
       "Resolvers/*": [
         "./src/resolvers/*"
-      ],
+      ]
     },
   }
 }
