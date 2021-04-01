@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "jsx": "react",
     "target": "es2018",
     "module": "commonjs",
     "lib": ["es2018", "esnext.asynciterable"],
@@ -7,6 +8,7 @@
     "emitDecoratorMetadata": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
+    "sourceMap": true,
     "rootDir": "./",
     "baseUrl": "./",
     "paths": {
