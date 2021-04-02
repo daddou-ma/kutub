@@ -1,5 +1,7 @@
 import "reflect-metadata";
-import { ApolloServer } from "apollo-server";
+import Koa from "koa";
+import serve from "koa-static";
+import { ApolloServer } from "apollo-server-koa";
 import { buildSchema, AuthChecker } from "type-graphql";
 import { createConnection } from "typeorm";
 import Context from "Interfaces/Context";
@@ -27,9 +29,23 @@ async function main() {
     context: (): Context => ({ manager: connection.manager }),
   });
 
-  const { port } = await server.listen(4000);
+  await server.start();
 
-  console.log(`GraphQL is listening on ${port}!`);
+  const app = new Koa();
+
+  app.use(serve(__dirname + "/../packages/frontend/build"));
+
+  server.applyMiddleware({ app });
+  // alternatively you can get a composed middleware from the apollo server
+  // app.use(server.getMiddleware());
+
+  await new Promise((resolve) =>
+    app.listen({ port: 4000 }, () => resolve(4000))
+  );
+
+  //const = await server.listen(4000);
+
+  console.log(`GraphQL is listening on !`);
 }
 
 main().catch(console.error);
