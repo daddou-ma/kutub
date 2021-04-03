@@ -16,11 +16,8 @@ import Author from "Entities/Author.entity";
 @Resolver((of) => Quote)
 export default class QuoteResolver {
   @FieldResolver()
-  async author(
-    @Root() quote: Quote,
-    @Ctx() { manager }: Context
-  ): Promise<Author> {
-    return await manager
+  async author(@Root() quote: Quote, @Ctx() { db }: Context): Promise<Author> {
+    return await db.manager
       .createQueryBuilder()
       .relation(Quote, "author")
       .of(quote)
@@ -28,17 +25,17 @@ export default class QuoteResolver {
   }
 
   @Query((returns) => [Quote])
-  async quotes(@Ctx() { manager }: Context): Promise<Quote[]> {
-    return await manager.find(Quote, {});
+  async quotes(@Ctx() { db }: Context): Promise<Quote[]> {
+    return await db.manager.find(Quote, {});
   }
 
   @Query((returns) => Quote)
   async quoteById(
     @Arg("quoteId") quoteId: string,
-    @Ctx() { manager }: Context
+    @Ctx() { db }: Context
   ): Promise<Quote> {
     try {
-      return await manager.findOneOrFail(Quote, quoteId);
+      return await db.manager.findOneOrFail(Quote, quoteId);
     } catch (error) {
       throw new UserInputError("No Quote Found with this id");
     }
@@ -47,10 +44,10 @@ export default class QuoteResolver {
   @Mutation((returns) => Quote)
   async createQuote(
     @Arg("data") input: CreateQuoteInput,
-    @Ctx() { manager }: Context
+    @Ctx() { db }: Context
   ): Promise<Quote> {
-    const quote = manager.create(Quote, input);
-    await manager.save(Quote);
+    const quote = db.manager.create(Quote, input);
+    await db.manager.save(Quote);
     return quote;
   }
 
@@ -58,20 +55,20 @@ export default class QuoteResolver {
   async updateQuote(
     @Arg("quoteId") quoteId: string,
     @Arg("data") input: UpdateQuoteInput,
-    @Ctx() { manager }: Context
+    @Ctx() { db }: Context
   ): Promise<Quote> {
-    await manager.update(Quote, quoteId, input);
-    return manager.findOne(Quote, quoteId);
+    await db.manager.update(Quote, quoteId, input);
+    return db.manager.findOne(Quote, quoteId);
   }
 
   @Mutation((returns) => Quote)
   async deleteQuote(
     @Arg("quoteId") quoteId: string,
-    @Ctx() { manager }: Context
+    @Ctx() { db }: Context
   ): Promise<Quote> {
     try {
-      const quote = await manager.findOneOrFail(Quote, quoteId);
-      await manager.remove(quote);
+      const quote = await db.manager.findOneOrFail(Quote, quoteId);
+      await db.manager.remove(quote);
       return quote;
     } catch (error) {
       throw new UserInputError("No Quote Found with this id");

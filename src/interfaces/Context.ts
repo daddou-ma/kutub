@@ -1,5 +1,5 @@
-import { EntityManager } from "typeorm";
+import { Connection } from "typeorm";
 
 export default interface Context {
-  manager: EntityManager;
+  db: Connection;
 }

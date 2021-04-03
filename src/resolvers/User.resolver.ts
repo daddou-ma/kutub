@@ -7,17 +7,17 @@ import Context from "Interfaces/Context";
 @Resolver((of) => User)
 export default class UserResolver {
   @Query((returns) => [User])
-  async users(@Ctx() { manager }: Context): Promise<User[]> {
-    return await manager.find(User, {});
+  async users(@Ctx() { db }: Context): Promise<User[]> {
+    return await db.manager.find(User, {});
   }
 
   @Query((returns) => User)
   async userById(
     @Arg("userId") userId: string,
-    @Ctx() { manager }: Context
+    @Ctx() { db }: Context
   ): Promise<User> {
     try {
-      return await manager.findOneOrFail(User, userId);
+      return await db.manager.findOneOrFail(User, userId);
     } catch (error) {
       throw new UserInputError("No User Found with this id");
     }
@@ -26,10 +26,10 @@ export default class UserResolver {
   @Mutation((returns) => User)
   async createUser(
     @Arg("data") input: CreateUserInput,
-    @Ctx() { manager }: Context
+    @Ctx() { db }: Context
   ): Promise<User> {
-    const user = manager.create(User, input);
-    await manager.save(user);
+    const user = db.manager.create(User, input);
+    await db.manager.save(user);
     return user;
   }
 
@@ -37,20 +37,20 @@ export default class UserResolver {
   async updateUser(
     @Arg("userId") userId: string,
     @Arg("data") input: UpdateUserInput,
-    @Ctx() { manager }: Context
+    @Ctx() { db }: Context
   ): Promise<User> {
-    await manager.update(User, userId, input);
-    return manager.findOne(User, userId);
+    await db.manager.update(User, userId, input);
+    return db.manager.findOne(User, userId);
   }
 
   @Mutation((returns) => User)
   async deleteUser(
     @Arg("userId") userId: string,
-    @Ctx() { manager }: Context
+    @Ctx() { db }: Context
   ): Promise<User> {
     try {
-      const user = await manager.findOneOrFail(User, userId);
-      await manager.remove(User);
+      const user = await db.manager.findOneOrFail(User, userId);
+      await db.manager.remove(User);
       return user;
     } catch (error) {
       throw new UserInputError("No User Found with this id");

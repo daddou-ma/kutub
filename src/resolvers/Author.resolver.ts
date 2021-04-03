@@ -18,9 +18,9 @@ export default class AuthorResolver {
   @FieldResolver()
   async quotes(
     @Root() author: Author,
-    @Ctx() { manager }: Context
+    @Ctx() { db }: Context
   ): Promise<Quote[]> {
-    return await manager
+    return await db.manager
       .createQueryBuilder()
       .relation(Author, "quotes")
       .of(author)
@@ -28,17 +28,17 @@ export default class AuthorResolver {
   }
 
   @Query((returns) => [Author])
-  async authors(@Ctx() { manager }: Context): Promise<Author[]> {
-    return await manager.find(Author, {});
+  async authors(@Ctx() { db }: Context): Promise<Author[]> {
+    return await db.manager.find(Author, {});
   }
 
   @Query((returns) => Author)
   async authorById(
     @Arg("authorId") authorId: string,
-    @Ctx() { manager }: Context
+    @Ctx() { db }: Context
   ): Promise<Author> {
     try {
-      return await manager.findOneOrFail(Author, authorId);
+      return await db.manager.findOneOrFail(Author, authorId);
     } catch (error) {
       throw new UserInputError("No Author Found with this id");
     }
@@ -47,10 +47,10 @@ export default class AuthorResolver {
   @Mutation((returns) => Author)
   async createAuthor(
     @Arg("data") input: CreateAuthorInput,
-    @Ctx() { manager }: Context
+    @Ctx() { db }: Context
   ): Promise<Author> {
-    const author = manager.create(Author, input);
-    await manager.save(Author);
+    const author = db.manager.create(Author, input);
+    await db.manager.save(Author);
     return author;
   }
 
@@ -58,20 +58,20 @@ export default class AuthorResolver {
   async updateAuthor(
     @Arg("authorId") authorId: string,
     @Arg("data") input: UpdateAuthorInput,
-    @Ctx() { manager }: Context
+    @Ctx() { db }: Context
   ): Promise<Author> {
-    await manager.update(Author, authorId, input);
-    return manager.findOne(Author, authorId);
+    await db.manager.update(Author, authorId, input);
+    return db.manager.findOne(Author, authorId);
   }
 
   @Mutation((returns) => Author)
   async deleteAuthor(
     @Arg("authorId") authorId: string,
-    @Ctx() { manager }: Context
+    @Ctx() { db }: Context
   ): Promise<Author> {
     try {
-      const author = await manager.findOneOrFail(Author, authorId);
-      await manager.remove(author);
+      const author = await db.manager.findOneOrFail(Author, authorId);
+      await db.manager.remove(author);
       return author;
     } catch (error) {
       throw new UserInputError("No Author Found with this id");

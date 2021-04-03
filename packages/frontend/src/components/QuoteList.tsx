@@ -6,9 +6,10 @@ import {
   ListItemAvatar,
   ListItemText,
   Avatar,
-  Typography,
   Divider,
+  Checkbox,
 } from "@material-ui/core";
+import { Favorite, FavoriteBorder } from "@material-ui/icons";
 
 const GET_DOGS = gql`
   query GET {
@@ -49,6 +50,11 @@ export default function QuoteList(): React.ReactElement {
             <ListItemText
               primary={author.name}
               secondary={<React.Fragment>{content}</React.Fragment>}
+            />
+            <Checkbox
+              icon={<FavoriteBorder />}
+              checkedIcon={<Favorite />}
+              name="checkedH"
             />
           </ListItem>
           <Divider variant="inset" component="li" />
