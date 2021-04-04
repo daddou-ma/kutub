@@ -5,7 +5,7 @@ import { ApolloServer } from "apollo-server-koa";
 import { buildSchema, AuthChecker } from "type-graphql";
 import { createConnection } from "typeorm";
 import Context from "Interfaces/Context";
-import { resolvers } from "Resolvers/resolvers";
+// import { resolvers } from "Resolvers/resolvers";
 
 export const customAuthChecker: AuthChecker<Context> = (
   { root, args, context, info },
@@ -19,7 +19,7 @@ async function main() {
   const connection = await createConnection("prod");
 
   const schema = await buildSchema({
-    resolvers: resolvers,
+    resolvers: ["src/modules/**/*.resolver.ts"],
     authChecker: customAuthChecker,
   });
 

@@ -8,7 +8,7 @@ import {
   UpdateDateColumn,
   DeleteDateColumn,
 } from "typeorm";
-import Quote from "Entities/Quote.entity";
+import Quote from "Modules/quotes/Quote.entity";
 
 @ObjectType()
 @Entity()

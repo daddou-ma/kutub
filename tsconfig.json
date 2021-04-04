@@ -21,18 +21,12 @@
       "Enums/*": [
         "./src/enums/*"
       ],
-      "Inputs/*": [
-        "./src/inputs/*"
-      ],
       "Interfaces/*": [
         "./src/interfaces/*"
       ],
-      "Entities/*": [
-        "src/entities/*"
+      "Modules/*": [
+        "src/modules/*"
       ],
-      "Resolvers/*": [
-        "./src/resolvers/*"
-      ]
     },
   }
 }

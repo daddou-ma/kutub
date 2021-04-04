@@ -1,6 +1,6 @@
 import { Resolver, Query, Mutation, Ctx, Arg } from "type-graphql";
-import User from "Entities/User.entity";
-import { CreateUserInput, UpdateUserInput } from "Inputs/User";
+import User from "Modules/users/User.entity";
+import { CreateUserInput, UpdateUserInput } from "Modules/users/inputs/index";
 import { UserInputError } from "apollo-server";
 import Context from "Interfaces/Context";
 

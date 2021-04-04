@@ -7,7 +7,7 @@
   "password": "inspire",
   "database": "inspire",
   "synchronize": true,
-  "entities": [ "src/entities/**/*.entity.{ts,js}" ],
+  "entities": [ "src/modules/**/*.entity.{ts,js}" ],
   "factories": [ "src/database/factories/**/*.factory.{ts,js}" ],
   "seeds": [ "src/database/seeds/**/*.seed.{ts,js}" ]
 }, {
@@ -16,6 +16,6 @@
   "database": "dev.db",
   "synchronize": true,
   "entities": [
-    "src/entities/**/*.entity.{ts,js}"
+    "src/modules/**/*.entity.{ts,js}"
   ]
 }]

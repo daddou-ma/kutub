@@ -7,11 +7,11 @@ import {
   FieldResolver,
   Root,
 } from "type-graphql";
-import Author from "Entities/Author.entity";
-import { CreateAuthorInput, UpdateAuthorInput } from "Inputs/Author";
+import Author from "Modules/authors/Author.entity";
+import { CreateAuthorInput, UpdateAuthorInput } from "Modules/authors/inputs";
 import { UserInputError } from "apollo-server";
 import Context from "Interfaces/Context";
-import Quote from "Entities/Quote.entity";
+import Quote from "Modules/quotes/Quote.entity";
 
 @Resolver((of) => Author)
 export default class AuthorResolver {

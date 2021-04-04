@@ -7,14 +7,12 @@ import {
   FieldResolver,
   Root,
 } from "type-graphql";
-import base64 from "base-64";
 
-import { CreateQuoteInput, UpdateQuoteInput } from "Inputs/Quote";
+import { CreateQuoteInput, UpdateQuoteInput } from "Modules/quotes/inputs";
 import { UserInputError } from "apollo-server";
 import Context from "Interfaces/Context";
-import Quote from "Entities/Quote.entity";
-import Author from "Entities/Author.entity";
-import { PaginationInputType } from "Inputs/Pagination";
+import Quote from "Modules/quotes/Quote.entity";
+import Author from "Modules/authors/Author.entity";
 
 @Resolver((of) => Quote)
 export default class QuoteResolver {
@@ -28,16 +26,10 @@ export default class QuoteResolver {
   }
 
   @Query((returns) => [Quote])
-  async quotes(
-    @Ctx() { db }: Context,
-    @Arg("pagination", { nullable: true }) { first, after }: PaginationInputType
-  ): Promise<Quote[]> {
-    const cursor = after;
-    console.log(cursor);
+  async quotes(@Ctx() { db }: Context): Promise<Quote[]> {
     const [quotes, count] = await db
       .getRepository(Quote)
       .createQueryBuilder("quotes")
-      .where("quotes.id > :cursor", { cursor })
       .limit(25)
       .getManyAndCount();
     console.log(count);

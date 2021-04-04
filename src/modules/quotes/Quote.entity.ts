@@ -10,7 +10,7 @@ import {
   Generated,
 } from "typeorm";
 import base64 from "base-64";
-import Author from "Entities/Author.entity";
+import Author from "Modules/authors/Author.entity";
 
 @ObjectType()
 @Entity()
