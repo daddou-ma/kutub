@@ -27,6 +27,9 @@
       "Modules/*": [
         "src/modules/*"
       ],
+      "Relay/*": [
+        "src/relay/*"
+      ],
     },
   }
 }
