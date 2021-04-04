@@ -1,4 +1,4 @@
-import { ObjectType, Field, ID } from "type-graphql";
+import { ObjectType, Field, ID, Int } from "type-graphql";
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -7,14 +7,16 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
+  Generated,
 } from "typeorm";
+import base64 from "base-64";
 import Author from "Entities/Author.entity";
 
 @ObjectType()
 @Entity()
 export default class Quote {
   @Field((type) => ID)
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn()
   public id: number;
 
   @Field()
@@ -28,12 +30,20 @@ export default class Quote {
   @ManyToOne(() => Author, (author) => author.quotes)
   public author: Author;
 
+  @Field((type) => Date)
   @CreateDateColumn()
   public createdAt: Date;
 
+  @Field((type) => Date)
   @UpdateDateColumn()
   public updatedAt: Date;
 
+  @Field((type) => Date)
   @DeleteDateColumn()
   public deletedAt: Date;
+
+  @Field()
+  public get hash(): string {
+    return base64.encode(this.id.toString());
+  }
 }

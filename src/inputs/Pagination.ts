@@ -1,13 +1,14 @@
-import { Field, InputType, ID, Int } from "type-graphql";
+import * as Relay from "graphql-relay";
+import { Field, ArgsType, ObjectType, ClassType } from "type-graphql";
 
-@InputType()
-export class PaginationInputType {
-  @Field(() => Int)
-  first: number;
-
-  @Field(() => ID)
-  before?: string;
-
-  @Field(() => ID)
-  after?: string;
+@ArgsType()
+export class PaginationArguments {
+  @Field({ nullable: true, description: "Paginate before opaque cursor" })
+  before?: number;
+  @Field({ nullable: true, description: "Paginate after opaque cursor" })
+  after?: number;
+  @Field({ nullable: true, description: "Paginate first" })
+  first?: number;
+  @Field({ nullable: true, description: "Paginate last" })
+  last?: number;
 }
