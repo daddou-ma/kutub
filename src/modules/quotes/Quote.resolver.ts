@@ -4,18 +4,27 @@ import {
   Mutation,
   Ctx,
   Arg,
+  Args,
   FieldResolver,
   Root,
 } from "type-graphql";
+import { Repository } from "typeorm";
+import { InjectRepository } from "typeorm-typedi-extensions";
 
+import { ConnectionArguments } from "Relay/generics/ConnectionsArguments";
+import { connectionFromRepository } from "Relay/Connection.factory";
 import { CreateQuoteInput, UpdateQuoteInput } from "Modules/quotes/inputs";
 import { UserInputError } from "apollo-server";
 import Context from "Interfaces/Context";
 import Quote from "Modules/quotes/Quote.entity";
 import Author from "Modules/authors/Author.entity";
+import { QuoteConnection } from "Modules/quotes/Quote.connection";
 
 @Resolver((of) => Quote)
 export default class QuoteResolver {
+  @InjectRepository(Quote, "prod")
+  private readonly repository!: Repository<Quote>;
+
   @FieldResolver()
   async author(@Root() quote: Quote, @Ctx() { db }: Context): Promise<Author> {
     return await db.manager
@@ -25,16 +34,9 @@ export default class QuoteResolver {
       .loadOne();
   }
 
-  @Query((returns) => [Quote])
-  async quotes(@Ctx() { db }: Context): Promise<Quote[]> {
-    const [quotes, count] = await db
-      .getRepository(Quote)
-      .createQueryBuilder("quotes")
-      .limit(25)
-      .getManyAndCount();
-    console.log(count);
-
-    return quotes;
+  @Query((returns) => QuoteConnection)
+  async quotes(@Args() args: ConnectionArguments): Promise<QuoteConnection> {
+    return connectionFromRepository(args, this.repository);
   }
 
   @Query((returns) => Quote)

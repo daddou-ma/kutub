@@ -3,9 +3,9 @@ import Koa from "koa";
 import serve from "koa-static";
 import { ApolloServer } from "apollo-server-koa";
 import { buildSchema, AuthChecker } from "type-graphql";
-import { createConnection } from "typeorm";
+import { createConnection, useContainer } from "typeorm";
+import { Container } from "typeorm-typedi-extensions";
 import Context from "Interfaces/Context";
-// import { resolvers } from "Resolvers/resolvers";
 
 export const customAuthChecker: AuthChecker<Context> = (
   { root, args, context, info },
@@ -16,17 +16,20 @@ export const customAuthChecker: AuthChecker<Context> = (
 };
 
 async function main() {
+  useContainer(Container);
+
   const connection = await createConnection("prod");
 
   const schema = await buildSchema({
-    resolvers: ["src/modules/**/*.resolver.ts"],
+    resolvers: ["src/{modules,relay}/**/*.resolver.ts"],
+    container: Container,
     authChecker: customAuthChecker,
   });
 
   const server = new ApolloServer({
     schema,
     playground: true,
-    context: (): Context => ({ db: connection }),
+    context: (): Context => ({ db: connection, repositories: {} }),
   });
 
   await server.start();

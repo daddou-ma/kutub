@@ -33,8 +33,10 @@
     "sqlite3": "^5.0.2",
     "tsconfig-paths": "^3.9.0",
     "type-graphql": "^1.1.1",
+    "typedi": "^0.10.0",
     "typeorm": "^0.2.31",
     "typeorm-seeding": "^1.6.1",
+    "typeorm-typedi-extensions": "^0.4.1",
     "yarn": "^1.22.10"
   },
   "devDependencies": {

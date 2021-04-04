@@ -11,10 +11,10 @@ import {
 } from "typeorm";
 import base64 from "base-64";
 import Author from "Modules/authors/Author.entity";
-
-@ObjectType()
+import { Node } from "Relay/interfaces/Node";
 @Entity()
-export default class Quote {
+@ObjectType({ implements: Node })
+export default class Quote extends Node {
   @Field((type) => ID)
   @PrimaryGeneratedColumn()
   public id: number;

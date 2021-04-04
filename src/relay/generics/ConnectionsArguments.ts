@@ -5,7 +5,7 @@ import {
 } from "graphql-relay";
 import { ArgsType, Field, Int } from "type-graphql";
 
-import { CannotWith } from "Relay/CannotWith";
+import { CannotWith } from "Relay/validators/CannotWith";
 
 // TODO: validate must provide at least first or last
 @ArgsType()
