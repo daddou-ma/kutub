@@ -29,6 +29,9 @@ module.exports = {
       },
     ],
   },
+  devServer: {
+    host: "inspire.creations.boutique",
+  },
   plugins: [
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, "src", "index.html"),
