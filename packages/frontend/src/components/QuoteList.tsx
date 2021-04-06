@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useQuery, gql } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import {
   List,
   ListItem,
@@ -8,21 +8,11 @@ import {
   Avatar,
   Divider,
   Checkbox,
+  CircularProgress,
 } from "@material-ui/core";
 import { Favorite, FavoriteBorder } from "@material-ui/icons";
-
-const GET_DOGS = gql`
-  query GET {
-    quotes {
-      id
-      content
-      author {
-        id
-        name
-      }
-    }
-  }
-`;
+import VisibilitySensor from "react-visibility-sensor";
+import { QUOTES_QUERY } from "../queries/quotes";
 
 export interface Quote {
   content: string;
@@ -34,22 +24,24 @@ export interface Author {
 }
 
 export default function QuoteList(): React.ReactElement {
-  const { loading, error, data } = useQuery(GET_DOGS);
+  const { loading, error, data, fetchMore } = useQuery(QUOTES_QUERY);
 
   if (loading) return <>Loading...</>;
   if (error) return <>Error! {error.message}</>;
 
   return (
     <List>
-      {data.quotes.map(({ content, author }: Quote) => (
+      {data.quotes.edges.map(({ node }) => (
         <>
           <ListItem alignItems="flex-start">
             <ListItemAvatar>
               <Avatar alt="Remy Sharp" src="../../public/img/einstein.jpg" />
             </ListItemAvatar>
             <ListItemText
-              primary={author.name}
-              secondary={<React.Fragment>{content}</React.Fragment>}
+              primary={node.content}
+              secondary={
+                <React.Fragment>{`--${node.author.name}`}</React.Fragment>
+              }
             />
             <Checkbox
               icon={<FavoriteBorder />}
@@ -60,6 +52,44 @@ export default function QuoteList(): React.ReactElement {
           <Divider variant="inset" component="li" />
         </>
       ))}
+      <ListItem
+        alignItems="flex-start"
+        style={{
+          justifyContent: "center",
+          padding: 24,
+        }}
+      >
+        {data.quotes.pageInfo.hasNextPage && (
+          <VisibilitySensor
+            onChange={(isVisible) => {
+              if (isVisible) {
+                fetchMore({
+                  variables: {
+                    cursor: data.quotes.pageInfo.endCursor,
+                  },
+                });
+              }
+            }}
+          >
+            {({ isVisible }) => {
+              return (
+                <div>
+                  {isVisible ? (
+                    <CircularProgress
+                      variant="indeterminate"
+                      disableShrink
+                      size={32}
+                      thickness={4}
+                    />
+                  ) : (
+                    "Loading"
+                  )}
+                </div>
+              );
+            }}
+          </VisibilitySensor>
+        )}
+      </ListItem>
     </List>
   );
 }
