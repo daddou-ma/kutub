@@ -3,8 +3,11 @@ import Koa from "koa";
 import serve from "koa-static";
 import { ApolloServer } from "apollo-server-koa";
 import { buildSchema, AuthChecker } from "type-graphql";
-import { createConnection, useContainer } from "typeorm";
+import { Connection, createConnection, useContainer } from "typeorm";
 import { Container } from "typeorm-typedi-extensions";
+import jwt from "jsonwebtoken";
+
+import User from "Modules/users/User.entity";
 import Context from "Interfaces/Context";
 
 export const customAuthChecker: AuthChecker<Context> = (
@@ -29,7 +32,13 @@ async function main() {
   const server = new ApolloServer({
     schema,
     playground: true,
-    context: (): Context => ({ db: connection, repositories: {} }),
+    context: async ({ ctx }): Promise<Context> => {
+      const token = ctx?.request?.headers?.authorization || "";
+
+      const { id } = jwt.verify(token.replace(/^Bearer\s/, ""), "secret");
+      const user = await connection.getRepository(User).findOne(id);
+      return { db: connection, repositories: {}, user };
+    },
   });
 
   await server.start();
@@ -39,14 +48,10 @@ async function main() {
   app.use(serve(__dirname + "/../packages/frontend/build"));
 
   server.applyMiddleware({ app });
-  // alternatively you can get a composed middleware from the apollo server
-  // app.use(server.getMiddleware());
 
   await new Promise((resolve) =>
     app.listen({ port: 4000 }, () => resolve(4000))
   );
-
-  //const = await server.listen(4000);
 
   console.log(`GraphQL is listening on !`);
 }

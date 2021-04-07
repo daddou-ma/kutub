@@ -7,6 +7,7 @@ import {
   UpdateDateColumn,
   DeleteDateColumn,
 } from "typeorm";
+import jwt from "jsonwebtoken";
 import UserRole from "Enums/UserRole";
 
 @ObjectType()
@@ -16,17 +17,17 @@ export default class User {
   @PrimaryGeneratedColumn("uuid")
   public id: number;
 
+  @Field({ nullable: true })
+  @Column("varchar", { length: 64, nullable: true })
+  public name?: string;
+
   @Field()
   @Column("varchar", { length: 64, unique: true })
   public email: string;
 
   @Field()
-  @Column("varchar", { length: 64 })
+  @Column("varchar", { length: 64, nullable: true })
   public password: string;
-
-  @Field({ nullable: true })
-  @Column("varchar", { nullable: true, length: 265 })
-  public rememberMeToken?: string;
 
   @Column({
     type: "enum",
@@ -34,6 +35,9 @@ export default class User {
     default: UserRole.USER,
   })
   role: UserRole;
+
+  @Column("varchar", { unique: true, nullable: true })
+  public googleId: string;
 
   @CreateDateColumn()
   public createdAt: Date;
@@ -44,12 +48,20 @@ export default class User {
   @DeleteDateColumn()
   public deletedAt: Date;
 
-  // @beforeSave()
-  // public static async hashPassword(user: User) {
-  //   if (user.$dirty.password) {
-  //     user.password = await Hash.make(user.password);
-  //   }
-  // }
+  public generateJWT(): string {
+    const today = new Date();
+    const expiration = new Date(today);
+    expiration.setDate(today.getDate() + 60);
+
+    return jwt.sign(
+      {
+        email: this.email,
+        id: this.id,
+        exp: expiration.getTime() / 1000,
+      },
+      "secret"
+    );
+  }
 }
 
 registerEnumType(UserRole, {

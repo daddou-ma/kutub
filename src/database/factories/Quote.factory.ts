@@ -1,6 +1,6 @@
 import * as Faker from "faker";
 import { define } from "typeorm-seeding";
-import Quote from "Entities/Quote.entity";
+import Quote from "Modules/quotes/Quote.entity";
 
 define(Quote, (faker: typeof Faker) => {
   const quote = new Quote();

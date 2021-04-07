@@ -1,8 +1,8 @@
 import { Factory, Seeder } from "typeorm-seeding";
 import { Connection } from "typeorm";
-import Quote from "Entities/Quote.entity";
+import Quote from "Modules/quotes/Quote.entity";
 import quotes from "Database/data/quotes.json";
-import Author from "Entities/Author.entity";
+import Author from "Modules/authors/Author.entity";
 
 export default class CreateQuotes implements Seeder {
   public async run(factory: Factory, connection: Connection): Promise<void> {
