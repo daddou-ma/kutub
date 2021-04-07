@@ -1,6 +1,6 @@
 import { useMutation } from "@apollo/client";
 import { useGoogleLogin, useGoogleLogout } from "react-google-login";
-import { GOOGLE_AUTH_MUTATION } from "../queries/auth";
+import { GOOGLE_AUTH_MUTATION } from "Graph/queries/auth";
 
 const CLIENT_ID =
   "510638141141-obpsl73plm75hjvfqnaaaegg3o4bqfc5.apps.googleusercontent.com";

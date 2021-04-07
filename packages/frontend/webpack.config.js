@@ -1,6 +1,8 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
+
 module.exports = {
   entry: "./src/index.tsx",
   target: "web",
@@ -11,6 +13,7 @@ module.exports = {
   },
   resolve: {
     extensions: [".js", ".jsx", ".json", ".ts", ".tsx"],
+    plugins: [new TsconfigPathsPlugin({ configFile: "./tsconfig.json" })],
   },
   module: {
     rules: [
@@ -31,6 +34,7 @@ module.exports = {
   },
   devServer: {
     host: "inspire.creations.boutique",
+    historyApiFallback: true,
   },
   plugins: [
     new HtmlWebpackPlugin({

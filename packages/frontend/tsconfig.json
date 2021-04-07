@@ -1,8 +1,37 @@
 {
-	"extends": "../../tsconfig.json",
+	// "extends": "../../tsconfig.json",
 	"compilerOptions": {
+		"jsx": "react",
     "target": "es5",
-		"rootDir": "src"
+    "module": "commonjs",
+    "lib": ["dom", "es5", "esnext.asynciterable"],
+		"experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "preserveConstEnums": true,
+    "removeComments": true,
+    "sourceMap": true,
+    "rootDir": "./",
+    "baseUrl": "./",
+    "skipLibCheck": true,
+		"paths": {
+			"Components/*": [
+				"./src/components/*"
+			],
+			"Pages/*": [
+				"./src/pages/*"
+			],
+			"Layouts/*": [
+				"./src/layouts/*"
+			],
+			"Hooks/*": [
+				"src/hooks/*"
+			],
+			"Graph/*": [
+				"src/graph/*"
+			],
+		},
 	},
-	"include": [ "src/**/*" ]
+	"include": [ "src/**/*" ],
 }

@@ -7,9 +7,11 @@ import {
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { relayStylePagination } from "@apollo/client/utilities";
-import QuoteList from "./QuoteList";
-import { LoginPage } from "./pages/Login";
-import { AuthProvider } from "../hooks/useAuth";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+
+import { QuotePage } from "Pages/Quotes";
+import { LoginPage } from "Pages/Login";
+import { AuthProvider } from "Hooks/useAuth";
 
 const GRAPH_URL = "http://localhost:4000/graphql";
 
@@ -45,11 +47,17 @@ export function App(): React.ReactElement {
   return (
     <ApolloProvider client={client}>
       <AuthProvider>
-        <>
-          Quote List
-          <LoginPage />
-          <QuoteList />
-        </>
+        <Router>
+          <Switch>
+            <Route path="/login">
+              <LoginPage />
+            </Route>
+            <Route path="/quotes">
+              <QuotePage />
+            </Route>
+            <Route path="/">Welcome</Route>
+          </Switch>
+        </Router>
       </AuthProvider>
     </ApolloProvider>
   );

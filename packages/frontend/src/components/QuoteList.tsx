@@ -12,7 +12,8 @@ import {
 } from "@material-ui/core";
 import { Favorite, FavoriteBorder } from "@material-ui/icons";
 import VisibilitySensor from "react-visibility-sensor";
-import { QUOTES_QUERY } from "../queries/quotes";
+
+import { QUOTES_QUERY } from "Graph/queries/quotes";
 
 export interface Quote {
   content: string;
