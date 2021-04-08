@@ -12,6 +12,7 @@ import {
 } from "@material-ui/core";
 import { LockOutlined as LockOutlinedIcon } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
+import { useTranslation } from "react-i18next";
 
 import { useAuth } from "Hooks/useAuth";
 import { useGoogleAuth } from "Hooks/useGoogleAuth";
@@ -86,6 +87,8 @@ const useStyles = makeStyles((theme) => ({
 export function LoginForm(): React.ReactElement {
   const classes = useStyles();
 
+  const { t, i18n } = useTranslation();
+  document.body.dir = i18n.dir();
   const { connect } = useAuth();
   const { googleSignIn } = useGoogleAuth({
     onLoginSuccess: connect,
@@ -98,7 +101,7 @@ export function LoginForm(): React.ReactElement {
         <LockOutlinedIcon />
       </Avatar>
       <Typography component="h1" variant="h5">
-        Sign in
+        {t("Sign in")}
       </Typography>
       <form className={classes.form} noValidate>
         <TextField
@@ -107,7 +110,7 @@ export function LoginForm(): React.ReactElement {
           required
           fullWidth
           id="email"
-          label="Email Address"
+          label={t("Email Address")}
           name="email"
           autoComplete="email"
           autoFocus
@@ -118,14 +121,14 @@ export function LoginForm(): React.ReactElement {
           required
           fullWidth
           name="password"
-          label="Password"
+          label={t("Password")}
           type="password"
           id="password"
           autoComplete="current-password"
         />
         <FormControlLabel
           control={<Checkbox value="remember" color="primary" />}
-          label="Remember me"
+          label={t("Remember me")}
         />
         <Button
           type="submit"
@@ -135,17 +138,17 @@ export function LoginForm(): React.ReactElement {
           fullWidth
           className={classes.submit}
         >
-          Sign In
+          {t("Sign In")}
         </Button>
         <Grid container>
           <Grid item xs>
             <Link href="#" variant="body2">
-              Forgot password?
+              {t("Forgot password?")}
             </Link>
           </Grid>
           <Grid item>
             <Link href="#" variant="body2">
-              {"Don't have an account? Sign Up"}
+              {t("Don't have an account? Sign Up")}
             </Link>
           </Grid>
         </Grid>
@@ -157,7 +160,7 @@ export function LoginForm(): React.ReactElement {
           onClick={() => googleSignIn()}
           startIcon={<GoogleIcon height={18} />}
         >
-          Connect with Google
+          {t("Connect with Google")}
         </Button>
         <Button
           variant="contained"
@@ -167,7 +170,7 @@ export function LoginForm(): React.ReactElement {
           onClick={() => googleSignIn()}
           startIcon={<FacebookIcon height={18} />}
         >
-          Connect with Facebook
+          {t("Connect with Facebook")}
         </Button>
       </form>
     </Box>

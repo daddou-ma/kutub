@@ -8,6 +8,15 @@ import {
 import { setContext } from "@apollo/client/link/context";
 import { relayStylePagination } from "@apollo/client/utilities";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { create } from "jss";
+import rtl from "jss-rtl";
+import {
+  MuiThemeProvider,
+  StylesProvider,
+  createMuiTheme,
+  jssPreset,
+} from "@material-ui/core/styles";
+import { useTranslation } from "react-i18next";
 
 import { QuotePage } from "Pages/Quotes";
 import { LoginPage } from "Pages/Login";
@@ -43,21 +52,32 @@ const client = new ApolloClient({
   }),
 });
 
+const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
+
 export function App(): React.ReactElement {
+  const { i18n } = useTranslation();
   return (
     <ApolloProvider client={client}>
       <AuthProvider>
-        <Router>
-          <Switch>
-            <Route path="/login">
-              <LoginPage />
-            </Route>
-            <Route path="/quotes">
-              <QuotePage />
-            </Route>
-            <Route path="/">Welcome</Route>
-          </Switch>
-        </Router>
+        <StylesProvider jss={jss}>
+          <MuiThemeProvider
+            theme={createMuiTheme({
+              direction: i18n.dir(),
+            })}
+          >
+            <Router>
+              <Switch>
+                <Route path="/login">
+                  <LoginPage />
+                </Route>
+                <Route path="/quotes">
+                  <QuotePage />
+                </Route>
+                <Route path="/">Welcome</Route>
+              </Switch>
+            </Router>
+          </MuiThemeProvider>
+        </StylesProvider>
       </AuthProvider>
     </ApolloProvider>
   );

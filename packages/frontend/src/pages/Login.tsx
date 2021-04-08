@@ -1,21 +1,13 @@
 import * as React from "react";
-import { Button, Container, Box } from "@material-ui/core";
-// import { Google } from "@material-ui/icons";
+import { Container, Box } from "@material-ui/core";
+import { useTranslation } from "react-i18next";
 
-import { useAuth } from "Hooks/useAuth";
-import { useGoogleAuth } from "Hooks/useGoogleAuth";
 import { EmptyLayout } from "Layouts/EmptyLayout";
 import { LoginForm } from "Components/LoginForm";
 import { Copyright } from "Components/CopyRight";
-import GoogleIcon from "../../public/icons/google-icon.svg";
 
 export function LoginPage(): React.ReactElement {
-  const { connect } = useAuth();
-  const { googleSignIn } = useGoogleAuth({
-    onLoginSuccess: connect,
-    onLoginFailure: console.log,
-  });
-
+  const { t } = useTranslation();
   return (
     <EmptyLayout>
       <Container component="main" maxWidth="xs">
