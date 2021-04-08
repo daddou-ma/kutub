@@ -66,6 +66,7 @@ export default class GoogleAuth {
       db.manager.update(User, user.id, {
         name: googleUser.name,
         email: googleUser.email,
+        picture: googleUser.picture,
       });
     }
 
@@ -74,6 +75,7 @@ export default class GoogleAuth {
       user = db.manager.create(User, {
         name: googleUser.name,
         email: googleUser.email,
+        picture: googleUser.picture,
         googleId: googleUser.id,
       });
       await db.manager.save(user);

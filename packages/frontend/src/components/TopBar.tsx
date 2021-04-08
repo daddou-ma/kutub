@@ -1,6 +1,7 @@
 import React from "react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import {
+  Avatar,
   AppBar,
   Toolbar,
   Typography,
@@ -12,6 +13,7 @@ import {
   Menu as MenuIcon,
   AccountCircle as AccountCircleIcon,
 } from "@material-ui/icons";
+import { useAuth } from "Hooks/useAuth";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -30,6 +32,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export function TopBar() {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const { user } = useAuth();
   const open = Boolean(anchorEl);
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -63,7 +66,7 @@ export function TopBar() {
               onClick={handleMenu}
               color="inherit"
             >
-              <AccountCircleIcon />
+              <Avatar alt={user?.name || "Guest"} src={user?.picture} />
             </IconButton>
             <Menu
               id="menu-appbar"

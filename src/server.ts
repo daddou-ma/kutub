@@ -35,9 +35,13 @@ async function main() {
     context: async ({ ctx }): Promise<Context> => {
       const token = ctx?.request?.headers?.authorization || "";
 
-      const { id } = jwt.verify(token.replace(/^Bearer\s/, ""), "secret");
-      const user = await connection.getRepository(User).findOne(id);
-      return { db: connection, repositories: {}, user };
+      try {
+        const { id } = jwt.verify(token.replace(/^Bearer\s/, ""), "secret");
+        const user = await connection.getRepository(User).findOne(id);
+        return { db: connection, repositories: {}, user };
+      } catch (exception) {
+        return { db: connection, repositories: {} };
+      }
     },
   });
 

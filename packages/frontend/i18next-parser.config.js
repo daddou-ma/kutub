@@ -63,7 +63,7 @@ module.exports = {
   skipDefaultValues: false,
   // Whether to ignore default values.
 
-  useKeysAsDefaultValue: false,
+  useKeysAsDefaultValue: true,
   // Whether to use the keys as the default value; ex. "Hello": "Hello", "World": "World"
   // This option takes precedence over the `defaultValue` and `skipDefaultValues` options
 

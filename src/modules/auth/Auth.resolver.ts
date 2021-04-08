@@ -13,6 +13,12 @@ export default class AuthResolver {
     "O3PjAWdPkK6d-K9HEmEATfeu",
     "postmessage"
   );
+
+  @Query((returns) => User)
+  async me(@Ctx() { user }: Context): Promise<User> {
+    return user;
+  }
+
   @Mutation((returns) => AuthResponse)
   async googleAuth(
     @Args() { code }: GoogleAuthArguments,

@@ -5,5 +5,5 @@ import { Node } from "Relay/interfaces/Node";
 export default interface Context {
   db: Connection;
   repositories: Record<string, Repository<Node>>;
-  user: User;
+  user?: User;
 }

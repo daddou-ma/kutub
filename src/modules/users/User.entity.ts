@@ -25,9 +25,12 @@ export default class User {
   @Column("varchar", { length: 64, unique: true })
   public email: string;
 
-  @Field()
   @Column("varchar", { length: 64, nullable: true })
   public password: string;
+
+  @Field({ nullable: true })
+  @Column("varchar", { length: 256, nullable: true })
+  public picture: string;
 
   @Column({
     type: "enum",
