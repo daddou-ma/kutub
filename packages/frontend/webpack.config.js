@@ -30,6 +30,21 @@ module.exports = {
         test: /\.css$/,
         loader: "css-loader",
       },
+      {
+        test: /\.(png|jpe?g|gif)$/i,
+        loader: "file-loader",
+      },
+      {
+        test: /\.svg$/,
+        use: [
+          {
+            loader: "svg-react-loader",
+            options: {
+              jsx: true, // true outputs JSX tags
+            },
+          },
+        ],
+      },
     ],
   },
   devServer: {
