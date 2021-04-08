@@ -75,7 +75,7 @@ export function App(): React.ReactElement {
                   <QuotePage />
                 </CustomRoute>
                 <CustomRoute path="/" role={Role.USER} redirect="login">
-                  <div>Welcome</div>
+                  <QuotePage />
                 </CustomRoute>
               </Switch>
             </Router>

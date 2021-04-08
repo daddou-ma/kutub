@@ -1,11 +1,32 @@
-import { Resolver, Query, Mutation, Ctx, Arg } from "type-graphql";
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Ctx,
+  Arg,
+  FieldResolver,
+  Root,
+} from "type-graphql";
 import User from "Modules/users/User.entity";
+import Quote from "Modules/quotes/Quote.entity";
 import { CreateUserInput, UpdateUserInput } from "Modules/users/inputs/index";
 import { UserInputError } from "apollo-server";
 import Context from "Interfaces/Context";
 
 @Resolver((of) => User)
 export default class UserResolver {
+  @FieldResolver((returns) => [Quote])
+  async favoriteQuotes(
+    @Root() user: User,
+    @Ctx() { db }: Context
+  ): Promise<Quote[]> {
+    return await db.manager
+      .createQueryBuilder()
+      .relation(User, "favoriteQuotes")
+      .of(user)
+      .loadMany();
+  }
+
   @Query((returns) => [User])
   async users(@Ctx() { db }: Context): Promise<User[]> {
     return await db.manager.find(User, {});

@@ -7,11 +7,12 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
-  Generated,
+  ManyToMany,
 } from "typeorm";
 import base64 from "base-64";
 import Author from "Modules/authors/Author.entity";
 import { Node } from "Relay/interfaces/Node";
+import User from "Modules/users/User.entity";
 @Entity()
 @ObjectType({ implements: Node })
 export default class Quote extends Node {
@@ -41,6 +42,13 @@ export default class Quote extends Node {
   @Field((type) => Date)
   @DeleteDateColumn()
   public deletedAt: Date;
+
+  @Field((type) => Boolean)
+  public favorited: boolean;
+
+  @Field((type) => [User])
+  @ManyToMany((type) => User, (user) => user.favoriteQuotes)
+  public favoredBy: User[];
 
   @Field()
   public get hash(): string {

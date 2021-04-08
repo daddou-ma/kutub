@@ -6,8 +6,12 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
+  ManyToMany,
+  JoinTable,
 } from "typeorm";
 import jwt from "jsonwebtoken";
+
+import Quote from "Modules/quotes/Quote.entity";
 import UserRole from "Enums/UserRole";
 
 @ObjectType()
@@ -50,6 +54,11 @@ export default class User {
 
   @DeleteDateColumn()
   public deletedAt: Date;
+
+  @Field((type) => [Quote])
+  @ManyToMany((type) => Quote, (quote) => quote.favoredBy)
+  @JoinTable()
+  public favoriteQuotes: Quote[];
 
   public generateJWT(): string {
     const today = new Date();

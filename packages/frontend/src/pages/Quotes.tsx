@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useQuery } from "@apollo/client";
+import { useQuery, useMutation, gql } from "@apollo/client";
 import {
   List,
   ListItem,
@@ -14,7 +14,11 @@ import { Favorite, FavoriteBorder } from "@material-ui/icons";
 import VisibilitySensor from "react-visibility-sensor";
 
 import { BasicLayout } from "Layouts/BasicLayout";
-import { QUOTES_QUERY } from "Graph/queries/quotes";
+import {
+  QUOTES_QUERY,
+  FAVORITE_QUOTE_MUTATION,
+  UNFAVORITE_QUOTE_MUTATION,
+} from "Graph/queries/quotes";
 
 export interface Quote {
   content: string;
@@ -27,6 +31,49 @@ export interface Author {
 
 export function QuotePage(): React.ReactElement {
   const { loading, error, data, fetchMore } = useQuery(QUOTES_QUERY);
+  const [favoriteQuote] = useMutation(FAVORITE_QUOTE_MUTATION, {
+    onCompleted: console.log,
+  });
+
+  const [unFavoriteQuote] = useMutation(UNFAVORITE_QUOTE_MUTATION, {
+    onCompleted: console.log,
+  });
+
+  function handleCacheUpdate(cache, { data: { quote } }) {
+    cache.modify({
+      fields: {
+        quotes({ existingQuotes }) {
+          cache.writeFragment({
+            id: `Quote:${quote.id}`,
+            fragment: gql`
+              fragment QuoteFavorited on Quote {
+                favorited
+              }
+            `,
+            data: quote,
+          });
+          return existingQuotes;
+        },
+      },
+    });
+  }
+
+  const handleFavoriteChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    quoteId
+  ) => {
+    if (event.target.checked) {
+      favoriteQuote({
+        variables: { quoteId },
+        update: handleCacheUpdate,
+      });
+    } else {
+      unFavoriteQuote({
+        variables: { quoteId },
+        update: handleCacheUpdate,
+      });
+    }
+  };
 
   if (loading) return <>Loading...</>;
   if (error) return <>Error! {error.message}</>;
@@ -50,6 +97,8 @@ export function QuotePage(): React.ReactElement {
                 icon={<FavoriteBorder />}
                 checkedIcon={<Favorite />}
                 name="checkedH"
+                checked={node.favorited}
+                onChange={(e) => handleFavoriteChange(e, node.id)}
               />
             </ListItem>
             <Divider variant="inset" component="li" />
