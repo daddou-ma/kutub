@@ -26,8 +26,8 @@ export function useAuth(): AuthContext {
 }
 
 export function useAuthProvider(): AuthContext {
-  const [user, setUser] = useState(localStorage.getItem("token"));
-  const [token, setToken] = useState(null);
+  const [user, setUser] = useState(null);
+  const [token, setToken] = useState(localStorage.getItem("token"));
 
   let isConnected = false;
 

@@ -20,6 +20,7 @@ import { useTranslation } from "react-i18next";
 
 import { QuotePage } from "Pages/Quotes";
 import { LoginPage } from "Pages/Login";
+import { CustomRoute, Role } from "Components/CustomRoute";
 import { AuthProvider } from "Hooks/useAuth";
 
 const GRAPH_URL = "http://localhost:4000/graphql";
@@ -67,13 +68,15 @@ export function App(): React.ReactElement {
           >
             <Router>
               <Switch>
-                <Route path="/login">
+                <CustomRoute path="/login" role={Role.GUEST} redirect="/">
                   <LoginPage />
-                </Route>
-                <Route path="/quotes">
+                </CustomRoute>
+                <CustomRoute path="/quotes" role={Role.USER} redirect="login">
                   <QuotePage />
-                </Route>
-                <Route path="/">Welcome</Route>
+                </CustomRoute>
+                <CustomRoute path="/" role={Role.USER} redirect="login">
+                  <div>Welcome</div>
+                </CustomRoute>
               </Switch>
             </Router>
           </MuiThemeProvider>
