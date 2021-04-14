@@ -19,6 +19,9 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       flexGrow: 1,
+      background: "white",
+      color: "black",
+      boxShadow: "none",
     },
     menuButton: {
       marginRight: theme.spacing(2),
@@ -45,7 +48,7 @@ export function TopBar() {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar position="static" className={classes.root}>
         <Toolbar>
           <IconButton
             edge="start"
@@ -56,7 +59,7 @@ export function TopBar() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
-            Photos
+            Inspire
           </Typography>
           <div>
             <IconButton

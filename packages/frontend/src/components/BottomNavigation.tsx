@@ -1,19 +1,26 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 import { BottomNavigation, BottomNavigationAction } from "@material-ui/core";
 import {
-  Folder as FolderIcon,
-  Restore as RestoreIcon,
+  Home as HomeIcon,
+  FormatQuote as FormatQuoteIcon,
   Favorite as FavoriteIcon,
-  LocationOn as LocationOnIcon,
+  ChromeReaderMode as ChromeReaderModeIcon,
 } from "@material-ui/icons";
 
 export function CustomBottomNavigation(): React.ReactElement {
+  const history = useHistory();
+  function onChange(e, value: string) {
+    history.push(value);
+  }
+
   return (
-    <BottomNavigation value="recents" onChange={console.log}>
+    <BottomNavigation value="recents" onChange={onChange}>
+      <BottomNavigationAction label="Home" value="/" icon={<HomeIcon />} />
       <BottomNavigationAction
-        label="Recents"
-        value="recents"
-        icon={<RestoreIcon />}
+        label="Quotes"
+        value="quotes"
+        icon={<FormatQuoteIcon />}
       />
       <BottomNavigationAction
         label="Favorites"
@@ -21,14 +28,9 @@ export function CustomBottomNavigation(): React.ReactElement {
         icon={<FavoriteIcon />}
       />
       <BottomNavigationAction
-        label="Nearby"
-        value="nearby"
-        icon={<LocationOnIcon />}
-      />
-      <BottomNavigationAction
-        label="Folder"
-        value="folder"
-        icon={<FolderIcon />}
+        label="Reader"
+        value="reader"
+        icon={<ChromeReaderModeIcon />}
       />
     </BottomNavigation>
   );

@@ -7,6 +7,14 @@ export const ME_QUERY = gql`
       name
       email
       picture
+      favoriteQuotes {
+        id
+        content
+        favorited
+        author {
+          name
+        }
+      }
     }
   }
 `;
