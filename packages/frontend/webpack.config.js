@@ -1,7 +1,9 @@
 const path = require("path");
+const fs = require("fs");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
+const WorkboxPlugin = require("workbox-webpack-plugin");
 
 module.exports = {
   entry: "./src/index.tsx",
@@ -48,7 +50,6 @@ module.exports = {
     ],
   },
   devServer: {
-    host: "inspire.creations.boutique",
     historyApiFallback: true,
   },
   plugins: [
@@ -58,5 +59,11 @@ module.exports = {
     // new MiniCssExtractPlugin({
     //   filename: "./src/css/yourfile.css",
     // }),
+    new WorkboxPlugin.GenerateSW({
+      // these options encourage the ServiceWorkers to get in there fast
+      // and not allow any straggling "old" SWs to hang around
+      clientsClaim: true,
+      skipWaiting: true,
+    }),
   ],
 };
