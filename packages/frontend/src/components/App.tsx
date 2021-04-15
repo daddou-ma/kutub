@@ -20,6 +20,7 @@ import { useTranslation } from "react-i18next";
 
 import { QuotePage } from "Pages/Quotes";
 import { FavoriteQuotePage } from "Pages/FavoriteQuotes";
+import { ReaderPage } from "Pages/Reader";
 import { LoginPage } from "Pages/Login";
 import { CustomRoute, Role } from "Components/CustomRoute";
 import { AuthProvider } from "Hooks/useAuth";
@@ -81,6 +82,9 @@ export function App(): React.ReactElement {
                   redirect="login"
                 >
                   <FavoriteQuotePage />
+                </CustomRoute>
+                <CustomRoute path="/reader" role={Role.USER} redirect="login">
+                  <ReaderPage />
                 </CustomRoute>
                 <CustomRoute path="/" role={Role.USER} redirect="login">
                   <QuotePage />

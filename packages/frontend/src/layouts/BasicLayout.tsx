@@ -16,7 +16,7 @@ export function BasicLayout({
       <Box flexBasis={64}>
         <TopBar />
       </Box>
-      <Box flexBasis="auto" height="100%" overflow="scroll">
+      <Box flexBasis="auto" height="100%" overflow="scroll" position="relative">
         {children}
       </Box>
       <Box flexBasis={56}>

@@ -63,6 +63,7 @@
     "react-facebook-login": "^4.1.1",
     "react-google-login": "^5.2.2",
     "react-i18next": "^11.8.12",
+    "react-reader": "^0.20.3",
     "react-router-dom": "^5.2.0",
     "react-visibility-sensor": "^5.1.1"
   }
