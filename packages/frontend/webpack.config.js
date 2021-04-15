@@ -1,9 +1,9 @@
 const path = require("path");
-const fs = require("fs");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
 const WorkboxPlugin = require("workbox-webpack-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = {
   entry: "./src/index.tsx",
@@ -49,11 +49,24 @@ module.exports = {
       },
     ],
   },
+  optimization: {
+    minimize: true,
+    minimizer: [
+      new TerserPlugin({
+        parallel: true,
+        terserOptions: {
+          // https://github.com/webpack-contrib/terser-webpack-plugin#terseroptions
+        },
+      }),
+    ],
+    removeAvailableModules: true,
+  },
   devServer: {
     historyApiFallback: true,
   },
   plugins: [
     new HtmlWebpackPlugin({
+      minify: false,
       template: path.resolve(__dirname, "src", "index.html"),
     }),
     // new MiniCssExtractPlugin({
