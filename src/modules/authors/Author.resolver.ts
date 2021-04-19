@@ -12,6 +12,7 @@ import { CreateAuthorInput, UpdateAuthorInput } from "Modules/authors/inputs";
 import { UserInputError } from "apollo-server";
 import Context from "Interfaces/Context";
 import Quote from "Modules/quotes/Quote.entity";
+import Book from "Modules/books/Book.entity";
 
 @Resolver((of) => Author)
 export default class AuthorResolver {
@@ -23,6 +24,15 @@ export default class AuthorResolver {
     return await db.manager
       .createQueryBuilder()
       .relation(Author, "quotes")
+      .of(author)
+      .loadMany();
+  }
+
+  @FieldResolver()
+  async books(@Root() author: Author, @Ctx() { db }: Context): Promise<Book[]> {
+    return await db.manager
+      .createQueryBuilder()
+      .relation(Author, "books")
       .of(author)
       .loadMany();
   }

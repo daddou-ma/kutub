@@ -1,9 +1,13 @@
 import "reflect-metadata";
+import fs from "fs";
+import path from "path";
 import Koa from "koa";
+import Router from "@koa/router";
 import serve from "koa-static";
 import { ApolloServer } from "apollo-server-koa";
 import { buildSchema, AuthChecker } from "type-graphql";
-import { Connection, createConnection, useContainer } from "typeorm";
+import { graphqlUploadKoa } from "graphql-upload";
+import { createConnection, useContainer } from "typeorm";
 import { Container } from "typeorm-typedi-extensions";
 import jwt from "jsonwebtoken";
 
@@ -32,6 +36,7 @@ async function main() {
   const server = new ApolloServer({
     schema,
     playground: true,
+    uploads: false,
     context: async ({ ctx }): Promise<Context> => {
       const token = ctx?.request?.headers?.authorization || "";
 
@@ -49,7 +54,27 @@ async function main() {
 
   const app = new Koa();
 
+  const router = new Router();
+  router.get("/content/uploads/:folder/:file", async function (ctx) {
+    const fileName = path.resolve(
+      `content/uploads/${ctx.params.folder}/${ctx.params.file}`
+    );
+
+    try {
+      if (fs.existsSync(fileName)) {
+        ctx.body = fs.createReadStream(fileName);
+        ctx.attachment(fileName);
+      } else {
+        ctx.throw(400, "Requested file not found on server");
+      }
+    } catch (error) {
+      ctx.throw(500, error);
+    }
+  });
+
+  app.use(router.routes());
   app.use(serve(__dirname + "/../packages/frontend/build"));
+  app.use(graphqlUploadKoa({ maxFileSize: 10000000, maxFiles: 10 }));
 
   server.applyMiddleware({ app });
 

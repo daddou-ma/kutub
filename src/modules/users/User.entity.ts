@@ -6,13 +6,16 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
+  OneToMany,
   ManyToMany,
   JoinTable,
 } from "typeorm";
 import jwt from "jsonwebtoken";
 
 import Quote from "Modules/quotes/Quote.entity";
+import Book from "Modules/books/Book.entity";
 import UserRole from "Enums/UserRole";
+import EPub from "Modules/epubs/EPub.entity";
 
 @ObjectType()
 @Entity()
@@ -54,6 +57,10 @@ export default class User {
 
   @DeleteDateColumn()
   public deletedAt: Date;
+
+  @Field((type) => [EPub])
+  @OneToMany((type) => EPub, (epub) => epub.owner)
+  public epubs: EPub[];
 
   @Field((type) => [Quote])
   @ManyToMany((type) => Quote, (quote) => quote.favoredBy)

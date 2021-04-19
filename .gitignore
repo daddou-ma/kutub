@@ -3,5 +3,8 @@ build
 
 yarn.lock
 
+# Ignore Upload Folder
+content
+
 # Ignore Translation Backups
 packages/frontend/locales/**/translation_old.json

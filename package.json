@@ -19,6 +19,8 @@
     "lint": "npx eslint '*/**/*.{js,ts,tsx}' --quiet --fix"
   },
   "dependencies": {
+    "@koa/router": "^10.0.0",
+    "@ridi/epub-parser": "^0.7.2-alpha.4",
     "add": "^2.0.6",
     "apollo-server": "^2.22.2",
     "apollo-server-koa": "^2.22.2",
@@ -29,6 +31,7 @@
     "googleapis": "^70.0.0",
     "graphql": "^15.5.0",
     "graphql-relay": "^0.6.0",
+    "graphql-upload": "^11.0.0",
     "jsonwebtoken": "^8.5.1",
     "koa": "^2.13.1",
     "koa-static": "^5.0.0",
@@ -44,6 +47,7 @@
     "yarn": "^1.22.10"
   },
   "devDependencies": {
+    "@babel/runtime": "^7.13.10",
     "@typescript-eslint/eslint-plugin": "^4.20.0",
     "@typescript-eslint/parser": "^4.20.0",
     "eslint": "^7.23.0",
