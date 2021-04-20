@@ -1,7 +1,6 @@
 import React from "react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import {
-  Avatar,
   AppBar,
   Toolbar,
   Typography,
@@ -9,10 +8,7 @@ import {
   Menu,
   MenuItem,
 } from "@material-ui/core";
-import {
-  Menu as MenuIcon,
-  AccountCircle as AccountCircleIcon,
-} from "@material-ui/icons";
+import { MoreVert as MoreVertIcon, Menu as MenuIcon } from "@material-ui/icons";
 import { useAuth } from "Hooks/useAuth";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -32,7 +28,16 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export function TopBar() {
+interface MenuAction {
+  name: string;
+  onClick: any;
+}
+interface TopBarProps {
+  title: string;
+  actions?: MenuAction[];
+}
+
+export function TopBar({ title, actions = [] }: TopBarProps) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const { user } = useAuth();
@@ -59,7 +64,7 @@ export function TopBar() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
-            Inspire
+            {title}
           </Typography>
           <div>
             <IconButton
@@ -69,7 +74,7 @@ export function TopBar() {
               onClick={handleMenu}
               color="inherit"
             >
-              <Avatar alt={user?.name || "Guest"} src={user?.picture} />
+              <MoreVertIcon />
             </IconButton>
             <Menu
               id="menu-appbar"
@@ -86,8 +91,9 @@ export function TopBar() {
               open={open}
               onClose={handleClose}
             >
-              <MenuItem onClick={handleClose}>Profile</MenuItem>
-              <MenuItem onClick={handleClose}>My account</MenuItem>
+              {actions.map(({ name, onClick }) => (
+                <MenuItem onClick={onClick}>{name}</MenuItem>
+              ))}
             </Menu>
           </div>
         </Toolbar>

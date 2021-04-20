@@ -22,7 +22,7 @@ export default class Book extends Node {
   @PrimaryGeneratedColumn()
   public id: number;
 
-  @Field()
+  @Field({ nullable: true })
   @Column("varchar", { length: 512 })
   public isbn: string;
 
@@ -30,15 +30,15 @@ export default class Book extends Node {
   @Column("varchar", { length: 512 })
   public title: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Column("varchar", { nullable: true, length: 2048 })
   public description: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Column("varchar", { nullable: true, length: 512 })
   public publisher: string;
 
-  @Field()
+  @Field({ nullable: true })
   @Column("varchar", { length: 1024 })
   public coverPath: string;
 

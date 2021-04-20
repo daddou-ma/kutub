@@ -77,7 +77,7 @@ export function FavoriteQuotePage(): React.ReactElement {
   if (error) return <>Error! {error.message}</>;
 
   return (
-    <BasicLayout>
+    <BasicLayout title="Favorite">
       <List>
         {data.me.favoriteQuotes.map((quote) => (
           <>

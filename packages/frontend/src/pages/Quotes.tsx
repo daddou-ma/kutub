@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useQuery, useMutation, gql } from "@apollo/client";
+import { useTranslation } from "react-i18next";
 import {
   List,
   ListItem,
@@ -30,6 +31,7 @@ export interface Author {
 }
 
 export function QuotePage(): React.ReactElement {
+  const { t } = useTranslation();
   const { loading, error, data, fetchMore } = useQuery(QUOTES_QUERY);
   const [favoriteQuote] = useMutation(FAVORITE_QUOTE_MUTATION, {
     onCompleted: console.log,
@@ -79,7 +81,7 @@ export function QuotePage(): React.ReactElement {
   if (error) return <>Error! {error.message}</>;
 
   return (
-    <BasicLayout>
+    <BasicLayout title={t("My Quotes")}>
       <List>
         {data.quotes.edges.map(({ node }) => (
           <>

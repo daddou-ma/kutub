@@ -2,10 +2,10 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { App } from "./components/App";
 import i18n from "i18next";
-import { initReactI18next } from "react-i18next";
+import { initReactI18next, I18nextProvider } from "react-i18next";
+
 import en from "Locales/en/translation.json";
 import ar from "Locales/ar/translation.json";
-import * as serviceWorker from "./serviceWorker";
 
 const resources = {
   en: { translation: en },
@@ -23,7 +23,12 @@ i18n.use(initReactI18next).init({
   },
 });
 
-ReactDOM.render(<App />, document.getElementById("output"));
+ReactDOM.render(
+  <I18nextProvider i18n={i18n}>
+    <App />
+  </I18nextProvider>,
+  document.getElementById("output")
+);
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {

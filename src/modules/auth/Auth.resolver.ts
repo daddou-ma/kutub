@@ -14,7 +14,7 @@ export default class AuthResolver {
     "postmessage"
   );
 
-  @Query((returns) => User)
+  @Query((returns) => User, { nullable: true })
   async me(@Ctx() { user }: Context): Promise<User> {
     return user;
   }

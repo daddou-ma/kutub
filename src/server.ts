@@ -3,6 +3,7 @@ import fs from "fs";
 import path from "path";
 import Koa from "koa";
 import Router from "@koa/router";
+import cors from "@koa/cors";
 import serve from "koa-static";
 import { ApolloServer } from "apollo-server-koa";
 import { buildSchema, AuthChecker } from "type-graphql";
@@ -53,6 +54,8 @@ async function main() {
   await server.start();
 
   const app = new Koa();
+
+  app.use(cors());
 
   const router = new Router();
   router.get("/content/uploads/:folder/:file", async function (ctx) {

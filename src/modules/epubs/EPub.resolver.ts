@@ -1,4 +1,5 @@
-import { createWriteStream, writeFileSync } from "fs";
+import { writeFileSync } from "fs";
+import { v4 as uuidv4 } from "uuid";
 import path from "path";
 import {
   Resolver,
@@ -68,12 +69,12 @@ export default class EPubResolver {
   @Mutation((returns) => EPub)
   async uploadEPub(
     @Arg("data") { upload }: CreateEPubInput,
-    @Ctx() { db }: Context
+    @Ctx() { user }: Context
   ): Promise<EPub> {
     const { filename, createReadStream } = await upload;
-
-    const filePath = `content/uploads/epubs/${filename}`;
-    const coverPath = `content/uploads/covers/${filename}.png`;
+    const uuid = uuidv4();
+    const filePath = `content/uploads/epubs/${uuid}.epub`;
+    const coverPath = `content/uploads/covers/${uuid}.png`;
 
     await saveFile(createReadStream(), path.resolve(filePath));
 
@@ -100,6 +101,7 @@ export default class EPubResolver {
       filename,
       filePath,
       book,
+      owner: user,
     });
 
     await this.repository.save(epub);

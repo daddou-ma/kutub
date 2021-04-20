@@ -31,9 +31,9 @@ export default class EPub extends Node {
   @ManyToOne(() => Book, (book) => book.epub)
   public book: Book;
 
-  @Field((type) => User)
+  @Field((type) => User, { nullable: true })
   @ManyToOne(() => User, (user) => user.epubs)
-  public owner: User;
+  public owner?: User;
 
   @Field((type) => Date)
   @CreateDateColumn()

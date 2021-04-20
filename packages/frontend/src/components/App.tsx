@@ -1,13 +1,9 @@
-import * as React from "react";
-import {
-  ApolloProvider,
-  ApolloClient,
-  InMemoryCache,
-  createHttpLink,
-} from "@apollo/client";
+import React from "react";
+import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
+import { createUploadLink } from "apollo-upload-client";
 import { relayStylePagination } from "@apollo/client/utilities";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch } from "react-router-dom";
 import { create } from "jss";
 import rtl from "jss-rtl";
 import {
@@ -19,6 +15,7 @@ import {
 import { useTranslation } from "react-i18next";
 
 import { QuotePage } from "Pages/Quotes";
+import { LibraryPage } from "Pages/Library";
 import { FavoriteQuotePage } from "Pages/FavoriteQuotes";
 import { ReaderPage } from "Pages/Reader";
 import { LoginPage } from "Pages/Login";
@@ -27,7 +24,7 @@ import { AuthProvider } from "Hooks/useAuth";
 
 const GRAPH_URL = "http://localhost:4000/graphql";
 
-const httpLink = createHttpLink({
+const httpLink = createUploadLink({
   uri: GRAPH_URL,
 });
 
@@ -49,6 +46,8 @@ const client = new ApolloClient({
       Query: {
         fields: {
           quotes: relayStylePagination(),
+          epubs: relayStylePagination(),
+          books: relayStylePagination(),
         },
       },
     },
@@ -70,6 +69,9 @@ export function App(): React.ReactElement {
           >
             <Router>
               <Switch>
+                <CustomRoute path="/library" role={Role.USER} redirect="login">
+                  <LibraryPage />
+                </CustomRoute>
                 <CustomRoute path="/login" role={Role.GUEST} redirect="/">
                   <LoginPage />
                 </CustomRoute>
@@ -83,7 +85,11 @@ export function App(): React.ReactElement {
                 >
                   <FavoriteQuotePage />
                 </CustomRoute>
-                <CustomRoute path="/reader" role={Role.USER} redirect="login">
+                <CustomRoute
+                  path="/reader/:epubId"
+                  role={Role.USER}
+                  redirect="login"
+                >
                   <ReaderPage />
                 </CustomRoute>
                 <CustomRoute path="/" role={Role.USER} redirect="login">

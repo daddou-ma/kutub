@@ -86,9 +86,8 @@ const useStyles = makeStyles((theme) => ({
 
 export function LoginForm(): React.ReactElement {
   const classes = useStyles();
+  const { t } = useTranslation();
 
-  const { t, i18n } = useTranslation();
-  document.body.dir = i18n.dir();
   const { connect } = useAuth();
   const { googleSignIn } = useGoogleAuth({
     onLoginSuccess: connect,

@@ -7,7 +7,6 @@ import { LoginForm } from "Components/LoginForm";
 import { Copyright } from "Components/CopyRight";
 
 export function LoginPage(): React.ReactElement {
-  const { t } = useTranslation();
   return (
     <EmptyLayout>
       <Container component="main" maxWidth="xs">
