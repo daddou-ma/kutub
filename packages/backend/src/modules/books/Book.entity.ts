@@ -9,16 +9,16 @@ import {
   DeleteDateColumn,
   ManyToMany,
   getConnection,
+  OneToMany,
 } from "typeorm";
 import Author from "Modules/authors/Author.entity";
-import User from "Modules/users/User.entity";
 import { Node } from "Relay/interfaces/Node";
 import EPub from "Modules/epubs/EPub.entity";
-
+import Publisher from "Modules/publishers/Publisher.entity";
 @Entity()
 @ObjectType({ implements: Node })
 export default class Book extends Node {
-  @Field((type) => ID)
+  @Field(() => ID)
   @PrimaryGeneratedColumn()
   public id: number;
 
@@ -35,34 +35,32 @@ export default class Book extends Node {
   public description: string;
 
   @Field({ nullable: true })
-  @Column("varchar", { nullable: true, length: 512 })
-  public publisher: string;
-
-  @Field({ nullable: true })
   @Column("varchar", { length: 1024 })
   public coverPath: string;
 
-  @Field((type) => EPub)
-  @ManyToOne(() => EPub, (epub) => epub.book)
-  public epub: EPub;
+  @Field(() => Publisher, { nullable: true })
+  @ManyToOne(() => Publisher, (publisher) => publisher.books)
+  public publisher: Publisher;
 
-  @Field((type) => [Author])
+  @OneToMany(() => EPub, (epub) => epub.book)
+  public epubs: EPub[];
+
   @ManyToMany(() => Author, (author) => author.books)
   public authors: Author[];
 
-  @Field((type) => Date)
+  @Field(() => Date)
   @CreateDateColumn()
   public createdAt: Date;
 
-  @Field((type) => Date)
+  @Field(() => Date)
   @UpdateDateColumn()
   public updatedAt: Date;
 
-  @Field((type) => Date)
+  @Field(() => Date)
   @DeleteDateColumn()
   public deletedAt: Date;
 
-  @Field((type) => Boolean)
+  @Field(() => Boolean)
   public favorited: boolean;
 
   public static async findOrCreate(book: Partial<Book>): Promise<Book> {

@@ -12,15 +12,15 @@ import {
 } from "typeorm";
 import jwt from "jsonwebtoken";
 
+import { Node } from "Relay/interfaces/Node";
 import Quote from "Modules/quotes/Quote.entity";
-import Book from "Modules/books/Book.entity";
 import UserRole from "Enums/UserRole";
 import EPub from "Modules/epubs/EPub.entity";
 
-@ObjectType()
 @Entity()
-export default class User {
-  @Field((type) => ID)
+@ObjectType({ implements: Node })
+export default class User extends Node {
+  @Field(() => ID)
   @PrimaryGeneratedColumn("uuid")
   public id: number;
 
@@ -58,12 +58,10 @@ export default class User {
   @DeleteDateColumn()
   public deletedAt: Date;
 
-  @Field((type) => [EPub])
-  @OneToMany((type) => EPub, (epub) => epub.owner)
+  @OneToMany(() => EPub, (epub) => epub.createdBy)
   public epubs: EPub[];
 
-  @Field((type) => [Quote])
-  @ManyToMany((type) => Quote, (quote) => quote.favoredBy)
+  @ManyToMany(() => Quote, (quote) => quote.favoredBy)
   @JoinTable()
   public favoriteQuotes: Quote[];
 

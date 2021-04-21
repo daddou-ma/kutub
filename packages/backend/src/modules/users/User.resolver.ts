@@ -6,33 +6,52 @@ import {
   Arg,
   FieldResolver,
   Root,
+  Args,
 } from "type-graphql";
 import User from "Modules/users/User.entity";
-import Quote from "Modules/quotes/Quote.entity";
-import { CreateUserInput, UpdateUserInput } from "Modules/users/inputs/index";
+import { CreateUserInput, UpdateUserInput } from "Modules/users/User.inputs";
 import { UserInputError } from "apollo-server";
 import Context from "Interfaces/Context";
+import { EPubConnection } from "Modules/epubs/EPub.connection";
+import { ConnectionArguments } from "Relay/generics/ConnectionsArguments";
+import {
+  connectionFromRelation,
+  connectionFromRepository,
+} from "Relay/Connection.factory";
+import { QuoteConnection } from "Modules/quotes/Quote.connection";
+import { UserConnection } from "./User.connection";
+import { InjectRepository } from "typeorm-typedi-extensions";
+import { Repository } from "typeorm";
 
-@Resolver((of) => User)
+@Resolver(() => User)
 export default class UserResolver {
-  @FieldResolver((returns) => [Quote])
+  @InjectRepository(User, "prod")
+  private readonly repository!: Repository<User>;
+
+  @FieldResolver(() => EPubConnection)
+  async epubs(
+    @Root() user: User,
+    @Args() args: ConnectionArguments,
+    @Ctx() { db }: Context
+  ): Promise<EPubConnection> {
+    return connectionFromRelation(args, db, User, "epubs", user);
+  }
+
+  @FieldResolver(() => QuoteConnection)
   async favoriteQuotes(
     @Root() user: User,
+    @Args() args: ConnectionArguments,
     @Ctx() { db }: Context
-  ): Promise<Quote[]> {
-    return await db.manager
-      .createQueryBuilder()
-      .relation(User, "favoriteQuotes")
-      .of(user)
-      .loadMany();
+  ): Promise<QuoteConnection> {
+    return connectionFromRelation(args, db, User, "favoriteQuotes", user);
   }
 
-  @Query((returns) => [User])
-  async users(@Ctx() { db }: Context): Promise<User[]> {
-    return await db.manager.find(User, {});
+  @Query(() => UserConnection)
+  async users(@Args() args: ConnectionArguments): Promise<UserConnection> {
+    return connectionFromRepository(args, this.repository);
   }
 
-  @Query((returns) => User)
+  @Query(() => User)
   async userById(
     @Arg("userId") userId: string,
     @Ctx() { db }: Context
@@ -44,7 +63,7 @@ export default class UserResolver {
     }
   }
 
-  @Mutation((returns) => User)
+  @Mutation(() => User)
   async createUser(
     @Arg("data") input: CreateUserInput,
     @Ctx() { db }: Context
@@ -54,7 +73,7 @@ export default class UserResolver {
     return user;
   }
 
-  @Mutation((returns) => User)
+  @Mutation(() => User)
   async updateUser(
     @Arg("userId") userId: string,
     @Arg("data") input: UpdateUserInput,
@@ -64,7 +83,7 @@ export default class UserResolver {
     return db.manager.findOne(User, userId);
   }
 
-  @Mutation((returns) => User)
+  @Mutation(() => User)
   async deleteUser(
     @Arg("userId") userId: string,
     @Ctx() { db }: Context

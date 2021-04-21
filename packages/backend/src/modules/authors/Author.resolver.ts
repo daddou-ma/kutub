@@ -6,43 +6,55 @@ import {
   Arg,
   FieldResolver,
   Root,
+  Args,
 } from "type-graphql";
 import Author from "Modules/authors/Author.entity";
-import { CreateAuthorInput, UpdateAuthorInput } from "Modules/authors/inputs";
+import {
+  CreateAuthorInput,
+  UpdateAuthorInput,
+} from "Modules/authors/Author.inputs";
 import { UserInputError } from "apollo-server";
 import Context from "Interfaces/Context";
-import Quote from "Modules/quotes/Quote.entity";
-import Book from "Modules/books/Book.entity";
+import { QuoteConnection } from "Modules/quotes/Quote.connection";
+import { BookConnection } from "Modules/books/Book.connection";
+import {
+  connectionFromRelation,
+  connectionFromRepository,
+} from "Relay/Connection.factory";
+import { ConnectionArguments } from "Relay/generics/ConnectionsArguments";
+import { AuthorConnection } from "./Author.connection";
+import { InjectRepository } from "typeorm-typedi-extensions";
+import { Repository } from "typeorm";
 
-@Resolver((of) => Author)
+@Resolver(() => Author)
 export default class AuthorResolver {
-  @FieldResolver()
+  @InjectRepository(Author, "prod")
+  private readonly repository!: Repository<Author>;
+
+  @FieldResolver(() => QuoteConnection)
   async quotes(
     @Root() author: Author,
+    @Args() args: ConnectionArguments,
     @Ctx() { db }: Context
-  ): Promise<Quote[]> {
-    return await db.manager
-      .createQueryBuilder()
-      .relation(Author, "quotes")
-      .of(author)
-      .loadMany();
+  ): Promise<QuoteConnection> {
+    return connectionFromRelation(args, db, Author, "quotes", author);
   }
 
-  @FieldResolver()
-  async books(@Root() author: Author, @Ctx() { db }: Context): Promise<Book[]> {
-    return await db.manager
-      .createQueryBuilder()
-      .relation(Author, "books")
-      .of(author)
-      .loadMany();
+  @FieldResolver(() => BookConnection)
+  async books(
+    @Root() author: Author,
+    @Args() args: ConnectionArguments,
+    @Ctx() { db }: Context
+  ): Promise<BookConnection> {
+    return connectionFromRelation(args, db, Author, "books", author);
   }
 
-  @Query((returns) => [Author])
-  async authors(@Ctx() { db }: Context): Promise<Author[]> {
-    return await db.manager.find(Author, {});
+  @Query(() => AuthorConnection)
+  async authors(@Args() args: ConnectionArguments): Promise<AuthorConnection> {
+    return connectionFromRepository(args, this.repository);
   }
 
-  @Query((returns) => Author)
+  @Query(() => Author)
   async authorById(
     @Arg("authorId") authorId: string,
     @Ctx() { db }: Context
@@ -54,7 +66,7 @@ export default class AuthorResolver {
     }
   }
 
-  @Mutation((returns) => Author)
+  @Mutation(() => Author)
   async createAuthor(
     @Arg("data") input: CreateAuthorInput,
     @Ctx() { db }: Context
@@ -64,7 +76,7 @@ export default class AuthorResolver {
     return author;
   }
 
-  @Mutation((returns) => Author)
+  @Mutation(() => Author)
   async updateAuthor(
     @Arg("authorId") authorId: string,
     @Arg("data") input: UpdateAuthorInput,
@@ -74,7 +86,7 @@ export default class AuthorResolver {
     return db.manager.findOne(Author, authorId);
   }
 
-  @Mutation((returns) => Author)
+  @Mutation(() => Author)
   async deleteAuthor(
     @Arg("authorId") authorId: string,
     @Ctx() { db }: Context

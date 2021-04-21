@@ -15,7 +15,7 @@ import { Node } from "Relay/interfaces/Node";
 @Entity()
 @ObjectType({ implements: Node })
 export default class EPub extends Node {
-  @Field((type) => ID)
+  @Field(() => ID)
   @PrimaryGeneratedColumn()
   public id: number;
 
@@ -27,26 +27,21 @@ export default class EPub extends Node {
   @Column("varchar", { length: 1024 })
   public filePath: string;
 
-  @Field((type) => Book, { nullable: true })
-  @ManyToOne(() => Book, (book) => book.epub)
+  @ManyToOne(() => Book, (book) => book.epubs)
   public book: Book;
 
-  @Field((type) => User, { nullable: true })
   @ManyToOne(() => User, (user) => user.epubs)
-  public owner?: User;
+  public createdBy?: User;
 
-  @Field((type) => Date)
+  @Field(() => Date)
   @CreateDateColumn()
   public createdAt: Date;
 
-  @Field((type) => Date)
+  @Field(() => Date)
   @UpdateDateColumn()
   public updatedAt: Date;
 
-  @Field((type) => Date)
+  @Field(() => Date)
   @DeleteDateColumn()
   public deletedAt: Date;
-
-  @Field((type) => Boolean)
-  public favorited: boolean;
 }

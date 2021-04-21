@@ -12,45 +12,60 @@ import { Repository } from "typeorm";
 import { InjectRepository } from "typeorm-typedi-extensions";
 
 import { ConnectionArguments } from "Relay/generics/ConnectionsArguments";
-import { connectionFromRepository } from "Relay/Connection.factory";
-import { CreateBookInput, UpdateBookInput } from "Modules/books/inputs";
+import {
+  connectionFromRelation,
+  connectionFromRepository,
+} from "Relay/Connection.factory";
+import { CreateBookInput, UpdateBookInput } from "Modules/books/Book.inputs";
 import { UserInputError } from "apollo-server";
 import Context from "Interfaces/Context";
 import Book from "Modules/books/Book.entity";
-import Author from "Modules/authors/Author.entity";
-import User from "Modules/users/User.entity";
+import Publisher from "Modules/publishers/Publisher.entity";
 import { BookConnection } from "Modules/books/Book.connection";
-import EPub from "Modules/epubs/EPub.entity";
+import { AuthorConnection } from "Modules/authors/Author.connection";
+import { EPubConnection } from "Modules/epubs/EPub.connection";
 
-@Resolver((of) => Book)
+@Resolver(() => Book)
 export default class BookResolver {
   @InjectRepository(Book, "prod")
   private readonly repository!: Repository<Book>;
 
-  @FieldResolver()
-  async authors(@Root() book: Book, @Ctx() { db }: Context): Promise<Author[]> {
+  @FieldResolver(() => Publisher)
+  async publisher(
+    @Root() book: Book,
+    @Ctx() { db }: Context
+  ): Promise<Publisher> {
     return await db.manager
       .createQueryBuilder()
-      .relation(Book, "authors")
-      .of(book)
-      .loadMany();
-  }
-
-  @FieldResolver()
-  async epub(@Root() book: Book, @Ctx() { db }: Context): Promise<EPub> {
-    return await db.manager
-      .createQueryBuilder()
-      .relation(Book, "epub")
+      .relation(Book, "publisher")
       .of(book)
       .loadOne();
   }
 
-  @Query((returns) => BookConnection)
+  @FieldResolver(() => EPubConnection)
+  async epubs(
+    @Root() book: Book,
+    @Args() args: ConnectionArguments,
+    @Ctx() { db }: Context
+  ): Promise<EPubConnection> {
+    return connectionFromRelation(args, db, Book, "epubs", book);
+  }
+
+  @FieldResolver(() => AuthorConnection)
+  async authors(
+    @Root() book: Book,
+    @Args() args: ConnectionArguments,
+    @Ctx() { db }: Context
+  ): Promise<AuthorConnection> {
+    return connectionFromRelation(args, db, Book, "authors", book);
+  }
+
+  @Query(() => BookConnection)
   async books(@Args() args: ConnectionArguments): Promise<BookConnection> {
     return connectionFromRepository(args, this.repository);
   }
 
-  @Query((returns) => Book)
+  @Query(() => Book)
   async bookById(
     @Arg("bookId") bookId: string,
     @Ctx() { db }: Context
@@ -62,7 +77,7 @@ export default class BookResolver {
     }
   }
 
-  @Mutation((returns) => Book)
+  @Mutation(() => Book)
   async createBook(
     @Arg("data") input: CreateBookInput,
     @Ctx() { db }: Context
@@ -72,7 +87,7 @@ export default class BookResolver {
     return book;
   }
 
-  @Mutation((returns) => Book)
+  @Mutation(() => Book)
   async updateBook(
     @Arg("bookId") bookId: string,
     @Arg("data") input: UpdateBookInput,
@@ -82,7 +97,7 @@ export default class BookResolver {
     return db.manager.findOne(Book, bookId);
   }
 
-  @Mutation((returns) => Book)
+  @Mutation(() => Book)
   async deleteBook(
     @Arg("bookId") bookId: string,
     @Ctx() { db }: Context

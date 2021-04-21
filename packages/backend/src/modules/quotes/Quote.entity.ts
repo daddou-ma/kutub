@@ -1,4 +1,4 @@
-import { ObjectType, Field, ID, Int } from "type-graphql";
+import { ObjectType, Field, ID } from "type-graphql";
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -16,7 +16,7 @@ import User from "Modules/users/User.entity";
 @Entity()
 @ObjectType({ implements: Node })
 export default class Quote extends Node {
-  @Field((type) => ID)
+  @Field(() => ID)
   @PrimaryGeneratedColumn()
   public id: number;
 
@@ -24,30 +24,30 @@ export default class Quote extends Node {
   @Column("varchar", { length: 512 })
   public content: string;
 
-  @Field((type) => ID)
+  @Field(() => ID)
   public authorId: string;
 
-  @Field((type) => Author)
+  @Field(() => Author)
   @ManyToOne(() => Author, (author) => author.quotes)
   public author: Author;
 
-  @Field((type) => Date)
+  @Field(() => Date)
   @CreateDateColumn()
   public createdAt: Date;
 
-  @Field((type) => Date)
+  @Field(() => Date)
   @UpdateDateColumn()
   public updatedAt: Date;
 
-  @Field((type) => Date)
+  @Field(() => Date)
   @DeleteDateColumn()
   public deletedAt: Date;
 
-  @Field((type) => Boolean)
+  @Field(() => Boolean)
   public favorited: boolean;
 
-  @Field((type) => [User])
-  @ManyToMany((type) => User, (user) => user.favoriteQuotes)
+  @Field(() => [User])
+  @ManyToMany(() => User, (user) => user.favoriteQuotes)
   public favoredBy: User[];
 
   @Field()

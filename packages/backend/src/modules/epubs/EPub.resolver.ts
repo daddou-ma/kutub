@@ -16,34 +16,34 @@ import { InjectRepository } from "typeorm-typedi-extensions";
 
 import { ConnectionArguments } from "Relay/generics/ConnectionsArguments";
 import { connectionFromRepository } from "Relay/Connection.factory";
-import { CreateEPubInput, UpdateEPubInput } from "Modules/epubs/inputs";
+import { CreateEPubInput } from "Modules/epubs/EPub.inputs";
 import { UserInputError } from "apollo-server";
 
 import EPub from "Modules/epubs/EPub.entity";
 import Book from "Modules/books/Book.entity";
 import User from "Modules/users/User.entity";
+import Author from "Modules/authors/Author.entity";
+import Publisher from "Modules/publishers/Publisher.entity";
 import { EPubConnection } from "Modules/epubs/EPub.connection";
-
 import { getEPubMetadata } from "Utils/epub";
 import { saveFile } from "Utils/file";
 import Context from "Interfaces/Context";
-import Author from "Modules/authors/Author.entity";
 
-@Resolver((of) => EPub)
+@Resolver(() => EPub)
 export default class EPubResolver {
   @InjectRepository(EPub, "prod")
   private readonly repository!: Repository<EPub>;
 
-  @FieldResolver()
-  async owner(@Root() epub: EPub): Promise<User> {
+  @FieldResolver(() => User, { nullable: true })
+  async createdBy(@Root() epub: EPub): Promise<User> {
     return await this.repository
       .createQueryBuilder()
-      .relation(EPub, "owner")
+      .relation(EPub, "createdBy")
       .of(epub)
       .loadOne();
   }
 
-  @FieldResolver()
+  @FieldResolver(() => EPub)
   async book(@Root() epub: EPub): Promise<Book> {
     return await this.repository
       .createQueryBuilder()
@@ -52,12 +52,12 @@ export default class EPubResolver {
       .loadOne();
   }
 
-  @Query((returns) => EPubConnection)
+  @Query(() => EPubConnection)
   async epubs(@Args() args: ConnectionArguments): Promise<EPubConnection> {
     return connectionFromRepository(args, this.repository);
   }
 
-  @Query((returns) => EPub)
+  @Query(() => EPub)
   async epubById(@Arg("epubId") epubId: string): Promise<EPub> {
     try {
       return await this.repository.findOneOrFail(epubId);
@@ -66,7 +66,7 @@ export default class EPubResolver {
     }
   }
 
-  @Mutation((returns) => EPub)
+  @Mutation(() => EPub)
   async uploadEPub(
     @Arg("data") { upload }: CreateEPubInput,
     @Ctx() { user }: Context
@@ -88,11 +88,13 @@ export default class EPubResolver {
       })
     );
 
+    const publisher = await Publisher.findOrCreate({ name: base.publisher });
+
     const book = await Book.findOrCreate({
       isbn: base.identifiers[0].value as string,
       title: base.titles[0],
       description: base.description,
-      publisher: base.publisher,
+      publisher,
       coverPath,
       authors,
     });
@@ -101,14 +103,14 @@ export default class EPubResolver {
       filename,
       filePath,
       book,
-      owner: user,
+      createdBy: user,
     });
 
     await this.repository.save(epub);
     return epub;
   }
 
-  @Mutation((returns) => EPub)
+  @Mutation(() => EPub)
   async deleteEPub(@Arg("epubId") epubId: string): Promise<EPub> {
     try {
       const epub = await this.repository.findOneOrFail(epubId);

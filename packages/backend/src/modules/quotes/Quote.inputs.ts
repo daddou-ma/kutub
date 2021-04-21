@@ -12,3 +12,14 @@ export class CreateQuoteInput implements Partial<Quote> {
   @MaxLength(128)
   authorID: string;
 }
+
+@InputType({ description: "Update Quote data" })
+export class UpdateQuoteInput implements Partial<Quote> {
+  @Field()
+  @MaxLength(512)
+  content: string;
+
+  @Field()
+  @MaxLength(128)
+  authorID: string;
+}

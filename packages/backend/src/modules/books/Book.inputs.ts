@@ -15,8 +15,11 @@ export class CreateBookInput implements Partial<Book> {
   @Field()
   @MaxLength(2048)
   description: string;
+}
 
+@InputType({ description: "Update Book data" })
+export class UpdateBookInput implements Partial<Book> {
   @Field()
-  @MaxLength(128)
-  publisher: string;
+  @MaxLength(512)
+  title: string;
 }

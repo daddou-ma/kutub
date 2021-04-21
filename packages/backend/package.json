@@ -15,6 +15,7 @@
     "server:dev": "npx ts-node -r tsconfig-paths/register src/server.ts"
   },
   "dependencies": {
+    "@inspire/types": "^0.0.0",
     "@koa/router": "^10.0.0",
     "@ridi/epub-parser": "^0.7.2-alpha.4",
     "add": "^2.0.6",

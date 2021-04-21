@@ -8,3 +8,10 @@ export class CreateAuthorInput implements Partial<Author> {
   @MaxLength(48)
   name: string;
 }
+
+@InputType({ description: "Update Author data" })
+export class UpdateAuthorInput implements Partial<Author> {
+  @Field()
+  @MaxLength(48)
+  name: string;
+}

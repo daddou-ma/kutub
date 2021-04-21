@@ -13,7 +13,10 @@ import { InjectRepository } from "typeorm-typedi-extensions";
 
 import { ConnectionArguments } from "Relay/generics/ConnectionsArguments";
 import { connectionFromRepository } from "Relay/Connection.factory";
-import { CreateQuoteInput, UpdateQuoteInput } from "Modules/quotes/inputs";
+import {
+  CreateQuoteInput,
+  UpdateQuoteInput,
+} from "Modules/quotes/Quote.inputs";
 import { UserInputError } from "apollo-server";
 import Context from "Interfaces/Context";
 import Quote from "Modules/quotes/Quote.entity";
@@ -21,7 +24,7 @@ import Author from "Modules/authors/Author.entity";
 import User from "Modules/users/User.entity";
 import { QuoteConnection } from "Modules/quotes/Quote.connection";
 
-@Resolver((of) => Quote)
+@Resolver(() => Quote)
 export default class QuoteResolver {
   @InjectRepository(Quote, "prod")
   private readonly repository!: Repository<Quote>;
@@ -47,12 +50,12 @@ export default class QuoteResolver {
     return Boolean(Number(favorited));
   }
 
-  @Query((returns) => QuoteConnection)
+  @Query(() => QuoteConnection)
   async quotes(@Args() args: ConnectionArguments): Promise<QuoteConnection> {
     return connectionFromRepository(args, this.repository);
   }
 
-  @Query((returns) => Quote)
+  @Query(() => Quote)
   async quoteById(
     @Arg("quoteId") quoteId: string,
     @Ctx() { db }: Context
@@ -64,7 +67,7 @@ export default class QuoteResolver {
     }
   }
 
-  @Mutation((returns) => Quote)
+  @Mutation(() => Quote)
   async favoriteQuote(
     @Arg("quoteId") quoteId: string,
     @Ctx() { db, user }: Context
@@ -78,7 +81,7 @@ export default class QuoteResolver {
     return quote;
   }
 
-  @Mutation((returns) => Quote)
+  @Mutation(() => Quote)
   async unFavoriteQuote(
     @Arg("quoteId") quoteId: string,
     @Ctx() { db, user }: Context
@@ -94,7 +97,7 @@ export default class QuoteResolver {
     return quote;
   }
 
-  @Mutation((returns) => Quote)
+  @Mutation(() => Quote)
   async createQuote(
     @Arg("data") input: CreateQuoteInput,
     @Ctx() { db }: Context
@@ -104,7 +107,7 @@ export default class QuoteResolver {
     return quote;
   }
 
-  @Mutation((returns) => Quote)
+  @Mutation(() => Quote)
   async updateQuote(
     @Arg("quoteId") quoteId: string,
     @Arg("data") input: UpdateQuoteInput,
@@ -114,7 +117,7 @@ export default class QuoteResolver {
     return db.manager.findOne(Quote, quoteId);
   }
 
-  @Mutation((returns) => Quote)
+  @Mutation(() => Quote)
   async deleteQuote(
     @Arg("quoteId") quoteId: string,
     @Ctx() { db }: Context
