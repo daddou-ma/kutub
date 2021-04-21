@@ -1,33 +1,17 @@
 import React, { useRef } from "react";
-import { Link } from "react-router-dom";
-import { useQuery, useMutation, gql } from "@apollo/client";
+import { useQuery, useMutation } from "@apollo/client";
 import { useTranslation } from "react-i18next";
+import { List, Divider } from "@material-ui/core";
 import {
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  Divider,
-  Checkbox,
-} from "@material-ui/core";
-import { Favorite, FavoriteBorder } from "@material-ui/icons";
+  EPubFragment,
+  BookFragment,
+  AuthorFragment,
+  Author,
+} from "Types/index";
 
+import { LibraryItem } from "Components/LibraryItem";
 import { BasicLayout } from "Layouts/BasicLayout";
 import { EPUB_QUERY, IMPORT_EPUB_MUTATION } from "Graph/queries/epubs";
-
-export interface Author {
-  name: string;
-}
-
-export interface EPub {
-  filename: string;
-  filePath: string;
-}
-
-export interface Book {
-  title: string;
-  description?: string;
-}
 
 export function LibraryPage(): React.ReactElement {
   const { t } = useTranslation();
@@ -44,31 +28,29 @@ export function LibraryPage(): React.ReactElement {
         epubs({ existingEPubs }) {
           cache.writeFragment({
             id: `EPub:${epub?.id}`,
-            fragment: gql`
-              fragment CreatedEPub on EPub {
-                filename
-                filePath
-              }
-            `,
+            fragment: EPubFragment,
             data: epub,
           });
           return existingEPubs;
         },
-        books({ existingBooks }) {
-          cache.writeFragment({
-            id: `Book:${epub?.book?.id}`,
-            fragment: gql`
-              fragment CreatedBook on Book {
-                id
-                title
-                description
-                publisher
-              }
-            `,
-            data: epub,
-          });
-          return existingBooks;
-        },
+        // books({ existingBooks }) {
+        //   cache.writeFragment({
+        //     id: `Book:${epub?.book?.id}`,
+        //     fragment: BookFragment,
+        //     data: epub?.book,
+        //   });
+        //   return existingBooks;
+        // },
+        // authors({ existingAuthors }) {
+        //   epub?.book?.authors.forEach((author: Author) => {
+        //     cache.writeFragment({
+        //       id: `Book:${author.id}`,
+        //       fragment: AuthorFragment,
+        //       data: author,
+        //     });
+        //   });
+        //   return existingAuthors;
+        // },
       },
     });
   }
@@ -109,40 +91,7 @@ export function LibraryPage(): React.ReactElement {
       <List>
         {data.epubs.edges.map(({ node }) => (
           <>
-            <ListItem alignItems="flex-start" key={node.id}>
-              <ListItemAvatar>
-                <img
-                  width={48}
-                  alt={node?.book?.title}
-                  src={"http://localhost:4000/" + node?.book?.coverPath}
-                />
-              </ListItemAvatar>
-              <ListItemText
-                primary={
-                  <Link
-                    style={{
-                      color: "#333",
-                      fontWeight: "bold",
-                      textDecoration: "none",
-                    }}
-                    to={`/reader/${node.id}`}
-                  >
-                    {node?.book?.title.slice(0, 48)}
-                  </Link>
-                }
-                secondary={
-                  <React.Fragment>{`by ${node?.book?.authors.map(
-                    ({ name }) => name
-                  )}`}</React.Fragment>
-                }
-              />
-              <Checkbox
-                icon={<FavoriteBorder />}
-                checkedIcon={<Favorite />}
-                checked={false}
-                onChange={(e) => console.log(e, node.id)}
-              />
-            </ListItem>
+            <LibraryItem epub={node} />
             <Divider variant="inset" component="li" />
           </>
         ))}

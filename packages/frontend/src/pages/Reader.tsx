@@ -1,6 +1,8 @@
 import * as React from "react";
 import { useParams } from "react-router-dom";
 import {} from "@material-ui/core";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import { ReactReaderStyle, EpubViewStyle, EpubView } from "react-reader";
 
 import { EmptyLayout } from "Layouts/EmptyLayout";

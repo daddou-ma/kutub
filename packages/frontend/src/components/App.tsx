@@ -93,7 +93,7 @@ export function App(): React.ReactElement {
                   <ReaderPage />
                 </CustomRoute>
                 <CustomRoute path="/" role={Role.USER} redirect="login">
-                  <QuotePage />
+                  <LibraryPage />
                 </CustomRoute>
               </Switch>
             </Router>
