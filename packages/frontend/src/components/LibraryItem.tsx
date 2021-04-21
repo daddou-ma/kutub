@@ -17,7 +17,6 @@ interface LibraryItemProps {
 
 export function LibraryItem({ epub }: LibraryItemProps): React.ReactElement {
   const { t } = useTranslation();
-
   return (
     <ListItem alignItems="flex-start" key={epub?.id}>
       <ListItemAvatar>
@@ -41,8 +40,8 @@ export function LibraryItem({ epub }: LibraryItemProps): React.ReactElement {
           </Link>
         }
         secondary={
-          <React.Fragment>{`${t("by")} ${epub?.book?.authors.map(
-            ({ name }) => name
+          <React.Fragment>{`${t("by")} ${epub?.book?.authors.edges.map(
+            ({ node }) => node.name
           )}`}</React.Fragment>
         }
       />

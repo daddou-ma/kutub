@@ -1,4 +1,5 @@
 import gql from "graphql-tag";
+import { Connection } from "Types/Connection";
 import { Author } from "Types/Author";
 import { Publisher } from "Types/Publisher";
 
@@ -10,7 +11,7 @@ export interface Book {
   publishDate: Date;
   coverPath: string;
   publisher: Publisher;
-  authors: Author[];
+  authors: Connection<Author>;
   createdAt: Date;
   updatedAt: Date;
   deletedAt: Date;

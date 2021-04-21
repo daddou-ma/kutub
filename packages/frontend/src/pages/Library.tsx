@@ -2,12 +2,7 @@ import React, { useRef } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { useTranslation } from "react-i18next";
 import { List, Divider } from "@material-ui/core";
-import {
-  EPubFragment,
-  BookFragment,
-  AuthorFragment,
-  Author,
-} from "Types/index";
+import { EPubFragment } from "Types/index";
 
 import { LibraryItem } from "Components/LibraryItem";
 import { BasicLayout } from "Layouts/BasicLayout";

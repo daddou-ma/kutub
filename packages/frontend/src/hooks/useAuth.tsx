@@ -3,20 +3,13 @@ import { useQuery } from "@apollo/client";
 import jwtDecode from "jwt-decode";
 
 import { ME_QUERY } from "Graph/queries/auth";
+import { User } from "Types/User";
 
 interface AuthProviderProps {
   children: React.ReactElement;
 }
 
-export interface User {
-  id: string;
-  name: string;
-  email: string;
-  picture: string;
-}
-
 interface AuthContext {
-  // eslint-disable-next-line @typescript-eslint/ban-types
   user: User;
   token: string;
   isConnected: boolean;

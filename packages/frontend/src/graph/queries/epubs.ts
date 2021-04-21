@@ -1,26 +1,30 @@
 import { gql } from "@apollo/client";
+import { AuthorFragment } from "Types/Author";
+import { EPubFragment } from "Types/EPub";
+import { BookFragment } from "Types/Book";
 
 export const EPUB_QUERY = gql`
   query EPUB {
     epubs {
       edges {
         node {
-          id
-          filename
-          filePath
+          ...EPubFragment
           book {
-            id
-            title
-            description
-            coverPath
+            ...BookFragment
             authors {
-              id
-              name
+              edges {
+                node {
+                  ...AuthorFragment
+                }
+                cursor
+              }
+              totalCount
             }
           }
         }
         cursor
       }
+      totalCount
       pageInfo {
         startCursor
         endCursor
@@ -29,34 +33,53 @@ export const EPUB_QUERY = gql`
       }
     }
   }
+  ${AuthorFragment}
+  ${BookFragment}
+  ${EPubFragment}
 `;
 
 export const EPUB_BYID_QUERY = gql`
   query EPUB($epubId: String!) {
     epub: epubById(epubId: $epubId) {
-      id
-      filename
-      filePath
+      ...EPubFragment
+      book {
+        ...BookFragment
+        authors {
+          edges {
+            node {
+              ...AuthorFragment
+            }
+            cursor
+          }
+          totalCount
+        }
+      }
     }
   }
+  ${AuthorFragment}
+  ${BookFragment}
+  ${EPubFragment}
 `;
 
 export const IMPORT_EPUB_MUTATION = gql`
   mutation IMPORT_EPUB($upload: Upload!) {
     epub: uploadEPub(data: { upload: $upload }) {
-      id
-      filename
-      filePath
+      ...EPubFragment
       book {
-        id
-        title
-        description
-        coverPath
+        ...BookFragment
         authors {
-          id
-          name
+          edges {
+            node {
+              ...AuthorFragment
+            }
+            cursor
+          }
+          totalCount
         }
       }
     }
   }
+  ${AuthorFragment}
+  ${BookFragment}
+  ${EPubFragment}
 `;

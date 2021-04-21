@@ -1,4 +1,5 @@
 import gql from "graphql-tag";
+import { Connection } from "Types/Connection";
 import { EPub } from "Types/EPub";
 
 export interface User {
@@ -6,7 +7,7 @@ export interface User {
   name: string;
   email: string;
   picture: string;
-  epubs: EPub[];
+  epubs: Connection<EPub>;
   createdAt: Date;
   updatedAt: Date;
   deletedAt: Date;
@@ -18,7 +19,6 @@ export const UserFragment = gql`
     name
     email
     picture
-    filePath
     createdAt
     updatedAt
     deletedAt

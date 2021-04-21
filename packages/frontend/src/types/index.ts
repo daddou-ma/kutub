@@ -1,3 +1,7 @@
+export { Connection } from "Types/Connection";
+
+export { Edge } from "Types/Edge";
+
 export { Author } from "Types/Author";
 export { AuthorFragment } from "Types/Author";
 
