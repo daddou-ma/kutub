@@ -39,7 +39,7 @@ export default class Quote extends Node {
   @UpdateDateColumn()
   public updatedAt: Date;
 
-  @Field(() => Date)
+  @Field(() => Date, { nullable: true })
   @DeleteDateColumn()
   public deletedAt: Date;
 

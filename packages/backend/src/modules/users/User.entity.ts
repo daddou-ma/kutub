@@ -49,15 +49,19 @@ export default class User extends Node {
   @Column("varchar", { unique: true, nullable: true })
   public googleId: string;
 
+  @Field(() => Date)
   @CreateDateColumn()
   public createdAt: Date;
 
+  @Field(() => Date)
   @UpdateDateColumn()
   public updatedAt: Date;
 
+  @Field(() => Date, { nullable: true })
   @DeleteDateColumn()
   public deletedAt: Date;
 
+  @Field(() => Date)
   @OneToMany(() => EPub, (epub) => epub.createdBy)
   public epubs: EPub[];
 

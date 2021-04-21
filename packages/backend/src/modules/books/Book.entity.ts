@@ -38,6 +38,10 @@ export default class Book extends Node {
   @Column("varchar", { length: 1024 })
   public coverPath: string;
 
+  @Field(() => Date, { nullable: true })
+  @Column({ nullable: true })
+  public publishDate: Date;
+
   @Field(() => Publisher, { nullable: true })
   @ManyToOne(() => Publisher, (publisher) => publisher.books)
   public publisher: Publisher;
@@ -56,7 +60,7 @@ export default class Book extends Node {
   @UpdateDateColumn()
   public updatedAt: Date;
 
-  @Field(() => Date)
+  @Field(() => Date, { nullable: true })
   @DeleteDateColumn()
   public deletedAt: Date;
 

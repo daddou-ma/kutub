@@ -28,12 +28,15 @@ export default class Publisher extends Node {
   @JoinTable()
   public books: Book[];
 
+  @Field(() => Date)
   @CreateDateColumn()
   public createdAt: Date;
 
+  @Field(() => Date)
   @UpdateDateColumn()
   public updatedAt: Date;
 
+  @Field(() => Date, { nullable: true })
   @DeleteDateColumn()
   public deletedAt: Date;
 

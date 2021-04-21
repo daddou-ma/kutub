@@ -33,12 +33,15 @@ export default class Author extends Node {
   @OneToMany(() => Quote, (quote) => quote.author)
   public quotes: Quote[];
 
+  @Field(() => Date)
   @CreateDateColumn()
   public createdAt: Date;
 
+  @Field(() => Date)
   @UpdateDateColumn()
   public updatedAt: Date;
 
+  @Field(() => Date, { nullable: true })
   @DeleteDateColumn()
   public deletedAt: Date;
 

@@ -43,7 +43,7 @@ export default class EPubResolver {
       .loadOne();
   }
 
-  @FieldResolver(() => EPub)
+  @FieldResolver(() => Book)
   async book(@Root() epub: EPub): Promise<Book> {
     return await this.repository
       .createQueryBuilder()
