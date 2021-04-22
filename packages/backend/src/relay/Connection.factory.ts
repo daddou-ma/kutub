@@ -34,7 +34,11 @@ export async function connectionFromRepository<T>(
   const take = Math.max(endOffset - startOffset, 1); // sql limit
 
   // records
-  const entities = await repository.find({ skip, take });
+  const entities = await repository.find({
+    skip,
+    take,
+    order: { id: "DESC" },
+  } as any);
 
   const edges = entities.map((entity, index) => ({
     cursor: offsetToCursor(startOffset + index),

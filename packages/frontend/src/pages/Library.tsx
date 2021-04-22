@@ -7,13 +7,15 @@ import { EPubFragment } from "Types/index";
 import { LibraryItem } from "Components/LibraryItem";
 import { BasicLayout } from "Layouts/BasicLayout";
 import { EPUB_QUERY, IMPORT_EPUB_MUTATION } from "Graph/queries/epubs";
+import { useSnackbar } from "Hooks/useSnackbar";
 
 export function LibraryPage(): React.ReactElement {
+  const { showSnackbar } = useSnackbar();
   const { t } = useTranslation();
   const fileRef = useRef(null);
   const { loading, error, data } = useQuery(EPUB_QUERY);
   const [importEPub] = useMutation(IMPORT_EPUB_MUTATION, {
-    onCompleted: console.log,
+    onCompleted: () => showSnackbar(t("EPub Book Added")),
     update: handleCacheUpdate,
   });
 
@@ -28,24 +30,6 @@ export function LibraryPage(): React.ReactElement {
           });
           return existingEPubs;
         },
-        // books({ existingBooks }) {
-        //   cache.writeFragment({
-        //     id: `Book:${epub?.book?.id}`,
-        //     fragment: BookFragment,
-        //     data: epub?.book,
-        //   });
-        //   return existingBooks;
-        // },
-        // authors({ existingAuthors }) {
-        //   epub?.book?.authors.forEach((author: Author) => {
-        //     cache.writeFragment({
-        //       id: `Book:${author.id}`,
-        //       fragment: AuthorFragment,
-        //       data: author,
-        //     });
-        //   });
-        //   return existingAuthors;
-        // },
       },
     });
   }
@@ -57,7 +41,6 @@ export function LibraryPage(): React.ReactElement {
     },
   }: any): void {
     if (!validity.valid) return;
-    console.log(file);
     importEPub({ variables: { upload: file } });
   }
 
@@ -70,7 +53,7 @@ export function LibraryPage(): React.ReactElement {
       title={t("My Books")}
       actions={[
         {
-          name: t("Import Book"),
+          name: t("Import EPub Book"),
           onClick: () => fileRef.current.click(),
         },
       ]}
@@ -78,6 +61,7 @@ export function LibraryPage(): React.ReactElement {
       <>
         <input
           type="file"
+          accept=".epub"
           style={{ display: "none" }}
           ref={fileRef}
           onChange={handleImport}

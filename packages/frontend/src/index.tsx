@@ -12,8 +12,6 @@ const resources = {
   ar: { translation: ar },
 };
 
-console.log(resources);
-
 i18n.use(initReactI18next).init({
   resources,
   lng: "en",

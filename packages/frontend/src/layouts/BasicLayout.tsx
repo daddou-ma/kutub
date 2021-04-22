@@ -2,7 +2,7 @@ import * as React from "react";
 import { Box } from "@material-ui/core";
 
 import { TopBar } from "Components/TopBar";
-import { CustomBottomNavigation } from "Components/BottomNavigation";
+// import { CustomBottomNavigation } from "Components/BottomNavigation";
 
 interface BasicLayoutProps {
   title: string;
@@ -23,9 +23,9 @@ export function BasicLayout({
       <Box flexBasis="auto" height="100%" overflow="scroll" position="relative">
         {children}
       </Box>
-      <Box flexBasis={56}>
+      {/* <Box flexBasis={56}>
         <CustomBottomNavigation />
-      </Box>
+      </Box> */}
     </Box>
   );
 }

@@ -92,7 +92,14 @@ export function TopBar({ title, actions = [] }: TopBarProps) {
               onClose={handleClose}
             >
               {actions.map(({ name, onClick }) => (
-                <MenuItem onClick={onClick}>{name}</MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    handleClose();
+                    onClick();
+                  }}
+                >
+                  {name}
+                </MenuItem>
               ))}
             </Menu>
           </div>

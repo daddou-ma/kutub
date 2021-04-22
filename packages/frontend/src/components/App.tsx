@@ -21,6 +21,7 @@ import { ReaderPage } from "Pages/Reader";
 import { LoginPage } from "Pages/Login";
 import { CustomRoute, Role } from "Components/CustomRoute";
 import { AuthProvider } from "Hooks/useAuth";
+import { SnackbarProvider } from "Hooks/useSnackbar";
 
 const GRAPH_URL = "http://localhost:4000/graphql";
 
@@ -67,36 +68,42 @@ export function App(): React.ReactElement {
               direction: i18n.dir(),
             })}
           >
-            <Router>
-              <Switch>
-                <CustomRoute path="/library" role={Role.USER} redirect="login">
-                  <LibraryPage />
-                </CustomRoute>
-                <CustomRoute path="/login" role={Role.GUEST} redirect="/">
-                  <LoginPage />
-                </CustomRoute>
-                <CustomRoute path="/quotes" role={Role.USER} redirect="login">
-                  <QuotePage />
-                </CustomRoute>
-                <CustomRoute
-                  path="/favorites"
-                  role={Role.USER}
-                  redirect="login"
-                >
-                  <FavoriteQuotePage />
-                </CustomRoute>
-                <CustomRoute
-                  path="/reader/:epubId"
-                  role={Role.USER}
-                  redirect="login"
-                >
-                  <ReaderPage />
-                </CustomRoute>
-                <CustomRoute path="/" role={Role.USER} redirect="login">
-                  <LibraryPage />
-                </CustomRoute>
-              </Switch>
-            </Router>
+            <SnackbarProvider>
+              <Router>
+                <Switch>
+                  <CustomRoute
+                    path="/library"
+                    role={Role.USER}
+                    redirect="login"
+                  >
+                    <LibraryPage />
+                  </CustomRoute>
+                  <CustomRoute path="/login" role={Role.GUEST} redirect="/">
+                    <LoginPage />
+                  </CustomRoute>
+                  <CustomRoute path="/quotes" role={Role.USER} redirect="login">
+                    <QuotePage />
+                  </CustomRoute>
+                  <CustomRoute
+                    path="/favorites"
+                    role={Role.USER}
+                    redirect="login"
+                  >
+                    <FavoriteQuotePage />
+                  </CustomRoute>
+                  <CustomRoute
+                    path="/reader/:epubId"
+                    role={Role.USER}
+                    redirect="login"
+                  >
+                    <ReaderPage />
+                  </CustomRoute>
+                  <CustomRoute path="/" role={Role.USER} redirect="login">
+                    <LibraryPage />
+                  </CustomRoute>
+                </Switch>
+              </Router>
+            </SnackbarProvider>
           </MuiThemeProvider>
         </StylesProvider>
       </AuthProvider>

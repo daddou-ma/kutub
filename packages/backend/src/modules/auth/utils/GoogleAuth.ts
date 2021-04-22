@@ -33,7 +33,6 @@ export default class GoogleAuth {
   }
 
   public async getGoogleUser({ code }): Promise<GoogleUser> {
-    console.log(code);
     const { tokens } = (await this.oauth2Client.getToken(code)) as GoogleTokens;
 
     // Fetch the user's profile with the access token and bearer
