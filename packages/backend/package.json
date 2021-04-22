@@ -15,7 +15,6 @@
     "server:dev": "npx ts-node -r tsconfig-paths/register src/server.ts"
   },
   "dependencies": {
-    "@inspire/types": "^0.0.0",
     "@koa/router": "^10.0.0",
     "@ridi/epub-parser": "^0.7.2-alpha.4",
     "add": "^2.0.6",
@@ -32,6 +31,7 @@
     "jsonwebtoken": "^8.5.1",
     "koa": "^2.13.1",
     "koa-static": "^5.0.0",
+    "md5": "^2.3.0",
     "mysql": "^2.18.1",
     "reflect-metadata": "^0.1.13",
     "sqlite3": "^5.0.2",

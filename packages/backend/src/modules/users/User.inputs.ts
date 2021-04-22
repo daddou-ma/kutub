@@ -6,6 +6,10 @@ import User from "Modules/users/User.entity";
 export class CreateUserInput implements Partial<User> {
   @Field()
   @MaxLength(64)
+  name: string;
+
+  @Field()
+  @MaxLength(64)
   email: string;
 
   @Field()
@@ -15,6 +19,10 @@ export class CreateUserInput implements Partial<User> {
 
 @InputType({ description: "Update User data" })
 export class UpdateUserInput implements Partial<User> {
+  @Field()
+  @MaxLength(64)
+  name: string;
+
   @Field()
   @MaxLength(64)
   email: string;
