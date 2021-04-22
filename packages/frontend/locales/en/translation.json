@@ -1,4 +1,8 @@
 {
+  "Copyright © ": "Copyright © ",
+  "Connect with Google": "Connect with Google",
+  "by": "by",
+  "Invalid Credentials": "Invalid Credentials",
   "Sign in": "Welcome",
   "Email Address": "Email Address",
   "Password": "Password",
@@ -6,7 +10,11 @@
   "Sign In": "Sign In",
   "Forgot password?": "Forgot password?",
   "Don't have an account? Sign Up": "Don't have an account? Sign Up",
-  "Connect with Google": "Connect with Google",
-  "Connect with Facebook": "Connect with Facebook",
-  "Copyright © ": "Copyright © "
+  "Register": "Register",
+  "Full Name": "Full Name",
+  "Already have an account? Login": "Already have an account? Login",
+  "EPub Book Added": "EPub Book Added",
+  "My Books": "My Books",
+  "Import EPub Book": "Import EPub Book",
+  "My Quotes": "My Quotes"
 }

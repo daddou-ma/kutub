@@ -3,14 +3,16 @@ import { Container, Box } from "@material-ui/core";
 import { useTranslation } from "react-i18next";
 
 import { EmptyLayout } from "Layouts/EmptyLayout";
-import { LoginForm } from "Components/LoginForm";
+import { PasswordAuth } from "Components/PasswordAuth";
+import { GoogleAuth } from "Components/GoogleAuth";
 import { Copyright } from "Components/CopyRight";
 
 export function LoginPage(): React.ReactElement {
   return (
     <EmptyLayout>
       <Container component="main" maxWidth="xs">
-        <LoginForm />
+        <PasswordAuth />
+        <GoogleAuth />
         <div></div>
         <Box mt={8}>
           <Copyright />

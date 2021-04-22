@@ -21,6 +21,17 @@ i18n.use(initReactI18next).init({
   },
 });
 
+i18n.on("languageChanged", function (language) {
+  console.log(language);
+  if (language === "ar") {
+    window.document.dir = "rtl";
+  } else {
+    window.document.dir = "ltr";
+  }
+});
+
+window.i18n = i18n;
+
 ReactDOM.render(
   <I18nextProvider i18n={i18n}>
     <App />

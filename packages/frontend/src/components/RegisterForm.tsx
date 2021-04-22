@@ -4,8 +4,6 @@ import {
   Avatar,
   Button,
   TextField,
-  FormControlLabel,
-  Checkbox,
   Link,
   Grid,
   Box,
@@ -17,7 +15,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { useTranslation } from "react-i18next";
 
 import { useAuth } from "Hooks/useAuth";
-import { PASSWORD_AUTH_MUTATION } from "Graph/queries/auth";
+import { REGISTER_MUTATION } from "Graph/queries/auth";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -37,37 +35,18 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
-  google: {
-    backgroundColor: "#DB4437",
-    borderColor: "#DB4437",
-    color: "white",
-    margin: theme.spacing(3, 0, 2),
-    "&:hover": {
-      backgroundColor: "#DB4437",
-      borderColor: "#DB4437",
-      color: "white",
-    },
-    "&:active": {
-      backgroundColor: "#DB4437",
-      borderColor: "#DB4437",
-      color: "white",
-    },
-    "&:focus": {
-      backgroundColor: "#DB4437",
-      borderColor: "#DB4437",
-      color: "white",
-      boxShadow: "0 0 0 0.2rem rgba(0,123,255,.5)",
-    },
-  },
 }));
 
-interface LoginFormProps {
+interface RegisterFormProps {
   onSwitch: CallableFunction;
 }
 
-export function LoginForm({ onSwitch }: LoginFormProps): React.ReactElement {
+export function RegisterForm({
+  onSwitch,
+}: RegisterFormProps): React.ReactElement {
   const [form, setForm] = useState({
-    username: "",
+    name: "",
+    email: "",
     password: "",
   });
   const [error, setError] = useState(null);
@@ -76,9 +55,9 @@ export function LoginForm({ onSwitch }: LoginFormProps): React.ReactElement {
 
   const { connect } = useAuth();
 
-  const [passwordAuth] = useMutation(PASSWORD_AUTH_MUTATION, {
-    onCompleted: ({ passwordAuth }) =>
-      connect({ user: passwordAuth?.user, token: passwordAuth?.token }),
+  const [register] = useMutation(REGISTER_MUTATION, {
+    onCompleted: ({ register }) =>
+      connect({ user: register?.user, token: register?.token }),
     onError: () => setError(t("Invalid Credentials")),
   });
 
@@ -91,7 +70,7 @@ export function LoginForm({ onSwitch }: LoginFormProps): React.ReactElement {
 
   function handleSubmit(e) {
     e.preventDefault();
-    passwordAuth({ variables: form });
+    register({ variables: { data: form } });
   }
 
   return (
@@ -100,26 +79,26 @@ export function LoginForm({ onSwitch }: LoginFormProps): React.ReactElement {
         <LockOutlinedIcon />
       </Avatar>
       <Typography component="h1" variant="h5">
-        {t("Sign in")}
+        {t("Register")}
       </Typography>
       <Snackbar
         open={error}
         onClose={() => setError(null)}
         autoHideDuration={3000}
         message={error}
-        key="login-message"
+        key="register-message"
       />
-      <form className={classes.form} noValidate onSubmit={handleSubmit}>
+      <form className={classes.form} onSubmit={handleSubmit}>
         <TextField
           variant="outlined"
           margin="normal"
           required
           fullWidth
-          id="username"
-          label={t("Email Address")}
-          name="username"
-          value={form.username}
-          autoComplete="email"
+          id="name"
+          label={t("Full Name")}
+          name="name"
+          value={form.name}
+          autoComplete="name"
           autoFocus
           onChange={handleChange}
         />
@@ -128,17 +107,25 @@ export function LoginForm({ onSwitch }: LoginFormProps): React.ReactElement {
           margin="normal"
           required
           fullWidth
+          id="email"
+          label={t("Email Address")}
+          name="email"
+          value={form.email}
+          autoComplete="email"
+          onChange={handleChange}
+        />
+        <TextField
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
           name="password"
-          value={form.passname}
+          value={form.password}
           label={t("Password")}
           type="password"
           id="password"
           autoComplete="current-password"
           onChange={handleChange}
-        />
-        <FormControlLabel
-          control={<Checkbox value="remember" color="primary" />}
-          label={t("Remember me")}
         />
         <Button
           type="submit"
@@ -148,7 +135,7 @@ export function LoginForm({ onSwitch }: LoginFormProps): React.ReactElement {
           fullWidth
           className={classes.submit}
         >
-          {t("Sign In")}
+          {t("Register")}
         </Button>
         <Grid container>
           <Grid item xs>
@@ -158,7 +145,7 @@ export function LoginForm({ onSwitch }: LoginFormProps): React.ReactElement {
           </Grid>
           <Grid item>
             <Link href="#" variant="body2" onClick={onSwitch}>
-              {t("Don't have an account? Sign Up")}
+              {t("Already have an account? Login")}
             </Link>
           </Grid>
         </Grid>

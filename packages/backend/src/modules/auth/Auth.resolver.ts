@@ -28,11 +28,17 @@ export default class AuthResolver {
   }
 
   @Mutation(() => AuthResponse)
-  async register(@Arg("data") input: CreateUserInput): Promise<AuthResponse> {
+  async register(
+    @Arg("data") { name, email, password }: CreateUserInput
+  ): Promise<AuthResponse> {
     let user;
     try {
-      user = await this.repository.create(input);
-      this.repository.save(user);
+      user = await this.repository.create({
+        name,
+        email,
+        password: md5(password),
+      });
+      user = await this.repository.save(user);
     } catch (e) {
       throw new UserInputError("Invalid Informations");
     }

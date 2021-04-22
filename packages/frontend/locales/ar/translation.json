@@ -1,4 +1,8 @@
 {
+  "Copyright © ": "علامة © ",
+  "Connect with Google": "الإتصال بحساب جوجل",
+  "by": "كاتب : ",
+  "Invalid Credentials": "معلومات غير صحيحة",
   "Sign in": "مرحبا بك",
   "Email Address": "البريد الإلكتروني",
   "Password": "كلمة المرور",
@@ -6,7 +10,11 @@
   "Sign In": "تسجيل دخول",
   "Forgot password?": "نسيت كلمة المرور ؟",
   "Don't have an account? Sign Up": "ليس لديك حساب ؟ تسجيل",
-  "Connect with Google": "الإتصال بحساب جوجل",
-  "Connect with Facebook": "الإتصال بحساب فيسبوك",
-  "Copyright © ": "علامة © "
+  "Register": "تسجيل",
+  "Full Name": "الإسم الكامل",
+  "Already have an account? Login": "Already have an account? Login",
+  "EPub Book Added": "تم إضافة الكتاب بنجاح",
+  "My Books": "كتبي",
+  "Import EPub Book": "إضافة كتاب جديد",
+  "My Quotes": "مقولات"
 }

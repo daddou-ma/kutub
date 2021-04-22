@@ -26,6 +26,30 @@ export const ME_QUERY = gql`
   ${UserFragment}
 `;
 
+export const REGISTER_MUTATION = gql`
+  mutation REGISTER($data: CreateUserInput!) {
+    register(data: $data) {
+      user {
+        ...UserFragment
+      }
+      token
+    }
+  }
+  ${UserFragment}
+`;
+
+export const PASSWORD_AUTH_MUTATION = gql`
+  mutation PASSWORD_AUTH($username: String!, $password: String!) {
+    passwordAuth(username: $username, password: $password) {
+      user {
+        ...UserFragment
+      }
+      token
+    }
+  }
+  ${UserFragment}
+`;
+
 export const GOOGLE_AUTH_MUTATION = gql`
   mutation GOOGLE_AUTH($code: String!) {
     googleAuth(code: $code) {
