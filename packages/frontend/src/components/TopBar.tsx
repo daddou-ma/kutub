@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import { useTranslation } from "react-i18next";
-import { useHistory } from "react-router-dom";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import {
   AppBar,
@@ -9,24 +7,9 @@ import {
   IconButton,
   Menu,
   MenuItem,
-  SwipeableDrawer,
-  Divider,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Avatar,
-  Box,
 } from "@material-ui/core";
-import {
-  MoreVert as MoreVertIcon,
-  Menu as MenuIcon,
-  Book as BookIcon,
-  FormatQuote as FormatQuoteIcon,
-  Settings as SettingsIcon,
-  Info as InfoIcon,
-} from "@material-ui/icons";
-import { useAuth } from "Hooks/useAuth";
+import { MoreVert as MoreVertIcon, Menu as MenuIcon } from "@material-ui/icons";
+import { SideMenu } from "Components/SideMenu";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -56,11 +39,8 @@ interface TopBarProps {
 
 export function TopBar({ title, actions = [] }: TopBarProps) {
   const [openDrawer, setOpenDrawer] = useState(false);
-  const history = useHistory();
-  const { t } = useTranslation();
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const { user } = useAuth();
 
   const open = Boolean(anchorEl);
 
@@ -70,11 +50,6 @@ export function TopBar({ title, actions = [] }: TopBarProps) {
 
   const handleClose = () => {
     setAnchorEl(null);
-  };
-
-  const handleClick = (path) => {
-    history.push(path);
-    handleClose();
   };
 
   return (
@@ -93,47 +68,11 @@ export function TopBar({ title, actions = [] }: TopBarProps) {
           <Typography variant="h6" className={classes.title}>
             {title}
           </Typography>
-          <SwipeableDrawer
-            anchor="left"
+          <SideMenu
             open={openDrawer}
-            onClose={() => setOpenDrawer(false)}
-            onOpen={() => setOpenDrawer(true)}
-          >
-            <div style={{ width: 250 }} role="presentation">
-              <Box p={2}>
-                <Avatar alt={user?.name} src={user?.picture} />
-                <Typography variant="h6">{user?.name}</Typography>
-                <Typography variant="overline">{user?.email}</Typography>
-              </Box>
-              <Divider />
-              <List>
-                <ListItem button onClick={() => handleClick("/library")}>
-                  <ListItemIcon>
-                    <BookIcon />
-                  </ListItemIcon>
-                  <ListItemText primary={t("My Library")} />
-                </ListItem>
-                <ListItem button onClick={() => handleClick("/quotes")}>
-                  <ListItemIcon>
-                    <FormatQuoteIcon />
-                  </ListItemIcon>
-                  <ListItemText primary={t("Quotes")} />
-                </ListItem>
-                <ListItem button onClick={() => handleClick("/settings")}>
-                  <ListItemIcon>
-                    <SettingsIcon />
-                  </ListItemIcon>
-                  <ListItemText primary={t("Settings")} />
-                </ListItem>
-                <ListItem button onClick={() => handleClick("/about")}>
-                  <ListItemIcon>
-                    <InfoIcon />
-                  </ListItemIcon>
-                  <ListItemText primary={t("About")} />
-                </ListItem>
-              </List>
-            </div>
-          </SwipeableDrawer>
+            handleOpen={() => setOpenDrawer(true)}
+            handleClose={() => setOpenDrawer(false)}
+          />
           <div>
             <IconButton
               aria-label="account of current user"
