@@ -13,8 +13,16 @@
   "Register": "Register",
   "Full Name": "Full Name",
   "Already have an account? Login": "Already have an account? Login",
+  "My Library": "My Library",
+  "Quotes": "Quotes",
+  "Settings": "Settings",
+  "About": "About",
+  "English": "English",
+  "Arabic": "Arabic",
   "EPub Book Added": "EPub Book Added",
   "My Books": "My Books",
   "Import EPub Book": "Import EPub Book",
-  "My Quotes": "My Quotes"
+  "My Quotes": "My Quotes",
+  "Language": "Language",
+  "Dark Mode": "Dark Mode"
 }

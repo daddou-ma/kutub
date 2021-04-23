@@ -39,7 +39,6 @@ export async function connectionFromRepository<T>(
     take,
     order: { id: "DESC" },
   } as any);
-
   const edges = entities.map((entity, index) => ({
     cursor: offsetToCursor(startOffset + index),
     node: entity,

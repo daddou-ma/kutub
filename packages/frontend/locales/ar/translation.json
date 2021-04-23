@@ -12,9 +12,17 @@
   "Don't have an account? Sign Up": "ليس لديك حساب ؟ تسجيل",
   "Register": "تسجيل",
   "Full Name": "الإسم الكامل",
-  "Already have an account? Login": "Already have an account? Login",
+  "Already have an account? Login": "هل لديك حساب ? دخول",
+  "My Library": "مكتبتي",
+  "Quotes": "مقولات",
+  "Settings": "إعدادات",
+  "About": "من نحن",
+  "English": "إنجليزية",
+  "Arabic": "عربية",
   "EPub Book Added": "تم إضافة الكتاب بنجاح",
   "My Books": "كتبي",
   "Import EPub Book": "إضافة كتاب جديد",
-  "My Quotes": "مقولات"
+  "My Quotes": "مقولات",
+  "Language": "لقة التطبيق",
+  "Dark Mode": "نظام المظلم"
 }

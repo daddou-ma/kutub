@@ -31,7 +31,9 @@ export function CustomRoute({
   return (
     <>
       {allowed ? (
-        <Route path={path}>{children}</Route>
+        <Route exact path={path}>
+          {children}
+        </Route>
       ) : (
         <Redirect to={redirect} />
       )}

@@ -129,7 +129,7 @@ export function LoginForm({ onSwitch }: LoginFormProps): React.ReactElement {
           required
           fullWidth
           name="password"
-          value={form.passname}
+          value={form.password}
           label={t("Password")}
           type="password"
           id="password"
@@ -157,7 +157,7 @@ export function LoginForm({ onSwitch }: LoginFormProps): React.ReactElement {
             </Link>
           </Grid>
           <Grid item>
-            <Link href="#" variant="body2" onClick={onSwitch}>
+            <Link href="#" variant="body2" onClick={() => onSwitch()}>
               {t("Don't have an account? Sign Up")}
             </Link>
           </Grid>

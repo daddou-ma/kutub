@@ -6,19 +6,16 @@ import { relayStylePagination } from "@apollo/client/utilities";
 import { BrowserRouter as Router, Switch } from "react-router-dom";
 import { create } from "jss";
 import rtl from "jss-rtl";
-import {
-  MuiThemeProvider,
-  StylesProvider,
-  createMuiTheme,
-  jssPreset,
-} from "@material-ui/core/styles";
-import { useTranslation } from "react-i18next";
+import { StylesProvider, jssPreset } from "@material-ui/core/styles";
+import { ThemeProvider } from "Hooks/useTheme";
 
 import { QuotePage } from "Pages/Quotes";
 import { LibraryPage } from "Pages/Library";
 import { FavoriteQuotePage } from "Pages/FavoriteQuotes";
 import { ReaderPage } from "Pages/Reader";
 import { LoginPage } from "Pages/Login";
+import { SettingsPage } from "Pages/Settings";
+import { LanguageSettingsPage } from "Pages/LanguageSettings";
 import { CustomRoute, Role } from "Components/CustomRoute";
 import { AuthProvider } from "Hooks/useAuth";
 import { SnackbarProvider } from "Hooks/useSnackbar";
@@ -58,16 +55,11 @@ const client = new ApolloClient({
 const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
 
 export function App(): React.ReactElement {
-  const { i18n } = useTranslation();
   return (
     <ApolloProvider client={client}>
       <AuthProvider>
         <StylesProvider jss={jss}>
-          <MuiThemeProvider
-            theme={createMuiTheme({
-              direction: i18n.dir(),
-            })}
-          >
+          <ThemeProvider>
             <SnackbarProvider>
               <Router>
                 <Switch>
@@ -98,13 +90,27 @@ export function App(): React.ReactElement {
                   >
                     <ReaderPage />
                   </CustomRoute>
+                  <CustomRoute
+                    path="/settings/language"
+                    role={Role.USER}
+                    redirect="login"
+                  >
+                    <LanguageSettingsPage />
+                  </CustomRoute>
+                  <CustomRoute
+                    path="/settings"
+                    role={Role.USER}
+                    redirect="login"
+                  >
+                    <SettingsPage />
+                  </CustomRoute>
                   <CustomRoute path="/" role={Role.USER} redirect="login">
                     <LibraryPage />
                   </CustomRoute>
                 </Switch>
               </Router>
             </SnackbarProvider>
-          </MuiThemeProvider>
+          </ThemeProvider>
         </StylesProvider>
       </AuthProvider>
     </ApolloProvider>
