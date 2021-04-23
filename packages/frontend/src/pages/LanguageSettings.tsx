@@ -15,23 +15,21 @@ export function LanguageSettingsPage(): React.ReactElement {
   return (
     <BasicLayout title={t("Settings")}>
       <List>
-        <ListItem>
+        <ListItem onClick={() => i18n.changeLanguage("en")}>
           <ListItemText>{t("English")}</ListItemText>
           <ListItemSecondaryAction>
             <Radio
               checked={i18n.language === "en"}
-              onChange={() => i18n.changeLanguage("en")}
               value="en"
               name="language"
             />
           </ListItemSecondaryAction>
         </ListItem>
-        <ListItem>
+        <ListItem onClick={() => i18n.changeLanguage("ar")}>
           <ListItemText>{t("Arabic")}</ListItemText>
           <ListItemSecondaryAction>
             <Radio
               checked={i18n.language === "ar"}
-              onChange={() => i18n.changeLanguage("ar")}
               value="ar"
               name="language"
             />

@@ -32,8 +32,8 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       flexGrow: 1,
-      background: "white",
-      color: "black",
+      background: theme.palette.background.default,
+      color: theme.palette.text.primary,
       boxShadow: "none",
     },
     menuButton: {

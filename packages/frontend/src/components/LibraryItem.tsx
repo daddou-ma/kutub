@@ -6,10 +6,23 @@ import {
   ListItemAvatar,
   ListItemText,
   Checkbox,
+  Theme,
+  makeStyles,
+  createStyles,
 } from "@material-ui/core";
 import { Favorite, FavoriteBorder } from "@material-ui/icons";
 
 import { EPub } from "Types/index";
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    listItem: {
+      color: theme.palette.text.primary,
+      fontWeight: "bold",
+      textDecoration: "none",
+    },
+  })
+);
 
 interface LibraryItemProps {
   epub: EPub;
@@ -17,6 +30,7 @@ interface LibraryItemProps {
 
 export function LibraryItem({ epub }: LibraryItemProps): React.ReactElement {
   const { t } = useTranslation();
+  const classes = useStyles();
   return (
     <ListItem alignItems="flex-start" key={epub?.id}>
       <ListItemAvatar>
@@ -28,14 +42,7 @@ export function LibraryItem({ epub }: LibraryItemProps): React.ReactElement {
       </ListItemAvatar>
       <ListItemText
         primary={
-          <Link
-            style={{
-              color: "#333",
-              fontWeight: "bold",
-              textDecoration: "none",
-            }}
-            to={`/reader/${epub?.id}`}
-          >
+          <Link to={`/reader/${epub?.id}`} className={classes.listItem}>
             {epub?.book?.title.slice(0, 48)}
           </Link>
         }

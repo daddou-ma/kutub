@@ -22,7 +22,6 @@ i18n.use(initReactI18next).init(
     },
   },
   () => {
-    console.log("sdafsdafausfhdu");
     const language = localStorage.getItem("lang");
     if (language === "ar") {
       window.document.dir = "rtl";
