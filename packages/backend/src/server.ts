@@ -76,7 +76,7 @@ async function main() {
   });
 
   app.use(router.routes());
-  app.use(serve(__dirname + "/../packages/frontend/build"));
+  app.use(serve(__dirname + "/../build"));
   app.use(graphqlUploadKoa({ maxFileSize: 10000000, maxFiles: 10 }));
 
   server.applyMiddleware({ app });

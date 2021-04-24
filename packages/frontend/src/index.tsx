@@ -40,7 +40,7 @@ i18n.on("languageChanged", function (language) {
   }
 });
 
-window.i18n = i18n;
+(window as any).i18n = i18n;
 
 ReactDOM.render(
   <I18nextProvider i18n={i18n}>

@@ -6,7 +6,7 @@ import { TopBar } from "Components/TopBar";
 
 interface BasicLayoutProps {
   title: string;
-  loading: boolean;
+  loading?: boolean;
   actions?: React.ReactElement;
   children: React.ReactElement | React.ReactElement[];
 }

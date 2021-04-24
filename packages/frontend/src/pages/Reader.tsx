@@ -68,10 +68,10 @@ export function ReaderPage(): React.ReactElement {
           });
         }}
         styles={styles}
-        tocChanged={(cs) => setChapters(cs)}
+        tocChanged={(cs) => setChapters(cs as any)}
         getRendition={(rendition) => {
           setRendition(rendition);
-          rendition.book.locations.generate();
+          rendition.book.locations.generate(undefined);
 
           rendition.themes.default({
             body: {
