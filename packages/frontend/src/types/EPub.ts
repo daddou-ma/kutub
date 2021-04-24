@@ -8,6 +8,8 @@ export abstract class EPub {
   id: string;
   filename: string;
   filePath: string;
+  location: string;
+  progress: number;
   book: Book;
   highlights: Connection<Highlight>;
   createdBy: User;
@@ -21,6 +23,8 @@ export const EPubFragment = gql`
     id
     filename
     filePath
+    location
+    progress
     createdAt
     updatedAt
     deletedAt

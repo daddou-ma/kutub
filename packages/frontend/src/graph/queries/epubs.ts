@@ -83,3 +83,12 @@ export const IMPORT_EPUB_MUTATION = gql`
   ${BookFragment}
   ${EPubFragment}
 `;
+
+export const UPDATE_EPUB_MUTATION = gql`
+  mutation UPDATE_EPUB($epubId: String!, $data: UpdateEPubInput!) {
+    epub: updateEPub(epubId: $epubId, data: $data) {
+      ...EPubFragment
+    }
+  }
+  ${EPubFragment}
+`;

@@ -2,15 +2,15 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
+  Box,
   ListItem,
   ListItemAvatar,
   ListItemText,
-  Checkbox,
   Theme,
   makeStyles,
   createStyles,
+  Typography,
 } from "@material-ui/core";
-import { Favorite, FavoriteBorder } from "@material-ui/icons";
 
 import { EPub } from "Types/index";
 
@@ -52,12 +52,12 @@ export function LibraryItem({ epub }: LibraryItemProps): React.ReactElement {
           )}`}</React.Fragment>
         }
       />
-      <Checkbox
-        icon={<FavoriteBorder />}
-        checkedIcon={<Favorite />}
-        checked={false}
-        onChange={(e) => console.log(e, epub.id)}
-      />
+      <Typography
+        variant="caption"
+        component="div"
+        color="textSecondary"
+        style={{ padding: "8px 0 0 8px" }}
+      >{`${Math.round(epub.progress)}%`}</Typography>
     </ListItem>
   );
 }

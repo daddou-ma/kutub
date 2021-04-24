@@ -16,7 +16,7 @@ import { InjectRepository } from "typeorm-typedi-extensions";
 
 import { ConnectionArguments } from "Relay/generics/ConnectionsArguments";
 import { connectionFromRepository } from "Relay/Connection.factory";
-import { CreateEPubInput } from "Modules/epubs/EPub.inputs";
+import { CreateEPubInput, UpdateEPubInput } from "Modules/epubs/EPub.inputs";
 import { UserInputError } from "apollo-server";
 
 import EPub from "Modules/epubs/EPub.entity";
@@ -108,6 +108,15 @@ export default class EPubResolver {
 
     await this.repository.save(epub);
     return epub;
+  }
+
+  @Mutation(() => EPub)
+  async updateEPub(
+    @Arg("epubId") epubId: string,
+    @Arg("data") input: UpdateEPubInput
+  ): Promise<EPub> {
+    await this.repository.update(epubId, input);
+    return this.repository.findOne(epubId);
   }
 
   @Mutation(() => EPub)

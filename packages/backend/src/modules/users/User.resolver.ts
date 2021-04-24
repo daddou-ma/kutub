@@ -52,45 +52,35 @@ export default class UserResolver {
   }
 
   @Query(() => User)
-  async userById(
-    @Arg("userId") userId: string,
-    @Ctx() { db }: Context
-  ): Promise<User> {
+  async userById(@Arg("userId") userId: string): Promise<User> {
     try {
-      return await db.manager.findOneOrFail(User, userId);
+      return await this.repository.findOneOrFail(userId);
     } catch (error) {
       throw new UserInputError("No User Found with this id");
     }
   }
 
   @Mutation(() => User)
-  async createUser(
-    @Arg("data") input: CreateUserInput,
-    @Ctx() { db }: Context
-  ): Promise<User> {
-    const user = db.manager.create(User, input);
-    await db.manager.save(user);
+  async createUser(@Arg("data") input: CreateUserInput): Promise<User> {
+    const user = this.repository.create(input);
+    await this.repository.save(user);
     return user;
   }
 
   @Mutation(() => User)
   async updateUser(
     @Arg("userId") userId: string,
-    @Arg("data") input: UpdateUserInput,
-    @Ctx() { db }: Context
+    @Arg("data") input: UpdateUserInput
   ): Promise<User> {
-    await db.manager.update(User, userId, input);
-    return db.manager.findOne(User, userId);
+    await this.repository.update(userId, input);
+    return this.repository.findOne(userId);
   }
 
   @Mutation(() => User)
-  async deleteUser(
-    @Arg("userId") userId: string,
-    @Ctx() { db }: Context
-  ): Promise<User> {
+  async deleteUser(@Arg("userId") userId: string): Promise<User> {
     try {
-      const user = await db.manager.findOneOrFail(User, userId);
-      await db.manager.remove(User);
+      const user = await this.repository.findOneOrFail(userId);
+      await this.repository.remove(user);
       return user;
     } catch (error) {
       throw new UserInputError("No User Found with this id");

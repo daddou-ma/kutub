@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
+import { useQuery, useMutation } from "@apollo/client";
 import { useTheme } from "@material-ui/core";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { EpubViewStyle, EpubView } from "react-reader";
 
 import { ReaderLayout } from "Layouts/ReaderLayout";
-import { useQuery } from "@apollo/client";
-import { EPUB_BYID_QUERY } from "Graph/queries/epubs";
+import { EPUB_BYID_QUERY, UPDATE_EPUB_MUTATION } from "Graph/queries/epubs";
 
 const styles = {
   ...EpubViewStyle,
@@ -23,7 +23,13 @@ export function ReaderPage(): React.ReactElement {
   const theme = useTheme();
   const { loading, error, data } = useQuery(EPUB_BYID_QUERY, {
     variables: { epubId },
+    onCompleted({ epub }) {
+      setLocation(epub.location);
+      setProgress(epub.progress);
+    },
   });
+
+  const [updateEPub] = useMutation(UPDATE_EPUB_MUTATION);
 
   if (loading) return <>Loading...</>;
   if (error) return <>Error! {error.message}</>;
@@ -37,18 +43,29 @@ export function ReaderPage(): React.ReactElement {
     >
       <EpubView
         url={`http://localhost:4000/${data?.epub?.filePath}`}
-        location={location}
-        locationChanged={(epubcifi) => {
-          setLocation(epubcifi);
-          console.log(epubcifi);
+        location={rendition ? location : null}
+        locationChanged={(location) => {
+          setLocation(location);
 
           if (!rendition) {
             return;
           }
-          const progress = rendition.book.locations.percentageFromCfi(epubcifi);
 
-          console.log("sds", progress);
+          const progress = Math.ceil(
+            rendition.book.locations.percentageFromCfi(location) * 100
+          );
+
           setProgress(progress);
+
+          updateEPub({
+            variables: {
+              epubId,
+              data: {
+                location,
+                progress,
+              },
+            },
+          });
         }}
         styles={styles}
         tocChanged={(cs) => setChapters(cs)}

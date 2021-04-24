@@ -69,7 +69,7 @@ export function ReaderLayout({
               <MenuIcon />
             </IconButton>
             <Typography variant="body1" className={classes.title}>
-              {title}
+              {`${title.slice(0, 24)}...`}
             </Typography>
             <ReaderChapters
               open={openDrawer}
@@ -91,7 +91,7 @@ export function ReaderLayout({
       <Box flexBasis="auto" height="100%" overflow="scroll" position="relative">
         {children}
       </Box>
-      <LinearProgress variant="determinate" value={Math.ceil(progress * 100)} />
+      <LinearProgress variant="determinate" value={progress} />
     </Box>
   );
 }

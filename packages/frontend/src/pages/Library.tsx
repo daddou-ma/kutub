@@ -44,13 +44,12 @@ export function LibraryPage(): React.ReactElement {
     importEPub({ variables: { upload: file } });
   }
 
-  if (loading) return <>Loading...</>;
-
   if (error) return <>Error! {error.message}</>;
 
   return (
     <BasicLayout
       title={t("My Books")}
+      loading={loading}
       actions={[
         {
           name: t("Import EPub Book"),
@@ -68,12 +67,13 @@ export function LibraryPage(): React.ReactElement {
         />
       </>
       <List>
-        {data.epubs.edges.map(({ node }) => (
-          <>
-            <LibraryItem epub={node} />
-            <Divider variant="inset" component="li" />
-          </>
-        ))}
+        {data &&
+          data.epubs.edges.map(({ node }) => (
+            <>
+              <LibraryItem epub={node} />
+              <Divider variant="inset" component="li" />
+            </>
+          ))}
       </List>
     </BasicLayout>
   );

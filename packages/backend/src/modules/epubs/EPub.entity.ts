@@ -27,6 +27,14 @@ export default class EPub extends Node {
   @Column("varchar", { length: 1024 })
   public filePath: string;
 
+  @Field({ nullable: true })
+  @Column("varchar", { nullable: true, length: 1024 })
+  public location: string;
+
+  @Field({ nullable: true })
+  @Column("int", { nullable: true })
+  public progress: number;
+
   @ManyToOne(() => Book, (book) => book.epubs)
   public book: Book;
 
