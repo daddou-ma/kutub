@@ -58,6 +58,8 @@ async function main() {
   app.use(cors());
 
   const router = new Router();
+  app.use(serve(__dirname + "/../build"));
+
   router.get("/content/uploads/:folder/:file", async function (ctx) {
     const fileName = path.resolve(
       `content/uploads/${ctx.params.folder}/${ctx.params.file}`
@@ -75,8 +77,19 @@ async function main() {
     }
   });
 
+  router.get("(.*)", async function (ctx) {
+    const fileName = path.resolve("build/index.html");
+
+    try {
+      ctx.type = "html";
+      ctx.body = fs.createReadStream(fileName);
+    } catch (error) {
+      ctx.throw(500, error);
+    }
+  });
+
   app.use(router.routes());
-  app.use(serve(__dirname + "/../build"));
+
   app.use(graphqlUploadKoa({ maxFileSize: 10000000, maxFiles: 10 }));
 
   server.applyMiddleware({ app });
