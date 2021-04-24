@@ -1,13 +1,6 @@
 import React, { useState } from "react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import {
-  AppBar,
-  Toolbar,
-  Typography,
-  IconButton,
-  Menu,
-  MenuItem,
-} from "@material-ui/core";
+import { AppBar, Toolbar, Typography, IconButton } from "@material-ui/core";
 import { MoreVert as MoreVertIcon, Menu as MenuIcon } from "@material-ui/icons";
 import { SideMenu } from "Components/SideMenu";
 
@@ -28,16 +21,12 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-interface MenuAction {
-  name: string;
-  onClick: any;
-}
 interface TopBarProps {
   title: string;
-  actions?: MenuAction[];
+  actions?: React.ReactElement;
 }
 
-export function TopBar({ title, actions = [] }: TopBarProps) {
+export function TopBar({ title, actions }: TopBarProps): React.ReactElement {
   const [openDrawer, setOpenDrawer] = useState(false);
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -74,6 +63,7 @@ export function TopBar({ title, actions = [] }: TopBarProps) {
             handleClose={() => setOpenDrawer(false)}
           />
           <div>
+            <>{actions}</>
             <IconButton
               aria-label="account of current user"
               aria-controls="menu-appbar"
@@ -83,32 +73,6 @@ export function TopBar({ title, actions = [] }: TopBarProps) {
             >
               <MoreVertIcon />
             </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorEl}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={open}
-              onClose={handleClose}
-            >
-              {actions.map(({ name, onClick }) => (
-                <MenuItem
-                  onClick={() => {
-                    handleClose();
-                    onClick();
-                  }}
-                >
-                  {name}
-                </MenuItem>
-              ))}
-            </Menu>
           </div>
         </Toolbar>
       </AppBar>

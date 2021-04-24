@@ -1,13 +1,14 @@
 import React, { useRef } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { useTranslation } from "react-i18next";
-import { List, Divider } from "@material-ui/core";
+import { List, Divider, IconButton } from "@material-ui/core";
 import { EPubFragment } from "Types/index";
 
 import { LibraryItem } from "Components/LibraryItem";
 import { BasicLayout } from "Layouts/BasicLayout";
 import { EPUB_QUERY, IMPORT_EPUB_MUTATION } from "Graph/queries/epubs";
 import { useSnackbar } from "Hooks/useSnackbar";
+import { Add as AddIcon } from "@material-ui/icons";
 
 export function LibraryPage(): React.ReactElement {
   const { showSnackbar } = useSnackbar();
@@ -50,12 +51,11 @@ export function LibraryPage(): React.ReactElement {
     <BasicLayout
       title={t("My Books")}
       loading={loading}
-      actions={[
-        {
-          name: t("Import EPub Book"),
-          onClick: () => fileRef.current.click(),
-        },
-      ]}
+      actions={
+        <IconButton onClick={() => fileRef.current.click()}>
+          <AddIcon />
+        </IconButton>
+      }
     >
       <>
         <input
