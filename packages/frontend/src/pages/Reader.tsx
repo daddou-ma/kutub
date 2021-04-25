@@ -2,16 +2,13 @@ import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useQuery, useMutation } from "@apollo/client";
 import { useTheme } from "@material-ui/core";
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import { EpubViewStyle, EpubView } from "react-reader";
 
 import { ReaderLayout } from "Layouts/ReaderLayout";
 import { EPUB_BYID_QUERY, UPDATE_EPUB_MUTATION } from "Graph/queries/epubs";
 
-const styles = {
-  ...EpubViewStyle,
-};
+const EPubReader = React.lazy(() => import("Components/EPubReader"));
+
+const styles = {};
 
 export function ReaderPage(): React.ReactElement {
   const [rendition, setRendition] = useState(null);
@@ -41,7 +38,7 @@ export function ReaderPage(): React.ReactElement {
       chapters={chapters}
       handleChapterClick={setLocation}
     >
-      <EpubView
+      <EPubReader
         url={`${process.env.URL}/${data?.epub?.filePath}`}
         location={rendition ? location : null}
         locationChanged={(location) => {

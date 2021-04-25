@@ -1,6 +1,5 @@
 import React from "react";
-import Link from "@material-ui/core/Link";
-import Typography from "@material-ui/core/Typography";
+import { Typography, Link } from "@material-ui/core";
 import { useTranslation } from "react-i18next";
 
 export function Copyright(): React.ReactElement {

@@ -1,5 +1,6 @@
 const path = require("path");
-const Dotenv = require('dotenv-webpack');
+const CompressionPlugin = require("compression-webpack-plugin");
+const Dotenv = require("dotenv-webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
@@ -8,11 +9,15 @@ const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = {
   entry: "./src/index.tsx",
+  entry: {
+    bundle: "./src/index.tsx",
+    reader: "./src/components/EPubReader.tsx",
+  },
   target: "web",
-  mode: "development",
+  mode: "production",
   output: {
     path: path.resolve(__dirname, "../backend/build"),
-    filename: "bundle.js",
+    filename: "[name].js",
     publicPath: "/",
   },
   resolve: {
@@ -23,7 +28,7 @@ module.exports = {
     rules: [
       {
         test: /\.(ts|tsx)$/,
-        loader: "awesome-typescript-loader",
+        loader: "ts-loader",
       },
       {
         enforce: "pre",
@@ -64,6 +69,7 @@ module.exports = {
     removeAvailableModules: true,
     usedExports: true,
   },
+  devtool: "source-map",
   devServer: {
     historyApiFallback: true,
   },
@@ -82,5 +88,6 @@ module.exports = {
       clientsClaim: true,
       skipWaiting: true,
     }),
+    new CompressionPlugin(),
   ],
 };

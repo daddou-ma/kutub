@@ -1,4 +1,4 @@
-import gql from "graphql-tag";
+import { gql } from "@apollo/client";
 import { Connection } from "Types/Connection";
 import { EPub } from "Types/EPub";
 

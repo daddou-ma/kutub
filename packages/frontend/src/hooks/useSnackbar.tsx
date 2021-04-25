@@ -1,5 +1,5 @@
 import React, { useState, useContext, createContext } from "react";
-import { List, Divider, Snackbar, Slide } from "@material-ui/core";
+import { Snackbar, Slide } from "@material-ui/core";
 
 interface SnackbarProviderProps {
   children: React.ReactElement;

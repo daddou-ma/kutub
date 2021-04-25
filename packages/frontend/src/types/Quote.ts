@@ -1,4 +1,4 @@
-import gql from "graphql-tag";
+import { gql } from "@apollo/client";
 import { Author } from "Types/Author";
 
 export interface Quote {

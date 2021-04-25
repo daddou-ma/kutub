@@ -2,9 +2,10 @@
 	// "extends": "../../tsconfig.json",
 	"compilerOptions": {
 		"jsx": "react",
-    "target": "es5",
-    "module": "commonjs",
-    "lib": ["dom", "es5", "esnext.asynciterable"],
+    "target": "ESNEXT",
+		"module": "ESNEXT",
+		"moduleResolution": "Node",
+    "lib": ["dom", "ESNEXT", "esnext.asynciterable"],
 		"experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "resolveJsonModule": true,

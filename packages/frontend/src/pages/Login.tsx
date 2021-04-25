@@ -1,6 +1,5 @@
-import * as React from "react";
+import React from "react";
 import { Container, Box } from "@material-ui/core";
-import { useTranslation } from "react-i18next";
 
 import { EmptyLayout } from "Layouts/EmptyLayout";
 import { PasswordAuth } from "Components/PasswordAuth";

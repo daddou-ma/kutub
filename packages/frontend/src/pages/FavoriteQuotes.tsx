@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { useQuery, useMutation, gql } from "@apollo/client";
 import {
   List,
