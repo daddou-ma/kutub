@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useQuery, useMutation } from "@apollo/client";
 import { useTheme } from "@material-ui/core";
@@ -38,52 +38,54 @@ export function ReaderPage(): React.ReactElement {
       chapters={chapters}
       handleChapterClick={setLocation}
     >
-      <EPubReader
-        url={`${process.env.URL}/${data?.epub?.filePath}`}
-        location={rendition ? location : null}
-        locationChanged={(location) => {
-          setLocation(location);
+      <Suspense fallback={<div>Loading...</div>}>
+        <EPubReader
+          url={`${process.env.URL}/${data?.epub?.filePath}`}
+          location={rendition ? location : null}
+          locationChanged={(location) => {
+            setLocation(location);
 
-          if (!rendition) {
-            return;
-          }
+            if (!rendition) {
+              return;
+            }
 
-          const progress = Math.ceil(
-            rendition.book.locations.percentageFromCfi(location) * 100
-          );
+            const progress = Math.ceil(
+              rendition.book.locations.percentageFromCfi(location) * 100
+            );
 
-          setProgress(progress);
+            setProgress(progress);
 
-          updateEPub({
-            variables: {
-              epubId,
-              data: {
-                location,
-                progress,
+            updateEPub({
+              variables: {
+                epubId,
+                data: {
+                  location,
+                  progress,
+                },
               },
-            },
-          });
-        }}
-        styles={styles}
-        tocChanged={(cs) => setChapters(cs as any)}
-        getRendition={(rendition) => {
-          setRendition(rendition);
-          rendition.book.locations.generate(undefined);
+            });
+          }}
+          styles={styles}
+          tocChanged={(cs) => setChapters(cs as any)}
+          getRendition={(rendition) => {
+            setRendition(rendition);
+            rendition.book.locations.generate(undefined);
 
-          rendition.themes.default({
-            body: {
-              color: theme.palette.text.primary,
-            },
-            a: {
-              color: theme.palette.text.secondary,
-            },
-          });
-          (window as any).rendition = rendition;
-          rendition.on("selected", function (cfiRange) {
-            rendition.annotations.highlight(cfiRange);
-          });
-        }}
-      />
+            rendition.themes.default({
+              body: {
+                color: theme.palette.text.primary,
+              },
+              a: {
+                color: theme.palette.text.secondary,
+              },
+            });
+            (window as any).rendition = rendition;
+            rendition.on("selected", function (cfiRange) {
+              rendition.annotations.highlight(cfiRange);
+            });
+          }}
+        />
+      </Suspense>
     </ReaderLayout>
   );
 }
