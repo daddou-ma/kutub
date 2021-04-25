@@ -5,6 +5,7 @@ import Koa from "koa";
 import Router from "@koa/router";
 import cors from "@koa/cors";
 import serve from "koa-static";
+import compress from "koa-compress";
 import { ApolloServer } from "apollo-server-koa";
 import { buildSchema, AuthChecker } from "type-graphql";
 import { graphqlUploadKoa } from "graphql-upload";
@@ -54,6 +55,17 @@ async function main() {
   await server.start();
 
   const app = new Koa();
+
+  app.use(compress({
+    threshold: 2048,
+    gzip: {
+      flush: require('zlib').constants.Z_SYNC_FLUSH
+    },
+    deflate: {
+      flush: require('zlib').constants.Z_SYNC_FLUSH,
+    },
+    br: false // disable brotli
+  }))
 
   app.use(cors());
 
