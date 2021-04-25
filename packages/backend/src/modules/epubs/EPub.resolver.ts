@@ -29,6 +29,8 @@ import { getEPubMetadata } from "Utils/epub";
 import { saveFile } from "Utils/file";
 import Context from "Interfaces/Context";
 
+import sharp from "sharp";
+
 @Resolver(() => EPub)
 export default class EPubResolver {
   @InjectRepository(EPub, "prod")
@@ -74,13 +76,14 @@ export default class EPubResolver {
     const { filename, createReadStream } = await upload;
     const uuid = uuidv4();
     const filePath = `content/uploads/epubs/${uuid}.epub`;
-    const coverPath = `content/uploads/covers/${uuid}.png`;
+    const coverPath = `content/uploads/covers/${uuid}.thumb.webp`;
 
     await saveFile(createReadStream(), path.resolve(filePath));
 
     const { base, coverImage } = await getEPubMetadata(path.resolve(filePath));
 
-    writeFileSync(path.resolve(coverPath), await coverImage);
+    const cover = sharp(await coverImage);
+    cover.resize({ width: 128 }).webp().toFile(path.resolve(coverPath));
 
     const authors = await Promise.all(
       base.creators.map(async ({ name }) => {
@@ -88,7 +91,10 @@ export default class EPubResolver {
       })
     );
 
-    const publisher = await Publisher.findOrCreate({ name: base.publisher });
+    let publisher = null;
+    if (base.publisher) {
+      publisher = await Publisher.findOrCreate({ name: base.publisher });
+    }
 
     const book = await Book.findOrCreate({
       isbn: base.identifiers[0].value as string,
