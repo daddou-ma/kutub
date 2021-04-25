@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { useTranslation } from "react-i18next";
-import { List, Divider, IconButton } from "@material-ui/core";
+import { List, IconButton } from "@material-ui/core";
 import { EPubFragment } from "Types/index";
 
 import { LibraryItem } from "Components/LibraryItem";
@@ -69,10 +69,7 @@ export function LibraryPage(): React.ReactElement {
       <List>
         {data &&
           data.epubs.edges.map(({ node }) => (
-            <>
-              <LibraryItem epub={node} />
-              <Divider variant="inset" component="li" />
-            </>
+            <LibraryItem epub={node} key={node.id} />
           ))}
       </List>
     </BasicLayout>

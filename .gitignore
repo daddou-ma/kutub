@@ -7,8 +7,9 @@ yarn-error.log
 # Ignore Upload Folder
 content
 
-# Ignore ORMConfig
-packages/backend/ormconfig.json
+# Ignore ENV Files
+packages/frontend/.env
+packages/backend/.env
 
 # Ignore Translation Backups
 packages/frontend/locales/**/translation_old.json

@@ -20,7 +20,7 @@ import { CustomRoute, Role } from "Components/CustomRoute";
 import { AuthProvider } from "Hooks/useAuth";
 import { SnackbarProvider } from "Hooks/useSnackbar";
 
-const GRAPH_URL = "http://localhost:4000/graphql";
+const GRAPH_URL = process.env.GRAPHQL_URL;
 
 const httpLink = createUploadLink({
   uri: GRAPH_URL,

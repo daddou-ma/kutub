@@ -42,7 +42,7 @@ export function ReaderPage(): React.ReactElement {
       handleChapterClick={setLocation}
     >
       <EpubView
-        url={`http://localhost:4000/${data?.epub?.filePath}`}
+        url={`${process.env.URL}/${data?.epub?.filePath}`}
         location={rendition ? location : null}
         locationChanged={(location) => {
           setLocation(location);

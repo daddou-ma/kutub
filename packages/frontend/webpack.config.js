@@ -1,4 +1,5 @@
 const path = require("path");
+const Dotenv = require('dotenv-webpack');
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
@@ -8,7 +9,7 @@ const TerserPlugin = require("terser-webpack-plugin");
 module.exports = {
   entry: "./src/index.tsx",
   target: "web",
-  mode: "production",
+  mode: "development",
   output: {
     path: path.resolve(__dirname, "../backend/build"),
     filename: "bundle.js",
@@ -61,11 +62,13 @@ module.exports = {
       }),
     ],
     removeAvailableModules: true,
+    usedExports: true,
   },
   devServer: {
     historyApiFallback: true,
   },
   plugins: [
+    new Dotenv(),
     new HtmlWebpackPlugin({
       minify: false,
       template: path.resolve(__dirname, "src", "index.html"),
