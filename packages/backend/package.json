@@ -12,7 +12,8 @@
     "seed:run": "npx ts-node -r tsconfig-paths/register ./node_modules/typeorm-seeding/dist/cli.js seed -c prod",
     "schema:drop": "npx ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js schema:drop -c prod",
     "schema:sync": "npx ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js schema:sync -c prod",
-    "server:dev": "npx ts-node -r tsconfig-paths/register src/server.ts"
+    "server:start": "npx pm2 start npx --name books -- ts-node -r tsconfig-paths/register src/server.ts",
+    "server:stop": "npx pm2 stop books"
   },
   "dependencies": {
     "@koa/router": "^10.0.0",
@@ -46,6 +47,7 @@
   },
   "devDependencies": {
     "@babel/runtime": "^7.13.10",
+    "pm2": "^4.5.6",
     "typescript": "^4.2.3"
   }
 }

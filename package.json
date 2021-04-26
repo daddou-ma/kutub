@@ -15,7 +15,8 @@
     "ui:dev": "npx lerna run --scope @inspire/frontend start --stream",
     "ui:build": "npx lerna run --scope @inspire/frontend build --stream",
     "ui:i18n": "npx lerna run --scope @inspire/frontend i18next-ext --stream",
-    "server:dev": "npx lerna run --scope @inspire/backend server:dev --stream",
+    "server:start": "npx lerna run --scope @inspire/backend server:start --stream",
+    "server:stop": "npx lerna run --scope @inspire/backend server:stop --stream",
     "lint": "npx eslint '*/**/*.{js,ts,tsx}' --quiet --fix"
   },
   "dependencies": {
