@@ -37,6 +37,8 @@ const useStyles = makeStyles((theme: Theme) =>
 
 interface ReaderLayoutProps {
   title: string;
+  loading?: boolean;
+  error?: any;
   progress: number;
   chapters: any[];
   handleChapterClick: CallableFunction;
@@ -45,6 +47,8 @@ interface ReaderLayoutProps {
 
 export function ReaderLayout({
   title = "Book Title",
+  loading = false,
+  error,
   progress = 0,
   chapters = [],
   handleChapterClick,
@@ -89,7 +93,7 @@ export function ReaderLayout({
         </AppBar>
       </Box>
       <Box flexBasis="auto" height="100%" overflow="scroll" position="relative">
-        {children}
+        {loading ? "Lodaing" : error ? "error" : children}
       </Box>
       <LinearProgress variant="determinate" value={progress} />
     </Box>

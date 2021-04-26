@@ -73,11 +73,8 @@ export function FavoriteQuotePage(): React.ReactElement {
     }
   };
 
-  if (loading) return <>Loading...</>;
-  if (error) return <>Error! {error.message}</>;
-
   return (
-    <BasicLayout title="Favorite">
+    <BasicLayout title="Favorite" loading={loading} error={!data && error}>
       <List>
         {data.me.favoriteQuotes.map((quote) => (
           <>

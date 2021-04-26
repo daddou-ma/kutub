@@ -77,11 +77,12 @@ export function QuotePage(): React.ReactElement {
     }
   };
 
-  if (loading) return <>Loading...</>;
-  if (error) return <>Error! {error.message}</>;
-
   return (
-    <BasicLayout title={t("My Quotes")}>
+    <BasicLayout
+      title={t("My Quotes")}
+      loading={loading}
+      error={!data && error}
+    >
       <List>
         {data.quotes.edges.map(({ node }) => (
           <>

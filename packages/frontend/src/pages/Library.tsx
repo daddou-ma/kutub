@@ -45,12 +45,11 @@ export function LibraryPage(): React.ReactElement {
     importEPub({ variables: { upload: file } });
   }
 
-  if (error) return <>Error! {error.message}</>;
-
   return (
     <BasicLayout
       title={t("My Books")}
       loading={loading}
+      error={!data && error}
       actions={
         <IconButton onClick={() => fileRef.current.click()}>
           <AddIcon />

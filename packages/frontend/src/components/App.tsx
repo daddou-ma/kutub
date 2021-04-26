@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { createUploadLink } from "apollo-upload-client";
 import { relayStylePagination } from "@apollo/client/utilities";
+import { persistCache, LocalStorageWrapper } from "apollo3-cache-persist";
 import { BrowserRouter as Router, Switch } from "react-router-dom";
 import { create } from "jss";
 import rtl from "jss-rtl";
@@ -37,24 +38,53 @@ const authLink = setContext((_, { headers }) => {
   };
 });
 
-const client = new ApolloClient({
-  link: authLink.concat(httpLink),
-  cache: new InMemoryCache({
-    typePolicies: {
-      Query: {
-        fields: {
-          quotes: relayStylePagination(),
-          epubs: relayStylePagination(),
-          books: relayStylePagination(),
-        },
-      },
-    },
-  }),
-});
-
 const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
 
 export function App(): React.ReactElement {
+  const [client, setClient] = useState(null);
+  useEffect(() => {
+    async function init() {
+      const cache = new InMemoryCache({
+        typePolicies: {
+          Query: {
+            fields: {
+              quotes: relayStylePagination(),
+              epubs: relayStylePagination(),
+              books: relayStylePagination(),
+            },
+          },
+        },
+      });
+
+      await persistCache({
+        cache,
+        storage: new LocalStorageWrapper(window.localStorage),
+      });
+
+      const client = new ApolloClient({
+        link: authLink.concat(httpLink),
+        cache,
+        defaultOptions: {
+          watchQuery: {
+            fetchPolicy: "cache-and-network",
+          },
+          query: {
+            fetchPolicy: "cache-first",
+            errorPolicy: "all",
+          },
+        },
+      });
+
+      setClient(client);
+    }
+
+    init().catch(console.error);
+  }, []);
+
+  if (!client) {
+    return <h2>Loading Cache...</h2>;
+  }
+
   return (
     <ApolloProvider client={client}>
       <AuthProvider>

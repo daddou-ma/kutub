@@ -7,6 +7,7 @@ import { TopBar } from "Components/TopBar";
 interface BasicLayoutProps {
   title: string;
   loading?: boolean;
+  error?: any;
   actions?: React.ReactElement;
   children: React.ReactElement | React.ReactElement[];
 }
@@ -14,6 +15,7 @@ interface BasicLayoutProps {
 export function BasicLayout({
   title = "Inspire",
   loading = false,
+  error,
   actions,
   children,
 }: BasicLayoutProps): React.ReactElement {
@@ -23,7 +25,7 @@ export function BasicLayout({
         <TopBar title={title} actions={actions} />
       </Box>
       <Box flexBasis="auto" height="100%" overflow="scroll" position="relative">
-        {loading ? "Lodaing" : children}
+        {loading ? "Lodaing" : error ? "error" : children}
       </Box>
       {/* <Box flexBasis={56}>
         <CustomBottomNavigation />

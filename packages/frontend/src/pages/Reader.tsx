@@ -28,12 +28,11 @@ export function ReaderPage(): React.ReactElement {
 
   const [updateEPub] = useMutation(UPDATE_EPUB_MUTATION);
 
-  if (loading) return <>Loading...</>;
-  if (error) return <>Error! {error.message}</>;
-
   return (
     <ReaderLayout
       title={data?.epub?.book?.title}
+      loading={loading}
+      error={!data && error}
       progress={progress}
       chapters={chapters}
       handleChapterClick={setLocation}

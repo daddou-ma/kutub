@@ -39,7 +39,7 @@ registerRoute(
 // IMAGES
 registerRoute(
   // Cache image files
-  /.*\.(?:png|jpg|jpeg|svg|gif|ico)/,
+  /.*\.(?:webp|png|jpg|jpeg|svg|gif|ico)/,
   // Use the cache if it's available
   new CacheFirst({
     // Use a custom cache name
