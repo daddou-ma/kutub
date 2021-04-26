@@ -3,6 +3,7 @@ build
 
 yarn.lock
 yarn-error.log
+lerna-debug.log
 
 # Ignore Upload Folder
 content

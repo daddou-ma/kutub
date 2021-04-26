@@ -1,10 +1,10 @@
 const path = require("path");
 const CompressionPlugin = require("compression-webpack-plugin");
+const CopyPlugin = require("copy-webpack-plugin");
 const Dotenv = require("dotenv-webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
-const WorkboxPlugin = require("workbox-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = {
@@ -12,6 +12,7 @@ module.exports = {
   entry: {
     bundle: "./src/index.tsx",
     reader: "./src/components/EPubReader.tsx",
+    sw: "./src/serviceWorker.ts",
   },
   target: "web",
   mode: "production",
@@ -28,7 +29,14 @@ module.exports = {
     rules: [
       {
         test: /\.(ts|tsx)$/,
-        loader: "ts-loader",
+        use: [
+          {
+            loader: "ts-loader",
+            options: {
+              transpileOnly: true,
+            },
+          },
+        ],
       },
       {
         enforce: "pre",
@@ -82,12 +90,22 @@ module.exports = {
     // new MiniCssExtractPlugin({
     //   filename: "./src/css/yourfile.css",
     // }),
-    new WorkboxPlugin.GenerateSW({
-      // these options encourage the ServiceWorkers to get in there fast
-      // and not allow any straggling "old" SWs to hang around
-      clientsClaim: true,
-      skipWaiting: true,
-    }),
     new CompressionPlugin(),
+    new CopyPlugin({
+      patterns: [
+        {
+          from: "public/manifest.json",
+          to: path.resolve(__dirname, "../backend/build/manifest.json"),
+        },
+        {
+          from: "public/favicon.ico",
+          to: path.resolve(__dirname, "../backend/build/favicon.ico"),
+        },
+        {
+          from: "public/img",
+          to: path.resolve(__dirname, "../backend/build/img"),
+        },
+      ],
+    }),
   ],
 };

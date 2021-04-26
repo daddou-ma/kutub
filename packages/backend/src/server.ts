@@ -89,6 +89,17 @@ async function main() {
     }
   });
 
+  router.get("(.*).json", async function (ctx) {
+    const fileName = path.resolve("build/index.html");
+
+    try {
+      ctx.type = "html";
+      ctx.body = fs.createReadStream(fileName);
+    } catch (error) {
+      ctx.throw(500, error);
+    }
+  });
+
   router.get("(.*)", async function (ctx) {
     const fileName = path.resolve("build/index.html");
 
