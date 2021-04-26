@@ -32,6 +32,7 @@
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
+  "orientation": "portrait",
   "theme_color": "#aaffaa",
   "background_color": "#ffffff"
  }
