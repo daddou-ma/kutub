@@ -19,6 +19,7 @@ export function ReaderPage(): React.ReactElement {
   const { epubId } = useParams();
   const theme = useTheme();
   const { loading, error, data } = useQuery(EPUB_BYID_QUERY, {
+    nextFetchPolicy: "cache-first",
     variables: { epubId },
     onCompleted({ epub }) {
       setLocation(epub.location);

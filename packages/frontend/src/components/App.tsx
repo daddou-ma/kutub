@@ -103,38 +103,42 @@ export function App(): React.ReactElement {
                   <CustomRoute path="/login" role={Role.GUEST} redirect="/">
                     <LoginPage />
                   </CustomRoute>
-                  <CustomRoute path="/quotes" role={Role.USER} redirect="login">
+                  <CustomRoute
+                    path="/quotes"
+                    role={Role.USER}
+                    redirect="/login"
+                  >
                     <QuotePage />
                   </CustomRoute>
                   <CustomRoute
                     path="/favorites"
                     role={Role.USER}
-                    redirect="login"
+                    redirect="/login"
                   >
                     <FavoriteQuotePage />
                   </CustomRoute>
                   <CustomRoute
                     path="/reader/:epubId"
                     role={Role.USER}
-                    redirect="login"
+                    redirect="/login"
                   >
                     <ReaderPage />
                   </CustomRoute>
                   <CustomRoute
                     path="/settings/language"
                     role={Role.USER}
-                    redirect="login"
+                    redirect="/login"
                   >
                     <LanguageSettingsPage />
                   </CustomRoute>
                   <CustomRoute
                     path="/settings"
                     role={Role.USER}
-                    redirect="login"
+                    redirect="/login"
                   >
                     <SettingsPage />
                   </CustomRoute>
-                  <CustomRoute path="/" role={Role.USER} redirect="login">
+                  <CustomRoute path="/" role={Role.USER} redirect="/login">
                     <LibraryPage />
                   </CustomRoute>
                 </Switch>

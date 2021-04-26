@@ -76,6 +76,7 @@
 		"react-i18next": "^11.8.12",
 		"react-reader": "^0.20.3",
 		"react-router-dom": "^5.2.0",
+		"react-swipeable": "^6.1.0",
 		"react-visibility-sensor": "^5.1.1",
 		"workbox": "^0.0.0",
 		"workbox-cacheable-response": "^6.1.5",
