@@ -34,5 +34,18 @@
   "display": "standalone",
   "orientation": "portrait",
   "theme_color": "#aaffaa",
-  "background_color": "#ffffff"
+  "background_color": "#ffffff",
+  "categories": ["books", "education"],
+  "shortcuts" : [
+    {
+      "name": "Library",
+      "url": "/library",
+      "description": "List of my books"
+    },
+    {
+      "name": "Settings",
+      "url": "/settings",
+      "description": "Settings & Preferences"
+    }
+  ]
  }
