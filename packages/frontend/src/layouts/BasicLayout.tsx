@@ -1,5 +1,5 @@
 import React from "react";
-import { Box } from "@material-ui/core";
+import { Box, LinearProgress } from "@material-ui/core";
 
 import { TopBar } from "Components/TopBar";
 // import { CustomBottomNavigation } from "Components/BottomNavigation";
@@ -24,8 +24,9 @@ export function BasicLayout({
       <Box flexBasis={64}>
         <TopBar title={title} actions={actions} />
       </Box>
+      <Box>{loading && <LinearProgress />}</Box>
       <Box flexBasis="auto" height="100%" overflow="scroll" position="relative">
-        {loading ? "Lodaing" : error ? "error" : children}
+        {error ? "error" : children}
       </Box>
       {/* <Box flexBasis={56}>
         <CustomBottomNavigation />

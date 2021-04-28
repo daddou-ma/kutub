@@ -84,7 +84,7 @@ export function QuotePage(): React.ReactElement {
       error={!data && error}
     >
       <List>
-        {data.quotes.edges.map(({ node }) => (
+        {(data?.quotes?.edges || []).map(({ node }) => (
           <>
             <ListItem alignItems="flex-start">
               <ListItemAvatar>
@@ -114,13 +114,13 @@ export function QuotePage(): React.ReactElement {
             padding: 24,
           }}
         >
-          {data.quotes.pageInfo.hasNextPage && (
+          {data?.quotes?.pageInfo?.hasNextPage && (
             <VisibilitySensor
               onChange={(isVisible) => {
                 if (isVisible) {
                   fetchMore({
                     variables: {
-                      cursor: data.quotes.pageInfo.endCursor,
+                      cursor: data?.quotes?.pageInfo?.endCursor,
                     },
                   });
                 }
