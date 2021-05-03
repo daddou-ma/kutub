@@ -30,11 +30,11 @@ export interface Author {
 export function FavoriteQuotePage(): React.ReactElement {
   const { loading, error, data, fetchMore } = useQuery(ME_QUERY);
   const [favoriteQuote] = useMutation(FAVORITE_QUOTE_MUTATION, {
-    onCompleted: console.log,
+    onCompleted: console.error,
   });
 
   const [unFavoriteQuote] = useMutation(UNFAVORITE_QUOTE_MUTATION, {
-    onCompleted: console.log,
+    onCompleted: console.error,
   });
 
   function handleCacheUpdate(cache, { data: { quote } }) {

@@ -34,11 +34,11 @@ export function QuotePage(): React.ReactElement {
   const { t } = useTranslation();
   const { loading, error, data, fetchMore } = useQuery(QUOTES_QUERY);
   const [favoriteQuote] = useMutation(FAVORITE_QUOTE_MUTATION, {
-    onCompleted: console.log,
+    onCompleted: console.error,
   });
 
   const [unFavoriteQuote] = useMutation(UNFAVORITE_QUOTE_MUTATION, {
-    onCompleted: console.log,
+    onCompleted: console.error,
   });
 
   function handleCacheUpdate(cache, { data: { quote } }) {

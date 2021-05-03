@@ -29,7 +29,6 @@ const httpLink = createUploadLink({
 
 const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem("token");
-  console.log("token", token);
   return {
     headers: {
       ...headers,

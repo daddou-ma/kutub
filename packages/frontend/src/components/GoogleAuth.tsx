@@ -40,7 +40,7 @@ export function GoogleAuth(): React.ReactElement {
   const { connect } = useAuth();
   const { googleSignIn } = useGoogleAuth({
     onLoginSuccess: connect,
-    onLoginFailure: console.log,
+    onLoginFailure: console.error,
   });
 
   return (
