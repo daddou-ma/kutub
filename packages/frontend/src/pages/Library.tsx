@@ -18,6 +18,12 @@ export function LibraryPage(): React.ReactElement {
   const [importEPub] = useMutation(IMPORT_EPUB_MUTATION, {
     onCompleted: () => showSnackbar(t("EPub Book Added")),
     update: handleCacheUpdate,
+    context: {
+      fetchOptions: {
+        useUpload: true,
+        onProgress: console.info,
+      },
+    },
   });
 
   function handleCacheUpdate(cache, { data: { epub } }) {
