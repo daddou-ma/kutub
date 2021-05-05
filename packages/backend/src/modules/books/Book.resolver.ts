@@ -7,6 +7,7 @@ import {
   Args,
   FieldResolver,
   Root,
+  Authorized,
 } from "type-graphql";
 import { Repository } from "typeorm";
 import { InjectRepository } from "typeorm-typedi-extensions";
@@ -30,6 +31,7 @@ export default class BookResolver {
   @InjectRepository(Book, "prod")
   private readonly repository!: Repository<Book>;
 
+  @Authorized(["ADMIN", "USER"])
   @FieldResolver(() => Publisher)
   async publisher(
     @Root() book: Book,
@@ -42,6 +44,7 @@ export default class BookResolver {
       .loadOne();
   }
 
+  @Authorized("ADMIN")
   @FieldResolver(() => EPubConnection)
   async epubs(
     @Root() book: Book,
@@ -51,6 +54,7 @@ export default class BookResolver {
     return connectionFromRelation(args, db, Book, "epubs", book);
   }
 
+  @Authorized(["ADMIN", "USER"])
   @FieldResolver(() => AuthorConnection)
   async authors(
     @Root() book: Book,
@@ -60,11 +64,13 @@ export default class BookResolver {
     return connectionFromRelation(args, db, Book, "authors", book);
   }
 
+  @Authorized("ADMIN")
   @Query(() => BookConnection)
   async books(@Args() args: ConnectionArguments): Promise<BookConnection> {
     return connectionFromRepository(args, this.repository);
   }
 
+  @Authorized("ADMIN")
   @Query(() => Book)
   async bookById(
     @Arg("bookId") bookId: string,
@@ -77,6 +83,7 @@ export default class BookResolver {
     }
   }
 
+  @Authorized("ADMIN")
   @Mutation(() => Book)
   async createBook(
     @Arg("data") input: CreateBookInput,
@@ -87,6 +94,7 @@ export default class BookResolver {
     return book;
   }
 
+  @Authorized("ADMIN")
   @Mutation(() => Book)
   async updateBook(
     @Arg("bookId") bookId: string,
@@ -97,6 +105,7 @@ export default class BookResolver {
     return db.manager.findOne(Book, bookId);
   }
 
+  @Authorized("ADMIN")
   @Mutation(() => Book)
   async deleteBook(
     @Arg("bookId") bookId: string,

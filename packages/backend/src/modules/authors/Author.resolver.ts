@@ -7,6 +7,7 @@ import {
   FieldResolver,
   Root,
   Args,
+  Authorized,
 } from "type-graphql";
 import Author from "Modules/authors/Author.entity";
 import {
@@ -31,6 +32,7 @@ export default class AuthorResolver {
   @InjectRepository(Author, "prod")
   private readonly repository!: Repository<Author>;
 
+  @Authorized("ADMIN")
   @FieldResolver(() => QuoteConnection)
   async quotes(
     @Root() author: Author,
@@ -40,6 +42,7 @@ export default class AuthorResolver {
     return connectionFromRelation(args, db, Author, "quotes", author);
   }
 
+  @Authorized("ADMIN")
   @FieldResolver(() => BookConnection)
   async books(
     @Root() author: Author,
@@ -49,11 +52,13 @@ export default class AuthorResolver {
     return connectionFromRelation(args, db, Author, "books", author);
   }
 
+  @Authorized("ADMIN")
   @Query(() => AuthorConnection)
   async authors(@Args() args: ConnectionArguments): Promise<AuthorConnection> {
     return connectionFromRepository(args, this.repository);
   }
 
+  @Authorized("ADMIN")
   @Query(() => Author)
   async authorById(
     @Arg("authorId") authorId: string,
@@ -66,6 +71,7 @@ export default class AuthorResolver {
     }
   }
 
+  @Authorized("ADMIN")
   @Mutation(() => Author)
   async createAuthor(
     @Arg("data") input: CreateAuthorInput,
@@ -76,6 +82,7 @@ export default class AuthorResolver {
     return author;
   }
 
+  @Authorized("ADMIN")
   @Mutation(() => Author)
   async updateAuthor(
     @Arg("authorId") authorId: string,
@@ -86,6 +93,7 @@ export default class AuthorResolver {
     return db.manager.findOne(Author, authorId);
   }
 
+  @Authorized("ADMIN")
   @Mutation(() => Author)
   async deleteAuthor(
     @Arg("authorId") authorId: string,

@@ -20,9 +20,24 @@ export const customAuthChecker: AuthChecker<Context> = (
   { root, args, context, info },
   roles
 ) => {
-  console.log("Auth Checked Once !");
-  return true;
-};
+  if (roles.includes("ANY")) {
+    return true;
+  }
+
+  if (roles.includes(context?.user?.role)) {
+    return true;
+  }
+
+  if (roles.includes("GUEST") && !context.user) {
+    return true;
+  }
+
+  if (roles.includes("NOBODY")) {
+    return false;
+  }
+
+  return false;
+}; 
 
 async function main() {
   useContainer(Container);

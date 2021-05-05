@@ -7,6 +7,7 @@ import {
   FieldResolver,
   Root,
   Args,
+  Authorized
 } from "type-graphql";
 import User from "Modules/users/User.entity";
 import { CreateUserInput, UpdateUserInput } from "Modules/users/User.inputs";
@@ -28,6 +29,7 @@ export default class UserResolver {
   @InjectRepository(User, "prod")
   private readonly repository!: Repository<User>;
 
+  @Authorized(["USER"])
   @FieldResolver(() => EPubConnection)
   async epubs(
     @Root() user: User,
@@ -37,6 +39,7 @@ export default class UserResolver {
     return connectionFromRelation(args, db, User, "epubs", user);
   }
 
+  @Authorized(["USER"])
   @FieldResolver(() => QuoteConnection)
   async favoriteQuotes(
     @Root() user: User,
@@ -46,11 +49,13 @@ export default class UserResolver {
     return connectionFromRelation(args, db, User, "favoriteQuotes", user);
   }
 
+  @Authorized(["ADMIN"])
   @Query(() => UserConnection)
   async users(@Args() args: ConnectionArguments): Promise<UserConnection> {
     return connectionFromRepository(args, this.repository);
   }
 
+  @Authorized(["ADMIN"])
   @Query(() => User)
   async userById(@Arg("userId") userId: string): Promise<User> {
     try {
@@ -60,6 +65,7 @@ export default class UserResolver {
     }
   }
 
+  @Authorized(["ADMIN"])
   @Mutation(() => User)
   async createUser(@Arg("data") input: CreateUserInput): Promise<User> {
     const user = this.repository.create(input);
@@ -67,6 +73,7 @@ export default class UserResolver {
     return user;
   }
 
+  @Authorized(["ADMIN"])
   @Mutation(() => User)
   async updateUser(
     @Arg("userId") userId: string,
@@ -76,6 +83,7 @@ export default class UserResolver {
     return this.repository.findOne(userId);
   }
 
+  @Authorized(["ADMIN"])
   @Mutation(() => User)
   async deleteUser(@Arg("userId") userId: string): Promise<User> {
     try {

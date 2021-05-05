@@ -7,6 +7,7 @@ import {
   Args,
   FieldResolver,
   Root,
+  Authorized,
 } from "type-graphql";
 import { Repository } from "typeorm";
 import { InjectRepository } from "typeorm-typedi-extensions";
@@ -29,6 +30,7 @@ export default class QuoteResolver {
   @InjectRepository(Quote, "prod")
   private readonly repository!: Repository<Quote>;
 
+  @Authorized(["ANY"])
   @FieldResolver()
   async author(@Root() quote: Quote, @Ctx() { db }: Context): Promise<Author> {
     return await db.manager
@@ -38,6 +40,7 @@ export default class QuoteResolver {
       .loadOne();
   }
 
+  @Authorized("USER")
   @FieldResolver()
   async favorited(
     @Root() quote: Quote,
@@ -50,11 +53,13 @@ export default class QuoteResolver {
     return Boolean(Number(favorited));
   }
 
+  @Authorized(["ADMIN"])
   @Query(() => QuoteConnection)
   async quotes(@Args() args: ConnectionArguments): Promise<QuoteConnection> {
     return connectionFromRepository(args, this.repository);
   }
 
+  @Authorized("ADMIN")
   @Query(() => Quote)
   async quoteById(
     @Arg("quoteId") quoteId: string,
@@ -67,6 +72,7 @@ export default class QuoteResolver {
     }
   }
 
+  @Authorized(["ADMIN", "USER"])
   @Mutation(() => Quote)
   async favoriteQuote(
     @Arg("quoteId") quoteId: string,
@@ -81,6 +87,7 @@ export default class QuoteResolver {
     return quote;
   }
 
+  @Authorized(["ADMIN", "USER"])
   @Mutation(() => Quote)
   async unFavoriteQuote(
     @Arg("quoteId") quoteId: string,
@@ -97,6 +104,7 @@ export default class QuoteResolver {
     return quote;
   }
 
+  @Authorized(["ADMIN"])
   @Mutation(() => Quote)
   async createQuote(
     @Arg("data") input: CreateQuoteInput,
@@ -107,6 +115,7 @@ export default class QuoteResolver {
     return quote;
   }
 
+  @Authorized(["ADMIN"])
   @Mutation(() => Quote)
   async updateQuote(
     @Arg("quoteId") quoteId: string,
@@ -117,6 +126,7 @@ export default class QuoteResolver {
     return db.manager.findOne(Quote, quoteId);
   }
 
+  @Authorized(["ADMIN"])
   @Mutation(() => Quote)
   async deleteQuote(
     @Arg("quoteId") quoteId: string,

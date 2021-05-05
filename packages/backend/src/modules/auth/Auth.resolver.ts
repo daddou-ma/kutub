@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, Ctx, Args, Arg } from "type-graphql";
+import { Resolver, Query, Mutation, Ctx, Args, Arg, Authorized } from "type-graphql";
 import User from "Modules/users/User.entity";
 import { PasswordAuthArguments } from "Modules/auth/args/PasswordAuthArgs";
 import { GoogleAuthArguments } from "Modules/auth/args/GoogleAuthArgs";
@@ -22,11 +22,13 @@ export default class AuthResolver {
     "postmessage"
   );
 
+  @Authorized("USER")
   @Query(() => User, { nullable: true })
   async me(@Ctx() { user }: Context): Promise<User> {
     return user;
   }
 
+  @Authorized("GUEST")
   @Mutation(() => AuthResponse)
   async register(
     @Arg("data") { name, email, password }: CreateUserInput
@@ -49,6 +51,7 @@ export default class AuthResolver {
     };
   }
 
+  @Authorized("GUEST")
   @Mutation(() => AuthResponse)
   async passwordAuth(
     @Args() { username, password }: PasswordAuthArguments
@@ -71,6 +74,7 @@ export default class AuthResolver {
     };
   }
 
+  @Authorized("GUEST")
   @Mutation(() => AuthResponse)
   async googleAuth(
     @Args() { code }: GoogleAuthArguments,

@@ -7,6 +7,7 @@ import {
   FieldResolver,
   Root,
   Args,
+  Authorized,
 } from "type-graphql";
 import Publisher from "Modules/publishers/Publisher.entity";
 import {
@@ -30,6 +31,7 @@ export default class PublisherResolver {
   @InjectRepository(Publisher, "prod")
   private readonly repository!: Repository<Publisher>;
 
+  @Authorized("ADMIN")
   @FieldResolver(() => BookConnection)
   async books(
     @Root() publisher: Publisher,
@@ -39,6 +41,7 @@ export default class PublisherResolver {
     return connectionFromRelation(args, db, Publisher, "books", publisher);
   }
 
+  @Authorized("ADMIN")
   @Query(() => PublisherConnection)
   async publishers(
     @Args() args: ConnectionArguments
@@ -46,6 +49,7 @@ export default class PublisherResolver {
     return connectionFromRepository(args, this.repository);
   }
 
+  @Authorized("ADMIN")
   @Query(() => Publisher)
   async publisherById(
     @Arg("publisherId") publisherId: string,
@@ -58,6 +62,7 @@ export default class PublisherResolver {
     }
   }
 
+  @Authorized("ADMIN")
   @Mutation(() => Publisher)
   async createPublisher(
     @Arg("data") input: CreatePublisherInput,
@@ -68,6 +73,7 @@ export default class PublisherResolver {
     return publisher;
   }
 
+  @Authorized("ADMIN")
   @Mutation(() => Publisher)
   async updatePublisher(
     @Arg("publisherId") publisherId: string,
@@ -77,7 +83,8 @@ export default class PublisherResolver {
     await db.manager.update(Publisher, publisherId, input);
     return db.manager.findOne(Publisher, publisherId);
   }
-
+  
+  @Authorized("ADMIN")
   @Mutation(() => Publisher)
   async deletePublisher(
     @Arg("publisherId") publisherId: string,

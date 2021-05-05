@@ -5,7 +5,7 @@ import { BookFragment } from "Types/Book";
 
 export const EPUB_QUERY = gql`
   query EPUB {
-    epubs {
+    epubs: myEpubs {
       edges {
         node {
           ...EPubFragment
