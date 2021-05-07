@@ -31,7 +31,7 @@ export default class Book extends Node {
   public title: string;
 
   @Field({ nullable: true })
-  @Column("varchar", { nullable: true, length: 2048 })
+  @Column("varchar", { nullable: true, length: 4096 })
   public description: string;
 
   @Field({ nullable: true })

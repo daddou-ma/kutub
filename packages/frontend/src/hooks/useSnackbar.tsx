@@ -53,7 +53,6 @@ export function useSnackbarProvider(): SnackbarContext {
   function hideSnackbar() {
     setMessage(null);
     setVisible(false);
-    localStorage.removeItem("token");
   }
 
   return {

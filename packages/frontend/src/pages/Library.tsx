@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useState, useRef, ChangeEvent } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { useTranslation } from "react-i18next";
 import { List, IconButton } from "@material-ui/core";
@@ -9,19 +9,27 @@ import { BasicLayout } from "Layouts/BasicLayout";
 import { EPUB_QUERY, IMPORT_EPUB_MUTATION } from "Graph/queries/epubs";
 import { useSnackbar } from "Hooks/useSnackbar";
 import { Add as AddIcon } from "@material-ui/icons";
+import { UploadProgress } from "Components/UploadProgress";
 
 export function LibraryPage(): React.ReactElement {
+  const [file, setFile] = useState(null);
+  const [progress, setProgress] = useState(0);
   const { showSnackbar } = useSnackbar();
   const { t } = useTranslation();
   const fileRef = useRef(null);
   const { loading, error, data } = useQuery(EPUB_QUERY);
   const [importEPub] = useMutation(IMPORT_EPUB_MUTATION, {
-    onCompleted: () => showSnackbar(t("EPub Book Added")),
+    onCompleted: () => {
+      setFile(null);
+      setProgress(0);
+      showSnackbar(t("EPub Book Added"));
+    },
     update: handleCacheUpdate,
     context: {
       fetchOptions: {
         useUpload: true,
-        onProgress: console.info,
+        onProgress: ({ loaded, total }: ProgressEvent) =>
+          setProgress(Math.ceil((loaded / total) * 100)),
       },
     },
   });
@@ -29,13 +37,13 @@ export function LibraryPage(): React.ReactElement {
   function handleCacheUpdate(cache, { data: { epub } }) {
     cache.modify({
       fields: {
-        epubs({ existingEPubs }) {
+        library({ existingLibrary }) {
           cache.writeFragment({
             id: `EPub:${epub?.id}`,
             fragment: EPubFragment,
             data: epub,
           });
-          return existingEPubs;
+          return existingLibrary;
         },
       },
     });
@@ -48,6 +56,7 @@ export function LibraryPage(): React.ReactElement {
     },
   }: any): void {
     if (!validity.valid) return;
+    setFile(file);
     importEPub({ variables: { upload: file } });
   }
 
@@ -71,9 +80,10 @@ export function LibraryPage(): React.ReactElement {
           onChange={handleImport}
         />
       </>
+      {file && <UploadProgress filename={file?.name} progress={progress} />}
       <List>
         {data &&
-          data.epubs.edges.map(({ node }) => (
+          data.library.edges.map(({ node }) => (
             <LibraryItem epub={node} key={node.id} />
           ))}
       </List>

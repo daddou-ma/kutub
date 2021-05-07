@@ -64,7 +64,7 @@ export default class EPubResolver {
 
   @Authorized(["ADMIN", "USER"])
   @Query(() => EPubConnection)
-  async myEpubs(@Args() args: ConnectionArguments, @Ctx() { db, user }: Context): Promise<EPubConnection> {
+  async library(@Args() args: ConnectionArguments, @Ctx() { db, user }: Context): Promise<EPubConnection> {
     return connectionFromRelation(args, db, User, "epubs", user);
   }
 
@@ -116,7 +116,7 @@ export default class EPubResolver {
     const book = await Book.findOrCreate({
       isbn: base.identifiers[0].value as string,
       title: base.titles[0],
-      description: base.description,
+      description: base.description.toString(),
       publisher,
       coverPath,
       authors,

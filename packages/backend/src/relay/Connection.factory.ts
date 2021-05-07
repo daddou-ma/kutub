@@ -77,6 +77,7 @@ export async function connectionFromRelation<T>(
     .relation(entity, relation)
     .of(of)
     .loadMany();
+  
   const totalCount = entities.length;
 
   // offsets
@@ -98,7 +99,7 @@ export async function connectionFromRelation<T>(
   const edges = entities.map((entity, index) => ({
     cursor: offsetToCursor(startOffset + index),
     node: entity,
-  }));
+  })).reverse();
 
   // page info
   const { length, 0: firstEdge, [length - 1]: lastEdge } = edges;
