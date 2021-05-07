@@ -7,6 +7,8 @@ import {
 import { CacheableResponsePlugin } from "workbox-cacheable-response";
 import { ExpirationPlugin } from "workbox-expiration";
 
+const hash = "0001";
+
 // HTML
 // https://developers.google.com/web/tools/workbox/reference-docs/latest/workbox.routing#registerRoute
 registerRoute(
