@@ -116,7 +116,7 @@ export default class EPubResolver {
     const book = await Book.findOrCreate({
       isbn: base.identifiers[0].value as string,
       title: base.titles[0],
-      description: base.description.toString(),
+      description: (base?.description || '').replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g, ''),
       publisher,
       coverPath,
       authors,
