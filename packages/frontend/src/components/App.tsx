@@ -5,6 +5,7 @@ import { createUploadLink } from "apollo-upload-client";
 import { relayStylePagination } from "@apollo/client/utilities";
 import { persistCache, LocalStorageWrapper } from "apollo3-cache-persist";
 import { BrowserRouter as Router, Switch } from "react-router-dom";
+import { createBrowserHistory } from "history";
 import { create } from "jss";
 import rtl from "jss-rtl";
 import { StylesProvider, jssPreset } from "@material-ui/core/styles";
@@ -20,6 +21,7 @@ import { LanguageSettingsPage } from "Pages/LanguageSettings";
 import { CustomRoute, Role } from "Components/CustomRoute";
 import { AuthProvider } from "Hooks/useAuth";
 import { SnackbarProvider } from "Hooks/useSnackbar";
+import ReactGA from "react-ga";
 
 const GRAPH_URL = process.env.GRAPHQL_URL;
 
@@ -103,6 +105,11 @@ const authLink = setContext((_, { headers }) => {
 
 const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
 
+const history = createBrowserHistory();
+history.listen((location) => {
+  ReactGA.pageview(location.pathname + location.search);
+});
+
 export function App(): React.ReactElement {
   const [client, setClient] = useState(null);
   useEffect(() => {
@@ -154,7 +161,7 @@ export function App(): React.ReactElement {
         <StylesProvider jss={jss}>
           <ThemeProvider>
             <SnackbarProvider>
-              <Router>
+              <Router history={history}>
                 <Switch>
                   <CustomRoute
                     path="/library"

@@ -3,9 +3,12 @@ import * as ReactDOM from "react-dom";
 import { App } from "./components/App";
 import i18n from "i18next";
 import { initReactI18next, I18nextProvider } from "react-i18next";
+import ReactGA from "react-ga";
 
 import en from "Locales/en/translation.json";
 import ar from "Locales/ar/translation.json";
+
+ReactGA.initialize(process.env.ANALYTICS_ID);
 
 const resources = {
   en: { translation: en },
@@ -15,7 +18,7 @@ const resources = {
 i18n.use(initReactI18next).init(
   {
     resources,
-    lng: localStorage.getItem("lang") || "en",
+    lng: localStorage.getItem("lang") || "ar",
     keySeparator: false,
     interpolation: {
       escapeValue: false,

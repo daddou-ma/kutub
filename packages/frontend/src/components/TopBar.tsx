@@ -64,7 +64,7 @@ export function TopBar({ title, actions }: TopBarProps): React.ReactElement {
           />
           <div>
             <>{actions}</>
-            <IconButton
+            {/* <IconButton
               aria-label="account of current user"
               aria-controls="menu-appbar"
               aria-haspopup="true"
@@ -72,7 +72,7 @@ export function TopBar({ title, actions }: TopBarProps): React.ReactElement {
               color="inherit"
             >
               <MoreVertIcon />
-            </IconButton>
+            </IconButton> */}
           </div>
         </Toolbar>
       </AppBar>
