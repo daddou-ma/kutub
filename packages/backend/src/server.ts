@@ -128,13 +128,14 @@ async function main() {
 
   app.use(router.routes());
 
-  app.use(graphqlUploadKoa({ maxFileSize: 10000000, maxFiles: 10 }));
+  app.use(graphqlUploadKoa({ maxFileSize: 10000000, maxFiles: 1 }));
 
   server.applyMiddleware({ app });
 
-  await new Promise((resolve) =>
-    app.listen({ port: 4000 }, () => resolve(4000))
-  );
+  await new Promise((resolve) => {
+    const s = app.listen({ port: 4000 }, () => resolve(4000));
+    s.headersTimeout = 1000 * 60 * 10;
+  });
 
   console.log(`GraphQL is listening on !`);
 }

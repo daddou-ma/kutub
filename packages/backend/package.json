@@ -12,6 +12,7 @@
     "seed:run": "npx ts-node -r tsconfig-paths/register ./node_modules/typeorm-seeding/dist/cli.js seed -c prod",
     "schema:drop": "npx ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js schema:drop -c prod",
     "schema:sync": "npx ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js schema:sync -c prod",
+    "server:dev": "npx ts-node -r tsconfig-paths/register src/server.ts -c prod",
     "server:start": "npx pm2 start npx --name books -- ts-node -r tsconfig-paths/register src/server.ts",
     "server:stop": "npx pm2 stop books"
   },
@@ -28,7 +29,7 @@
     "googleapis": "^70.0.0",
     "graphql": "^15.5.0",
     "graphql-relay": "^0.6.0",
-    "graphql-upload": "^11.0.0",
+    "graphql-upload": "12.0.0",
     "jsonwebtoken": "^8.5.1",
     "koa": "^2.13.1",
     "koa-compress": "^5.0.1",
