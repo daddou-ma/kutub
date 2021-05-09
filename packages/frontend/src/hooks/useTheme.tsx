@@ -44,6 +44,9 @@ export function useThemeProvider(): ThemeContext {
   const { i18n } = useTranslation();
 
   const theme = createMuiTheme({
+    typography: {
+      fontFamily: "Amiri",
+    },
     palette: {
       type: darkMode ? "dark" : "light",
     },

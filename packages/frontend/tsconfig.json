@@ -38,7 +38,10 @@
 			"Locales/*": [
 				"locales/*"
 			],
+			"Public/*": [
+				"public/*"
+			],
 		},
 	},
-	"include": [ "src/**/*", "types/icons.d.ts"],
+	"include": [ "src/**/*", "types/icons.d.ts", "types/png.d.ts"],
 }

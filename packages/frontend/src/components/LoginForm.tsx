@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useMutation } from "@apollo/client";
 import {
-  Avatar,
   Button,
   TextField,
   FormControlLabel,
@@ -12,7 +11,6 @@ import {
   Typography,
   Snackbar,
 } from "@material-ui/core";
-import { LockOutlined as LockOutlinedIcon } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 import { useTranslation } from "react-i18next";
 
@@ -21,14 +19,9 @@ import { PASSWORD_AUTH_MUTATION } from "Graph/queries/auth";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    marginTop: theme.spacing(8),
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
   },
   form: {
     width: "100%", // Fix IE 11 issue.
@@ -96,9 +89,6 @@ export function LoginForm({ onSwitch }: LoginFormProps): React.ReactElement {
 
   return (
     <Box className={classes.paper}>
-      <Avatar className={classes.avatar}>
-        <LockOutlinedIcon />
-      </Avatar>
       <Typography component="h1" variant="h5">
         {t("Sign in")}
       </Typography>

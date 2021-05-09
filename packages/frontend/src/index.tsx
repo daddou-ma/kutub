@@ -25,8 +25,8 @@ i18n.use(initReactI18next).init(
     },
   },
   () => {
-    const language = localStorage.getItem("lang");
-    if (language === "ar") {
+    console.log(i18n.language);
+    if (i18n.language === "ar") {
       window.document.dir = "rtl";
     } else {
       window.document.dir = "ltr";
