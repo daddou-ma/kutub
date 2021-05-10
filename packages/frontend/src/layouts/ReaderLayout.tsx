@@ -11,6 +11,7 @@ import {
   Toolbar,
   LinearProgress,
 } from "@material-ui/core";
+import { Helmet } from "react-helmet";
 import {
   Menu as MenuIcon,
   ArrowBack as ArrowBackIcon,
@@ -59,43 +60,53 @@ export function ReaderLayout({
   const classes = useStyles();
 
   return (
-    <Box display="flex" flexDirection="column" width="100vw" height="100vh">
-      <Box flexBasis={64}>
-        <AppBar position="static" className={classes.root}>
-          <Toolbar>
-            <IconButton
-              edge="start"
-              className={classes.menuButton}
-              color="inherit"
-              aria-label="menu"
-              onClick={() => setOpenDrawer(true)}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="body1" className={classes.title}>
-              {`${title.slice(0, 24)}...`}
-            </Typography>
-            <ReaderChapters
-              open={openDrawer}
-              chapters={chapters}
-              handleOpen={() => setOpenDrawer(true)}
-              handleClose={() => setOpenDrawer(false)}
-              handleChapterClick={handleChapterClick}
-            />
-            <IconButton
-              color="inherit"
-              aria-label="back"
-              onClick={() => history.goBack()}
-            >
-              <ArrowBackIcon />
-            </IconButton>
-          </Toolbar>
-        </AppBar>
+    <>
+      <Helmet>
+        <title>{title}</title>
+      </Helmet>
+      <Box display="flex" flexDirection="column" width="100vw" height="100vh">
+        <Box flexBasis={64}>
+          <AppBar position="static" className={classes.root}>
+            <Toolbar>
+              <IconButton
+                edge="start"
+                className={classes.menuButton}
+                color="inherit"
+                aria-label="menu"
+                onClick={() => setOpenDrawer(true)}
+              >
+                <MenuIcon />
+              </IconButton>
+              <Typography variant="body1" className={classes.title}>
+                {`${title.slice(0, 24)}...`}
+              </Typography>
+              <ReaderChapters
+                open={openDrawer}
+                chapters={chapters}
+                handleOpen={() => setOpenDrawer(true)}
+                handleClose={() => setOpenDrawer(false)}
+                handleChapterClick={handleChapterClick}
+              />
+              <IconButton
+                color="inherit"
+                aria-label="back"
+                onClick={() => history.goBack()}
+              >
+                <ArrowBackIcon />
+              </IconButton>
+            </Toolbar>
+          </AppBar>
+        </Box>
+        <Box
+          flexBasis="auto"
+          height="100%"
+          overflow="scroll"
+          position="relative"
+        >
+          {loading ? "Lodaing" : error ? "error" : children}
+        </Box>
+        <LinearProgress variant="determinate" value={progress} />
       </Box>
-      <Box flexBasis="auto" height="100%" overflow="scroll" position="relative">
-        {loading ? "Lodaing" : error ? "error" : children}
-      </Box>
-      <LinearProgress variant="determinate" value={progress} />
-    </Box>
+    </>
   );
 }
