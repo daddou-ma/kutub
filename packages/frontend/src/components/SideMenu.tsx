@@ -14,7 +14,7 @@ import {
 } from "@material-ui/core";
 import {
   Book as BookIcon,
-  FormatQuote as FormatQuoteIcon,
+  // FormatQuote as FormatQuoteIcon,
   Settings as SettingsIcon,
   Info as InfoIcon,
   ExitToApp as ExitToAppIcon,
@@ -62,12 +62,12 @@ export function SideMenu({
             </ListItemIcon>
             <ListItemText primary={t("My Library")} />
           </ListItem>
-          <ListItem button onClick={() => handleClick("/quotes")}>
+          {/* <ListItem button onClick={() => handleClick("/quotes")}>
             <ListItemIcon>
               <FormatQuoteIcon />
             </ListItemIcon>
             <ListItemText primary={t("Quotes")} />
-          </ListItem>
+          </ListItem> */}
           <ListItem button onClick={() => handleClick("/settings")}>
             <ListItemIcon>
               <SettingsIcon />

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Switch, useHistory } from "react-router-dom";
 
-import { QuotePage } from "Pages/Quotes";
+// import { QuotePage } from "Pages/Quotes";
 import { LibraryPage } from "Pages/Library";
 import { FavoriteQuotePage } from "Pages/FavoriteQuotes";
 import { ReaderPage } from "Pages/Reader";
@@ -31,9 +31,9 @@ export function Routes(): React.ReactElement {
       <CustomRoute path="/login" role={Role.GUEST} redirect="/">
         <LoginPage />
       </CustomRoute>
-      <CustomRoute path="/quotes" role={Role.USER} redirect="/login">
+      {/* <CustomRoute path="/quotes" role={Role.USER} redirect="/login">
         <QuotePage />
-      </CustomRoute>
+      </CustomRoute> */}
       <CustomRoute path="/favorites" role={Role.USER} redirect="/login">
         <FavoriteQuotePage />
       </CustomRoute>

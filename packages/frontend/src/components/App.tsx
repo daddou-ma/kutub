@@ -13,6 +13,7 @@ import { ThemeProvider } from "Hooks/useTheme";
 import { AuthProvider } from "Hooks/useAuth";
 import { SnackbarProvider } from "Hooks/useSnackbar";
 import { Routes } from "Components/Routes";
+import { LoadingPage } from "Pages/Loading";
 
 const GRAPH_URL = process.env.GRAPHQL_URL;
 
@@ -139,7 +140,7 @@ export function App(): React.ReactElement {
   }, []);
 
   if (!client) {
-    return <h2>Loading Cache...</h2>;
+    return <LoadingPage />;
   }
 
   return (

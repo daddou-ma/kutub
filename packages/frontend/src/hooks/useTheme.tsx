@@ -45,7 +45,7 @@ export function useThemeProvider(): ThemeContext {
 
   const theme = createMuiTheme({
     typography: {
-      fontFamily: "Amiri",
+      fontFamily: "Montserrat, Amiri",
     },
     palette: {
       type: darkMode ? "dark" : "light",
