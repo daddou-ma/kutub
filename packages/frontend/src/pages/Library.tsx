@@ -11,7 +11,7 @@ import { useSnackbar } from "Hooks/useSnackbar";
 import { Add as AddIcon } from "@material-ui/icons";
 import { UploadProgress } from "Components/UploadProgress";
 
-export function LibraryPage(): React.ReactElement {
+export default function LibraryPage(): React.ReactElement {
   const [file, setFile] = useState(null);
   const [progress, setProgress] = useState(0);
   const { showSnackbar } = useSnackbar();

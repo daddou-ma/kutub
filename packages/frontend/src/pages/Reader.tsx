@@ -10,7 +10,7 @@ const EPubReader = React.lazy(() => import("Components/EPubReader"));
 
 const styles = {};
 
-export function ReaderPage(): React.ReactElement {
+export default function ReaderPage(): React.ReactElement {
   const [rendition, setRendition] = useState(null);
   const [chapters, setChapters] = useState([]);
   const [location, setLocation] = useState(null);

@@ -9,7 +9,7 @@ import {
 } from "@material-ui/core";
 import { BasicLayout } from "Layouts/BasicLayout";
 
-export function LanguageSettingsPage(): React.ReactElement {
+export default function LanguageSettingsPage(): React.ReactElement {
   const { t, i18n } = useTranslation();
 
   return (

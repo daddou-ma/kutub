@@ -1,14 +1,40 @@
 import React, { useEffect } from "react";
 import { Switch, useHistory } from "react-router-dom";
+import loadable from "@loadable/component";
 
 // import { QuotePage } from "Pages/Quotes";
-import { LibraryPage } from "Pages/Library";
-import { FavoriteQuotePage } from "Pages/FavoriteQuotes";
-import { ReaderPage } from "Pages/Reader";
-import { LoginPage } from "Pages/Login";
-import { SettingsPage } from "Pages/Settings";
-import { LanguageSettingsPage } from "Pages/LanguageSettings";
+const LibraryPage = loadable(() => import("Pages/Library"), {
+  fallback: <LoadingPage />,
+});
+
+const LoginPage = loadable(() => import("Pages/Login"), {
+  fallback: <LoadingPage />,
+});
+
+const SettingsPage = loadable(() => import("Pages/Settings"), {
+  fallback: <LoadingPage />,
+});
+
+const LanguageSettingsPage = loadable(() => import("Pages/LanguageSettings"), {
+  fallback: <LoadingPage />,
+});
+
+const ReaderPage = loadable(() => import("Pages/Reader"), {
+  fallback: <LoadingPage />,
+});
+
+const FavoriteQuotesPage = loadable(() => import("Pages/FavoriteQuotes"), {
+  fallback: <LoadingPage />,
+});
+
+const AboutPage = loadable(() => import("Pages/About"), {
+  fallback: <LoadingPage />,
+});
+
+import { LoadingPage } from "Pages/Loading";
+
 import { CustomRoute, Role } from "Components/CustomRoute";
+
 import ReactGA from "react-ga";
 
 export function Routes(): React.ReactElement {
@@ -35,7 +61,7 @@ export function Routes(): React.ReactElement {
         <QuotePage />
       </CustomRoute> */}
       <CustomRoute path="/favorites" role={Role.USER} redirect="/login">
-        <FavoriteQuotePage />
+        <FavoriteQuotesPage />
       </CustomRoute>
       <CustomRoute path="/reader/:epubId" role={Role.USER} redirect="/login">
         <ReaderPage />
@@ -45,6 +71,9 @@ export function Routes(): React.ReactElement {
       </CustomRoute>
       <CustomRoute path="/settings" role={Role.USER} redirect="/login">
         <SettingsPage />
+      </CustomRoute>
+      <CustomRoute path="/about" role={Role.USER} redirect="/login">
+        <AboutPage />
       </CustomRoute>
       <CustomRoute path="/" role={Role.USER} redirect="/login">
         <LibraryPage />

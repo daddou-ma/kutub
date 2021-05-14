@@ -10,15 +10,14 @@ const TerserPlugin = require("terser-webpack-plugin");
 module.exports = {
   entry: "./src/index.tsx",
   entry: {
-    bundle: "./src/index.tsx",
-    reader: "./src/components/EPubReader.tsx",
+    main: "./src/index.tsx",
     sw: "./src/serviceWorker.ts",
   },
   target: "web",
   mode: "production",
   output: {
     path: path.resolve(__dirname, "../backend/build"),
-    filename: "[name].js",
+    filename: "[name].[hash].js",
     publicPath: "/",
   },
   resolve: {

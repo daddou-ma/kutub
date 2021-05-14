@@ -11,7 +11,7 @@ import {
 import { BasicLayout } from "Layouts/BasicLayout";
 import { useTheme } from "Hooks/useTheme";
 
-export function SettingsPage(): React.ReactElement {
+export default function SettingsPage(): React.ReactElement {
   const { t } = useTranslation();
   const history = useHistory();
   const { darkMode, setDarkMode } = useTheme();

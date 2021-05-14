@@ -26,7 +26,7 @@
     "base-64": "^1.0.0",
     "class-validator": "^0.13.1",
     "faker": "^5.5.2",
-    "googleapis": "^70.0.0",
+    "googleapis": "^73.0.0",
     "graphql": "^15.5.0",
     "graphql-relay": "^0.6.0",
     "graphql-upload": "12.0.0",

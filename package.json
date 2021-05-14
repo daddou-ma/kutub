@@ -20,8 +20,7 @@
     "server:stop": "npx lerna run --scope @inspire/backend server:stop --stream",
     "lint": "npx eslint '*/**/*.{js,ts,tsx}' --quiet --fix"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "@babel/runtime": "^7.13.10",
     "@typescript-eslint/eslint-plugin": "^4.20.0",

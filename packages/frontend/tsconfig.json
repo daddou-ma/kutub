@@ -5,6 +5,7 @@
     "target": "ESNEXT",
 		"module": "ESNEXT",
 		"moduleResolution": "Node",
+		"importHelpers": true,
     "lib": ["dom", "ESNEXT", "esnext.asynciterable"],
 		"experimentalDecorators": true,
     "emitDecoratorMetadata": true,

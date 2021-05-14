@@ -27,7 +27,7 @@ export interface Author {
   name: string;
 }
 
-export function FavoriteQuotePage(): React.ReactElement {
+export default function FavoriteQuotesPage(): React.ReactElement {
   const { loading, error, data, fetchMore } = useQuery(ME_QUERY);
   const [favoriteQuote] = useMutation(FAVORITE_QUOTE_MUTATION, {
     onCompleted: console.error,
