@@ -25,6 +25,7 @@ import Publisher from "Modules/publishers/Publisher.entity";
 import Category from "Modules/categories/Category.entity";
 import { BookConnection } from "Modules/books/Book.connection";
 import { AuthorConnection } from "Modules/authors/Author.connection";
+import { TagConnection } from "Modules/tags/Tag.connection";
 
 @Resolver(() => Book)
 export default class BookResolver {
@@ -55,6 +56,16 @@ export default class BookResolver {
       .relation(Book, "category")
       .of(book)
       .loadOne();
+  }
+
+  @Authorized(["ADMIN", "USER"])
+  @FieldResolver(() => TagConnection)
+  async tags(
+    @Root() book: Book,
+    @Args() args: ConnectionArguments,
+    @Ctx() { db }: Context
+  ): Promise<TagConnection> {
+    return connectionFromRelation(args, db, Book, "tags", book);
   }
 
   @Authorized(["ADMIN", "USER"])
