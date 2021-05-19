@@ -13,7 +13,7 @@ import User from "Modules/users/User.entity";
 import { CreateUserInput, UpdateUserInput } from "Modules/users/User.inputs";
 import { UserInputError } from "apollo-server";
 import Context from "Interfaces/Context";
-import { EPubConnection } from "Modules/epubs/EPub.connection";
+import { LectureConnection } from "Modules/lectures/Lecture.connection";
 import { ConnectionArguments } from "Relay/generics/ConnectionsArguments";
 import {
   connectionFromRelation,
@@ -30,13 +30,13 @@ export default class UserResolver {
   private readonly repository!: Repository<User>;
 
   @Authorized(["USER"])
-  @FieldResolver(() => EPubConnection)
-  async epubs(
+  @FieldResolver(() => LectureConnection)
+  async lectures(
     @Root() user: User,
     @Args() args: ConnectionArguments,
     @Ctx() { db }: Context
-  ): Promise<EPubConnection> {
-    return connectionFromRelation(args, db, User, "epubs", user);
+  ): Promise<LectureConnection> {
+    return connectionFromRelation(args, db, User, "lectures", user);
   }
 
   @Authorized(["USER"])

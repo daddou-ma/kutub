@@ -16,7 +16,7 @@ import { Node } from "Relay/interfaces/Node";
 
 @Entity()
 @ObjectType({ implements: Node })
-export default class EPub extends Node {
+export default class Lecture extends Node {
   @Field(() => ID)
   @PrimaryGeneratedColumn()
   public id: number;
@@ -41,10 +41,10 @@ export default class EPub extends Node {
   @Column("int", { nullable: true })
   public progress: number;
 
-  @ManyToOne(() => User, (user) => user.epubs)
+  @ManyToOne(() => User, (user) => user.lectures)
   public createdBy?: User;
 
-  @OneToOne(() => Metadata, (metadata) => metadata.epub)
+  @OneToOne(() => Metadata, (metadata) => metadata.lecture)
   @JoinColumn()
   public metadata?: Metadata;
 

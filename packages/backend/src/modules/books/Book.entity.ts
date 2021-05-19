@@ -15,6 +15,7 @@ import { Node } from "Relay/interfaces/Node";
 import Publisher from "Modules/publishers/Publisher.entity";
 import Category from "Modules/categories/Category.entity";
 import Tag from "Modules/tags/Tag.entity";
+import Lecture from "Modules/lectures/Lecture.entity";
 
 @Entity()
 @ObjectType({ implements: Node })
