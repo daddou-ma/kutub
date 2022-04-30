@@ -1,0 +1,106 @@
+version: '3'
+services:
+    # nginx:
+    #     container_name: "clevermate-nginx-main"
+    #     build: ./nginx
+    #     restart: always
+    #     ports:
+    #         - 443:443
+    #     volumes:
+    #         - ./clevermate-php:/usr/share/nginx/html
+    #         - ./uploaded_files:${UPLOADED_FILE_PATH}
+    #         - node_build:/usr/share/nginx/html/build
+    #         - ./nginx/templates:/etc/nginx/templates
+    #         - ./nginx_cache:/usr/share/nginx/cache
+    #         - ./ssl:/usr/share/nginx/ssl
+    #         - ./logs:${LOG_DIR}
+    #     environment:
+    #         - NGINX_DEFAULT_HOST=${DOMAIN}
+    #         - NGINX_ADDITIONAL_HOSTS=${DOMAIN_LIST}
+    #         - NGINX_ADMIN_HOST=${DOMAIN_ADMIN}
+    #         - LOG_DIR=${LOG_DIR}
+    #     depends_on:
+    #         - phpfpm
+    #         - website
+    db:
+      image: mysql:5.7
+      restart: always
+      environment:
+        MYSQL_DATABASE: ${DBNAME}
+        # So you don't have to use root, but you can if you like
+        MYSQL_USER: ${DBUSER}
+        # You can use whatever password you like
+        MYSQL_PASSWORD: ${DBPASS}
+        # Password for root access
+        MYSQL_ROOT_PASSWORD: ${DBPASS}
+      expose:
+        # Opens port 3306 on the container
+        - '3306'
+        # Where our data will be persisted
+      volumes:
+        - database:/var/lib/mysql
+    backend:
+        container_name: "kutub-backend"
+        build: ./packages/backend
+        restart: always
+        user: "node"
+        working_dir: /home/node/app
+        environment:
+            - NODE_ENV=${NODE_ENV}
+            - DBHOST=${DBHOST}
+            - DBNAME=${DBNAME}
+            - DBUSER=${DBUSER}
+            - DBPASS=${DBPASS}
+        ports:
+            - 4000:4000
+        volumes:
+            - ./packages/backend:/home/node/app
+            - backend_node_modules:/home/node/app/node_modules
+            - .env:/home/node/app/.env:ro
+    frontend:
+        container_name: "kutub-frontend"
+        build: ./packages/frontend
+        restart: always
+        user: "node"
+        working_dir: /home/node/app
+        environment:
+            - NODE_ENV=${NODE_ENV}
+        ports:
+            - 8080:8080
+        volumes:
+            - ./packages/frontend:/home/node/app
+            - frontend_node_modules:/home/node/app/node_modules
+            - .env:/home/node/app/.env:ro
+    # website:
+    #     container_name: "clevermate-seo"
+    #     build: ./clevermate-seo
+    #     restart: always
+    #     user: "node"
+    #     working_dir: /home/node/app
+    #     environment:
+    #         - NODE_ENV=${NODE_ENV}
+    #     ports:
+    #         - 3001:3001
+    #     volumes:
+    #         - ./clevermate-seo:/home/node/app
+    #         - ./uploaded_files:/home/node/app/public/avatars
+    #         - website_node_modules:/home/node/app/node_modules
+    #         - .env:/home/node/app/.env.local:ro
+    # memcached:
+    #     container_name: "clevermate-cache"
+    #     image: 'memcached:1.6.9'
+    #     ports:
+    #         - 11211:11211
+    # redis:
+    #     container_name: "clevermate-redis"
+    #     image: 'redis:latest'
+    #     volumes:
+    #         - ./redis_storage:/data
+    #         - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+    #     ports:
+    #         - 6379:6379
+
+volumes:
+  database:
+  frontend_node_modules:
+  backend_node_modules:
