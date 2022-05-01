@@ -1,16 +1,17 @@
 import { gql } from "@apollo/client";
 import { Connection } from "Types/Connection";
-import { Book } from "Types/Book";
 import { Highlight } from "Types/Highlight";
 import { User } from "Types/User";
+import { Metadata } from "Types/Metadata";
 
 export abstract class EPub {
   id: string;
   filename: string;
   filePath: string;
+  coverPath: string;
   location: string;
   progress: number;
-  book: Book;
+  metadata: Metadata;
   highlights: Connection<Highlight>;
   createdBy: User;
   createdAt: Date;
@@ -23,6 +24,7 @@ export const EPubFragment = gql`
     id
     filename
     filePath
+    coverPath
     location
     progress
     createdAt

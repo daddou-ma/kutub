@@ -28,13 +28,16 @@
 				"./src/layouts/*"
 			],
 			"Hooks/*": [
-				"src/hooks/*"
+				"./src/hooks/*"
 			],
 			"Graph/*": [
-				"src/graph/*"
+				"./src/graph/*"
 			],
 			"Types/*": [
-				"src/types/*"
+				"./src/types/*"
+			],
+			"Utils/*": [
+				"src/utils/*"
 			],
 			"Locales/*": [
 				"locales/*"

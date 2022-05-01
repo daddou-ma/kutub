@@ -1,10 +1,11 @@
-import React, { Suspense, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useQuery, useMutation } from "@apollo/client";
 import { useTheme } from "@material-ui/core";
 
 import { ReaderLayout } from "Layouts/ReaderLayout";
 import { EPUB_BYID_QUERY, UPDATE_EPUB_MUTATION } from "Graph/queries/epubs";
+import { loadFileFromCache } from "Utils/File";
 
 const EPubReader = React.lazy(() => import("Components/EPubReader"));
 
@@ -15,7 +16,7 @@ export default function ReaderPage(): React.ReactElement {
   const [chapters, setChapters] = useState([]);
   const [location, setLocation] = useState(null);
   const [progress, setProgress] = useState(0);
-
+  const [file, setFile] = useState(null)
   const { epubId } = useParams();
   const theme = useTheme();
   const { loading, error, data } = useQuery(EPUB_BYID_QUERY, {
@@ -29,6 +30,13 @@ export default function ReaderPage(): React.ReactElement {
 
   const [updateEPub] = useMutation(UPDATE_EPUB_MUTATION);
 
+  useEffect(() => {
+    async function loadFunction() {
+      setFile(await loadFileFromCache('cached-epubs', data?.epub?.filePath))
+    }
+    loadFunction()
+  }, [data?.epub?.filePath])
+
   return (
     <ReaderLayout
       title={data?.epub?.book?.title}
@@ -40,7 +48,7 @@ export default function ReaderPage(): React.ReactElement {
     >
       <Suspense fallback={<div>Loading...</div>}>
         <EPubReader
-          url={`${process.env.URL}/${data?.epub?.filePath}`}
+          url={file}
           location={rendition ? location : null}
           locationChanged={(location) => {
             setLocation(location);

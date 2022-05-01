@@ -9,11 +9,9 @@ import {
   DeleteDateColumn,
   ManyToMany,
   getConnection,
-  OneToMany,
 } from "typeorm";
 import Author from "Modules/authors/Author.entity";
 import { Node } from "Relay/interfaces/Node";
-import EPub from "Modules/epubs/EPub.entity";
 import Publisher from "Modules/publishers/Publisher.entity";
 @Entity()
 @ObjectType({ implements: Node })
@@ -45,9 +43,6 @@ export default class Book extends Node {
   @Field(() => Publisher, { nullable: true })
   @ManyToOne(() => Publisher, (publisher) => publisher.books)
   public publisher: Publisher;
-
-  @OneToMany(() => EPub, (epub) => epub.book)
-  public epubs: EPub[];
 
   @ManyToMany(() => Author, (author) => author.books)
   public authors: Author[];

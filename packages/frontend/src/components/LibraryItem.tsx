@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
@@ -13,9 +13,22 @@ import {
 } from "@material-ui/core";
 
 import { EPub } from "Types/index";
+import { getCacheStorageObjectUrl } from "Utils/File";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
+    avatar: {
+      height:128,
+      width:90,
+      background: 'linear-gradient(to bottom, rgba(0, 0, 0, 0.30) 0%, rgba(0, 0, 0, 0.75) 100%)',
+      margin:'auto',
+      marginRight: 8,
+      borderRadius: 4,
+      overflow: 'hidden',
+      '& img': {
+        width: '100%'
+      }
+    },
     listItem: {
       color: theme.palette.text.primary,
       fontWeight: "bold",
@@ -29,27 +42,34 @@ interface LibraryItemProps {
 }
 
 export function LibraryItem({ epub }: LibraryItemProps): React.ReactElement {
+  const [coverUrl, setCoverUrl] = useState(null)
   const { t } = useTranslation();
   const classes = useStyles();
+
+  useEffect(() => {
+    async function loadFunction() {
+      setCoverUrl(await getCacheStorageObjectUrl('cached-covers', epub?.coverPath))
+    }
+    loadFunction()
+  }, [epub?.coverPath])
+
   return (
     <>
       <ListItem alignItems="flex-start" key={epub?.id}>
-        <ListItemAvatar>
+        <ListItemAvatar className={classes.avatar}>
           <img
-            width={48}
-            alt={epub?.book?.title}
-            src={`${process.env.URL}/${epub?.book?.coverPath}`}
+            src={coverUrl}
           />
         </ListItemAvatar>
         <ListItemText
           primary={
             <Link to={`/reader/${epub?.id}`} className={classes.listItem}>
-              {epub?.book?.title.slice(0, 48)}
+              {epub?.metadata?.title.slice(0, 48)}
             </Link>
           }
           secondary={
-            <React.Fragment>{`${t("by")} ${epub?.book?.authors.edges.map(
-              ({ node }) => node.name
+            <React.Fragment>{`${t("by")} ${[epub?.metadata?.author].map(
+              (name) => name
             )}`}</React.Fragment>
           }
         />

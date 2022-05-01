@@ -7,9 +7,11 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
+  OneToOne,
+  JoinColumn,
 } from "typeorm";
-import Book from "Modules/books/Book.entity";
 import User from "Modules/users/User.entity";
+import Metadata from "Modules/metadatas/Metadata.entity";
 import { Node } from "Relay/interfaces/Node";
 
 @Entity()
@@ -27,6 +29,10 @@ export default class EPub extends Node {
   @Column("varchar", { length: 1024 })
   public filePath: string;
 
+  @Field()
+  @Column("varchar", { length: 1024 })
+  public coverPath: string;
+
   @Field({ nullable: true })
   @Column("varchar", { nullable: true, length: 1024 })
   public location: string;
@@ -35,11 +41,12 @@ export default class EPub extends Node {
   @Column("int", { nullable: true })
   public progress: number;
 
-  @ManyToOne(() => Book, (book) => book.epubs)
-  public book: Book;
-
   @ManyToOne(() => User, (user) => user.epubs)
   public createdBy?: User;
+
+  @OneToOne(() => Metadata, (metadata) => metadata.epub)
+  @JoinColumn()
+  public metadata?: Metadata;
 
   @Field(() => Date)
   @CreateDateColumn()

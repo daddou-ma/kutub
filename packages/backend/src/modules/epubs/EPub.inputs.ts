@@ -1,23 +1,15 @@
 import { Field, InputType } from "type-graphql";
-import { GraphQLUpload } from "graphql-upload";
 import { MaxLength } from "class-validator";
-import { Stream } from "stream";
 import EPub from "Modules/epubs/EPub.entity";
-
-export interface Upload {
-  filename: string;
-  mimetype: string;
-  encoding: string;
-  createReadStream: () => Stream;
-}
+import { CreateMetadataInput } from "Modules/metadatas/Metadata.inputs";
 
 @InputType({ description: "Create EPub data" })
 export class CreateEPubInput {
-  @Field((type) => GraphQLUpload)
-  upload: Upload;
+  @Field((type) => CreateMetadataInput)
+  metadata: CreateMetadataInput;
 }
 
-@InputType({ description: "Create EPub data" })
+@InputType({ description: "Update EPub data" })
 export class UpdateEPubInput implements Partial<EPub> {
   @Field()
   @MaxLength(256)

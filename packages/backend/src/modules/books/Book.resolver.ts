@@ -24,7 +24,6 @@ import Book from "Modules/books/Book.entity";
 import Publisher from "Modules/publishers/Publisher.entity";
 import { BookConnection } from "Modules/books/Book.connection";
 import { AuthorConnection } from "Modules/authors/Author.connection";
-import { EPubConnection } from "Modules/epubs/EPub.connection";
 
 @Resolver(() => Book)
 export default class BookResolver {
@@ -42,16 +41,6 @@ export default class BookResolver {
       .relation(Book, "publisher")
       .of(book)
       .loadOne();
-  }
-
-  @Authorized("ADMIN")
-  @FieldResolver(() => EPubConnection)
-  async epubs(
-    @Root() book: Book,
-    @Args() args: ConnectionArguments,
-    @Ctx() { db }: Context
-  ): Promise<EPubConnection> {
-    return connectionFromRelation(args, db, Book, "epubs", book);
   }
 
   @Authorized(["ADMIN", "USER"])

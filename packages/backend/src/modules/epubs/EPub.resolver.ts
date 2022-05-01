@@ -1,5 +1,4 @@
-import { v4 as uuidv4 } from "uuid";
-import path from "path";
+import { v4 as uuidv4 } from 'uuid';
 import {
   Resolver,
   Query,
@@ -20,16 +19,10 @@ import { CreateEPubInput, UpdateEPubInput } from "Modules/epubs/EPub.inputs";
 import { UserInputError } from "apollo-server";
 
 import EPub from "Modules/epubs/EPub.entity";
-import Book from "Modules/books/Book.entity";
 import User from "Modules/users/User.entity";
-import Author from "Modules/authors/Author.entity";
-import Publisher from "Modules/publishers/Publisher.entity";
+import Metadata from "Modules/metadatas/Metadata.entity";
 import { EPubConnection } from "Modules/epubs/EPub.connection";
-import { getEPubMetadata } from "Utils/epub";
-import { saveFile } from "Utils/file";
 import Context from "Interfaces/Context";
-
-import sharp from "sharp";
 
 @Resolver(() => EPub)
 export default class EPubResolver {
@@ -47,11 +40,11 @@ export default class EPubResolver {
   }
 
   @Authorized(["ADMIN", "USER"])
-  @FieldResolver(() => Book)
-  async book(@Root() epub: EPub): Promise<Book> {
+  @FieldResolver(() => Metadata)
+  async metadata(@Root() epub: EPub): Promise<Metadata> {
     return await this.repository
       .createQueryBuilder()
-      .relation(EPub, "book")
+      .relation(EPub, "metadata")
       .of(epub)
       .loadOne();
   }
@@ -86,47 +79,68 @@ export default class EPubResolver {
 
   @Authorized(["ADMIN", "USER"])
   @Mutation(() => EPub)
-  async uploadEPub(
-    @Arg("data") { upload }: CreateEPubInput,
+  async createEPub(
+    @Arg("data") { metadata: {
+      title,
+      author,
+      description,
+      isbn,
+      language,
+      publisher,
+      publishedAt,
+    } }: CreateEPubInput,
     @Ctx() { user }: Context
   ): Promise<EPub> {
-    const { filename, createReadStream } = await upload;
+    // const { filename, createReadStream } = await upload;
+    // const coverPath = `content/uploads/covers/${uuid}.thumb.webp`;
+
+    // await saveFile(createReadStream(), path.resolve(filePath));
+
+    // const { base, coverImage } = await getEPubMetadata(path.resolve(filePath));
+
+    // const cover = sharp(await coverImage);
+    // cover.resize({ width: 128 }).webp().toFile(path.resolve(coverPath));
+
+    // const authors = await Promise.all(
+    //   base.creators.map(async ({ name }) => {
+    //     return await Author.findOrCreate({ name });
+    //   })
+    // );
+
+    // let publisher = null;
+    // if (base.publisher) {
+    //   publisher = await Publisher.findOrCreate({ name: base.publisher });
+    // }
+
+    // const book = await Book.findOrCreate({
+    //   isbn: base.identifiers[0].value as string,
+    //   title: base.titles[0],
+    //   description: (base?.description || '').replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g, ''),
+    //   publisher,
+    //   coverPath,
+    //   authors,
+    // });
     const uuid = uuidv4();
-    const filePath = `content/uploads/epubs/${uuid}.epub`;
-    const coverPath = `content/uploads/covers/${uuid}.thumb.webp`;
+    const filename = `${uuid}.epub`;
+    const filePath = `/cached-epubs/${uuid}.epub`;
+    const coverPath = `/cached-covers/${uuid}.png`;
 
-    await saveFile(createReadStream(), path.resolve(filePath));
-
-    const { base, coverImage } = await getEPubMetadata(path.resolve(filePath));
-
-    const cover = sharp(await coverImage);
-    cover.resize({ width: 128 }).webp().toFile(path.resolve(coverPath));
-
-    const authors = await Promise.all(
-      base.creators.map(async ({ name }) => {
-        return await Author.findOrCreate({ name });
-      })
-    );
-
-    let publisher = null;
-    if (base.publisher) {
-      publisher = await Publisher.findOrCreate({ name: base.publisher });
-    }
-
-    const book = await Book.findOrCreate({
-      isbn: base.identifiers[0].value as string,
-      title: base.titles[0],
-      description: (base?.description || '').replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g, ''),
+    const metadata = await Metadata.findOrCreate({
+      title,
+      author,
+      description: (description || '').replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g, ''),
+      isbn,
+      language,
       publisher,
-      coverPath,
-      authors,
+      publishedAt,
     });
 
     const epub = await this.repository.create({
       filename,
       filePath,
-      book,
-      createdBy: user,
+      coverPath,
+      metadata,
+      createdBy: user
     });
 
     await this.repository.save(epub);

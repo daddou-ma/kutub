@@ -1,4 +1,4 @@
-import React, { useState, useRef, ChangeEvent } from "react";
+import React, { useState, useRef } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { useTranslation } from "react-i18next";
 import { List, IconButton } from "@material-ui/core";
@@ -6,10 +6,12 @@ import { EPubFragment } from "Types/index";
 
 import { LibraryItem } from "Components/LibraryItem";
 import { BasicLayout } from "Layouts/BasicLayout";
-import { EPUB_QUERY, IMPORT_EPUB_MUTATION } from "Graph/queries/epubs";
+import { EPUB_QUERY, CREATE_EPUB_MUTATION } from "Graph/queries/epubs";
 import { useSnackbar } from "Hooks/useSnackbar";
 import { Add as AddIcon } from "@material-ui/icons";
 import { UploadProgress } from "Components/UploadProgress";
+import { getEPubFileCover, getEPubFileMetaData } from "Utils/EPub";
+import { saveFileToCache } from "Utils/File";
 
 export default function LibraryPage(): React.ReactElement {
   const [file, setFile] = useState(null);
@@ -18,8 +20,12 @@ export default function LibraryPage(): React.ReactElement {
   const { t } = useTranslation();
   const fileRef = useRef(null);
   const { loading, error, data } = useQuery(EPUB_QUERY);
-  const [importEPub] = useMutation(IMPORT_EPUB_MUTATION, {
-    onCompleted: () => {
+  const [createEPub] = useMutation(CREATE_EPUB_MUTATION, {
+    onCompleted: async ({ epub: { filePath, coverPath }}) => {
+
+      saveFileToCache(file, 'cached-epubs', filePath)
+      saveFileToCache(await getEPubFileCover(file), 'cached-covers', coverPath)
+
       setFile(null);
       setProgress(0);
       showSnackbar(t("EPub Book Added"));
@@ -49,15 +55,17 @@ export default function LibraryPage(): React.ReactElement {
     });
   }
 
-  function handleImport({
+  async function handleImport({
     target: {
       validity,
       files: [file],
     },
-  }: any): void {
+  }: any): Promise<void> {
     if (!validity.valid) return;
     setFile(file);
-    importEPub({ variables: { upload: file } });
+    createEPub({ variables: { data: {
+      metadata: await getEPubFileMetaData(file)
+    }}});
   }
 
   return (

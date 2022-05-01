@@ -1,7 +1,6 @@
 import { gql } from "@apollo/client";
-import { AuthorFragment } from "Types/Author";
 import { EPubFragment } from "Types/EPub";
-import { BookFragment } from "Types/Book";
+import { MetadataFragment } from "Types/Metadata";
 
 export const EPUB_QUERY = gql`
   query EPUB {
@@ -9,17 +8,8 @@ export const EPUB_QUERY = gql`
       edges {
         node {
           ...EPubFragment
-          book {
-            ...BookFragment
-            authors {
-              edges {
-                node {
-                  ...AuthorFragment
-                }
-                cursor
-              }
-              totalCount
-            }
+          metadata {
+            ...MetadataFragment
           }
         }
         cursor
@@ -33,55 +23,34 @@ export const EPUB_QUERY = gql`
       }
     }
   }
-  ${AuthorFragment}
-  ${BookFragment}
   ${EPubFragment}
+  ${MetadataFragment}
 `;
 
 export const EPUB_BYID_QUERY = gql`
   query EPUB($epubId: String!) {
     epub: epubById(epubId: $epubId) {
       ...EPubFragment
-      book {
-        ...BookFragment
-        authors {
-          edges {
-            node {
-              ...AuthorFragment
-            }
-            cursor
-          }
-          totalCount
-        }
+      metadata {
+        ...MetadataFragment
       }
     }
   }
-  ${AuthorFragment}
-  ${BookFragment}
   ${EPubFragment}
+  ${MetadataFragment}
 `;
 
-export const IMPORT_EPUB_MUTATION = gql`
-  mutation IMPORT_EPUB($upload: Upload!) {
-    epub: uploadEPub(data: { upload: $upload }) {
+export const CREATE_EPUB_MUTATION = gql`
+  mutation CREATE_EPUB($data: CreateEPubInput!) {
+    epub: createEPub(data: $data) {
       ...EPubFragment
-      book {
-        ...BookFragment
-        authors {
-          edges {
-            node {
-              ...AuthorFragment
-            }
-            cursor
-          }
-          totalCount
-        }
+      metadata {
+        ...MetadataFragment
       }
     }
   }
-  ${AuthorFragment}
-  ${BookFragment}
   ${EPubFragment}
+  ${MetadataFragment}
 `;
 
 export const UPDATE_EPUB_MUTATION = gql`

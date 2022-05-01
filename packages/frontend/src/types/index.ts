@@ -11,6 +11,9 @@ export { BookFragment } from "Types/Book";
 export { EPub } from "Types/EPub";
 export { EPubFragment } from "Types/EPub";
 
+export { Metadata } from "Types/Metadata";
+export { MetadataFragment } from "Types/Metadata";
+
 export { Highlight } from "Types/Highlight";
 export { HighlightFragment } from "Types/Highlight";
 
