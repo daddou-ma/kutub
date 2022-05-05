@@ -15,7 +15,7 @@ import { SnackbarProvider } from "Hooks/useSnackbar";
 import { Routes } from "Components/Routes";
 import { LoadingPage } from "Pages/Loading";
 
-const GRAPH_URL = process.env.GRAPHQL_URL;
+const GRAPH_PATH = process.env.GRAPHQL_URL;
 
 const parseHeaders = (rawHeaders: any) => {
   const headers = new Headers();
@@ -81,7 +81,7 @@ const customFetch = (uri: any, options: any) => {
 };
 
 const httpLink = createUploadLink({
-  uri: GRAPH_URL,
+  uri: GRAPH_PATH,
   fetch: customFetch as any,
 });
 

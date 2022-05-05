@@ -91,41 +91,12 @@ export default class EPubResolver {
     } }: CreateEPubInput,
     @Ctx() { user }: Context
   ): Promise<EPub> {
-    // const { filename, createReadStream } = await upload;
-    // const coverPath = `content/uploads/covers/${uuid}.thumb.webp`;
-
-    // await saveFile(createReadStream(), path.resolve(filePath));
-
-    // const { base, coverImage } = await getEPubMetadata(path.resolve(filePath));
-
-    // const cover = sharp(await coverImage);
-    // cover.resize({ width: 128 }).webp().toFile(path.resolve(coverPath));
-
-    // const authors = await Promise.all(
-    //   base.creators.map(async ({ name }) => {
-    //     return await Author.findOrCreate({ name });
-    //   })
-    // );
-
-    // let publisher = null;
-    // if (base.publisher) {
-    //   publisher = await Publisher.findOrCreate({ name: base.publisher });
-    // }
-
-    // const book = await Book.findOrCreate({
-    //   isbn: base.identifiers[0].value as string,
-    //   title: base.titles[0],
-    //   description: (base?.description || '').replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g, ''),
-    //   publisher,
-    //   coverPath,
-    //   authors,
-    // });
     const uuid = uuidv4();
     const filename = `${uuid}.epub`;
     const filePath = `/cached-epubs/${uuid}.epub`;
     const coverPath = `/cached-covers/${uuid}.png`;
 
-    const metadata = await Metadata.findOrCreate({
+    const metadata = await Metadata.create({
       title,
       author,
       description: (description || '').replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g, ''),

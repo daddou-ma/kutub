@@ -19,7 +19,7 @@ export default class Metadata extends Node {
   @PrimaryGeneratedColumn()
   public id: number;
 
-  @Field()
+  @Field({ nullable: true })
   @Column("varchar", { length: 512 })
   public title: string;
 
@@ -44,7 +44,7 @@ export default class Metadata extends Node {
   public publisher: string;
 
   @Field(() => Date, { nullable: true })
-  @Column("datetime")
+  @Column("datetime", { nullable: true })
   public publishedAt: Date;
 
   @OneToOne(() => EPub, (epub) => epub.metadata)
@@ -61,6 +61,12 @@ export default class Metadata extends Node {
   @Field(() => Date, { nullable: true })
   @DeleteDateColumn()
   public deletedAt: Date;
+
+  public static async create(metadata: Partial<Metadata>): Promise<Metadata> {
+    const repository = getConnection("prod").getRepository(Metadata);
+    const instance = repository.create(metadata);
+    return repository.save(instance);
+  }
 
   public static async findOrCreate(metadata: Partial<Metadata>): Promise<Metadata> {
     const repository = getConnection("prod").getRepository(Metadata);

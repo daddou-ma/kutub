@@ -1,0 +1,24 @@
+server {
+  server_name ${NGINX_DEFAULT_HOST};
+  listen 80;
+
+  # config to enable HSTS(HTTP Strict Transport Security)
+  # add_header Strict-Transport-Security "max-age=63072000; includeSubdomains;";
+
+  # Client Timeouts
+  client_header_timeout 300;
+  client_body_timeout   300;
+
+  client_max_body_size 10M;
+  
+  location /graphql {
+    proxy_pass http://backend:${BE_INTERNAL_PORT};
+  }
+
+  location / {
+    proxy_pass http://frontend:${FE_INTERNAL_PORT};
+  }
+
+  access_log ${NGINX_LOG_DIR}/nginx.localhost.access.log;
+  error_log ${NGINX_LOG_DIR}/nginx.localhost.error.log crit;
+}

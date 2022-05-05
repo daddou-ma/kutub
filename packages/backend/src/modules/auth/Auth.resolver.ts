@@ -17,8 +17,8 @@ export default class AuthResolver {
   private readonly repository!: Repository<User>;
 
   private googleOauth = new GoogleAuth(
-    "510638141141-obpsl73plm75hjvfqnaaaegg3o4bqfc5.apps.googleusercontent.com",
-    "O3PjAWdPkK6d-K9HEmEATfeu",
+    process.env.GAPI_CLIENT_ID,
+    process.env.GAPI_CLIENT_SECRET,
     "postmessage"
   );
 

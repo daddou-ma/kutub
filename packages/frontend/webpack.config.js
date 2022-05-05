@@ -16,8 +16,9 @@ module.exports = {
   target: "web",
   mode: "production",
   output: {
-    path: path.resolve(__dirname, "../backend/build"),
-    filename: "[name].[hash].js",
+    // path: path.resolve(__dirname, "../backend/build"),
+    path: path.resolve(__dirname, "build"),
+    filename: "[name].js",
     publicPath: "/",
   },
   resolve: {
@@ -98,15 +99,15 @@ module.exports = {
       patterns: [
         {
           from: "public/manifest.json",
-          to: path.resolve(__dirname, "../backend/build/manifest.json"),
+          to: path.resolve(__dirname, "build/manifest.json"),
         },
         {
           from: "public/favicon.ico",
-          to: path.resolve(__dirname, "../backend/build/favicon.ico"),
+          to: path.resolve(__dirname, "build/favicon.ico"),
         },
         {
           from: "public/img",
-          to: path.resolve(__dirname, "../backend/build/img"),
+          to: path.resolve(__dirname, "build/img"),
         },
       ],
     }),

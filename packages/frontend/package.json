@@ -21,7 +21,8 @@
 		"url": "git+https://github.com/daddou-ma/inspire-creations.git"
 	},
 	"scripts": {
-		"start": "npx webpack serve --config webpack.config.js --open",
+		"start": "yarn build && npx serve -s build -l $PORT",
+		"dev": "npx webpack serve --config webpack.config.js --open",
 		"build": "npx webpack",
 		"i18next-ext": "npx i18next 'src/**/*.tsx'",
 		"test": "echo \"Error: run tests from root\" && exit 1"

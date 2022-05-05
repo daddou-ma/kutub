@@ -3,24 +3,24 @@ import Metadata from "Modules/metadatas/Metadata.entity";
 
 @InputType({ description: "Create Metadata data" })
 export class CreateMetadataInput implements Partial<Metadata> {
-  @Field()
-  title: string;
+  @Field({ nullable: true })
+  title?: string;
 
-  @Field()
-  author: string;
+  @Field({ nullable: true })
+  author?: string;
 
-  @Field()
-  description: string;
+  @Field({ nullable: true })
+  description?: string;
 
-  @Field()
-  isbn: string;
+  @Field({ nullable: true })
+  isbn?: string;
 
-  @Field()
-  language: string;
+  @Field({ nullable: true })
+  language?: string;
 
-  @Field()
-  publisher: string;
+  @Field({ nullable: true })
+  publisher?: string;
 
-  @Field(() => Date)
-  publishedAt: Date;
+  @Field(() => Date, { nullable: true })
+  publishedAt?: Date;
 }
