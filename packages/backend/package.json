@@ -1,9 +1,9 @@
 {
-  "name": "@inspire/backend",
+  "name": "@kutub/backend",
   "version": "1.0.0",
   "description": "Inpire by Creations du Bonheur",
   "main": "index.js",
-  "repository": "git@github.com:daddou-ma/inspire-creations.git",
+  "repository": "git@github.com:daddou-ma/kutub.git",
   "author": "Mohamed El Amine DADDOU <mea.daddou@gmail.com>",
   "license": "UNLICENSED",
   "private": true,

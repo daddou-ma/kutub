@@ -8,7 +8,7 @@ export function Copyright(): React.ReactElement {
     <Typography variant="body2" color="textSecondary" align="center">
       {t("Copyright © ")}
       <Link color="inherit" href="https://material-ui.com/">
-        Inspire.io
+        kutub.app
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
