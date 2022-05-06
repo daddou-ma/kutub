@@ -15,4 +15,4 @@ EXPOSE 4000
 
 USER node
 
-CMD yarn schema:sync; yarn server:dev
+CMD yarn all:start

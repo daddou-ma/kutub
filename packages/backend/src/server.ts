@@ -1,10 +1,10 @@
 import "reflect-metadata";
-// import fs from "fs";
-// import path from "path";
+import fs from "fs";
+import path from "path";
 import Koa from "koa";
-// import Router from "@koa/router";
+import Router from "@koa/router";
 import cors from "@koa/cors";
-// import serve from "koa-static";
+import serve from "koa-static";
 import compress from "koa-compress";
 import { ApolloServer } from "apollo-server-koa";
 import { buildSchema, AuthChecker } from "type-graphql";
@@ -84,50 +84,49 @@ async function main() {
 
   app.use(cors());
 
-  // No need for it now, Commented for later use maybe
-  // const router = new Router();
-  // app.use(serve(__dirname + "/../build"));
+  const router = new Router();
+  app.use(serve(__dirname + "/../build"));
 
-  // router.get("/content/uploads/:folder/:file", async function (ctx) {
-  //   const fileName = path.resolve(
-  //     `content/uploads/${ctx.params.folder}/${ctx.params.file}`
-  //   );
+  router.get("/content/uploads/:folder/:file", async function (ctx) {
+    const fileName = path.resolve(
+      `content/uploads/${ctx.params.folder}/${ctx.params.file}`
+    );
 
-  //   try {
-  //     if (fs.existsSync(fileName)) {
-  //       ctx.body = fs.createReadStream(fileName);
-  //       ctx.attachment(fileName);
-  //     } else {
-  //       ctx.throw(400, "Requested file not found on server");
-  //     }
-  //   } catch (error) {
-  //     ctx.throw(500, error);
-  //   }
-  // });
+    try {
+      if (fs.existsSync(fileName)) {
+        ctx.body = fs.createReadStream(fileName);
+        ctx.attachment(fileName);
+      } else {
+        ctx.throw(400, "Requested file not found on server");
+      }
+    } catch (error) {
+      ctx.throw(500, error);
+    }
+  });
 
-  // router.get("(.*).json", async function (ctx) {
-  //   const fileName = path.resolve("build/index.html");
+  router.get("(.*).json", async function (ctx) {
+    const fileName = path.resolve("build/index.html");
 
-  //   try {
-  //     ctx.type = "html";
-  //     ctx.body = fs.createReadStream(fileName);
-  //   } catch (error) {
-  //     ctx.throw(500, error);
-  //   }
-  // });
+    try {
+      ctx.type = "html";
+      ctx.body = fs.createReadStream(fileName);
+    } catch (error) {
+      ctx.throw(500, error);
+    }
+  });
 
-  // router.get("(.*)", async function (ctx) {
-  //   const fileName = path.resolve("build/index.html");
+  router.get("(.*)", async function (ctx) {
+    const fileName = path.resolve("build/index.html");
 
-  //   try {
-  //     ctx.type = "html";
-  //     ctx.body = fs.createReadStream(fileName);
-  //   } catch (error) {
-  //     ctx.throw(500, error);
-  //   }
-  // });
+    try {
+      ctx.type = "html";
+      ctx.body = fs.createReadStream(fileName);
+    } catch (error) {
+      ctx.throw(500, error);
+    }
+  });
 
-  // app.use(router.routes());
+  app.use(router.routes());
 
   app.use(graphqlUploadKoa({ maxFileSize: 10000000, maxFiles: 1 }));
 

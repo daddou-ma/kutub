@@ -1,23 +1,5 @@
 version: '3'
 services:
-    nginx:
-        container_name: "nginx-proxy"
-        build: ./nginx
-        restart: always
-        ports:
-            - 80:80
-        volumes:
-            - ./ssl:/usr/share/nginx/ssl
-            - ./nginx/templates:/etc/nginx/templates
-            - ./logs:${NGINX_LOG_DIR}
-        environment:
-            - NGINX_DEFAULT_HOST=${DOMAIN}
-            - NGINX_LOG_DIR=${NGINX_LOG_DIR}
-            - FE_INTERNAL_PORT=${FE_INTERNAL_PORT}
-            - BE_INTERNAL_PORT=${BE_INTERNAL_PORT}
-        depends_on:
-            - frontend
-            - backend
     db:
       image: mysql:5.7
       restart: always
@@ -32,34 +14,27 @@ services:
         - 3306:3306
       volumes:
         - database:/var/lib/mysql
-    backend:
-        container_name: "kutub-backend"
+    server:
+        container_name: "kutub-server"
         build: ./packages/backend
         restart: always
         user: "node"
         working_dir: /home/node/app
         environment:
             - NODE_ENV=${NODE_ENV}
-            - PORT=${BE_INTERNAL_PORT}
+            - PORT=${PORT}
+            - DB_HOST=${DB_HOST}
+            - DB_NAME=${DB_NAME}
+            - DB_USER=${DB_USER}
+            - DB_PASS=${DB_PASS}
+        ports:
+            - ${PORT}:${PORT}
         volumes:
             - ./packages/backend:/home/node/app
-            - backend_node_modules:/home/node/app/node_modules
+            - ./packages/frontend:/home/node/app/.frontend
+            - node_modules:/home/node/app/node_modules
             - .env:/home/node/app/.env:ro
-    frontend:
-        container_name: "kutub-frontend"
-        build: ./packages/frontend
-        restart: always
-        user: "node"
-        working_dir: /home/node/app
-        environment:
-            - NODE_ENV=${NODE_ENV}
-            - PORT=${FE_INTERNAL_PORT}
-        volumes:
-            - ./packages/frontend:/home/node/app
-            - frontend_node_modules:/home/node/app/node_modules
-            - .env:/home/node/app/.env:ro
-
+            - .env:/home/node/app/.frontend/.env:ro
 volumes:
   database:
-  frontend_node_modules:
-  backend_node_modules:
+  node_modules:
