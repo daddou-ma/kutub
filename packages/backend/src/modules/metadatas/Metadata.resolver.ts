@@ -19,7 +19,7 @@ import Metadata from "Modules/metadatas/Metadata.entity";
 import User from "Modules/users/User.entity";
 import { MetadataConnection } from "Modules/metadatas/Metadata.connection";
 import Context from "Interfaces/Context";
-import EPub from "Modules/epubs/EPub.entity";
+import Lecture from "Modules/lectures/Lecture.entity";
 
 @Resolver(() => Metadata)
 export default class MetadataResolver {
@@ -37,11 +37,11 @@ export default class MetadataResolver {
   }
 
   @Authorized(["ADMIN", "USER"])
-  @FieldResolver(() => EPub)
-  async epub(@Root() metadata: Metadata): Promise<EPub> {
+  @FieldResolver(() => Lecture)
+  async lecture(@Root() metadata: Metadata): Promise<Lecture> {
     return await this.repository
       .createQueryBuilder()
-      .relation(Metadata, "epub")
+      .relation(Metadata, "lecture")
       .of(metadata)
       .loadOne();
   }

@@ -13,6 +13,10 @@ import {
 import Author from "Modules/authors/Author.entity";
 import { Node } from "Relay/interfaces/Node";
 import Publisher from "Modules/publishers/Publisher.entity";
+import Category from "Modules/categories/Category.entity";
+import Tag from "Modules/tags/Tag.entity";
+import Lecture from "Modules/lectures/Lecture.entity";
+
 @Entity()
 @ObjectType({ implements: Node })
 export default class Book extends Node {
@@ -43,6 +47,13 @@ export default class Book extends Node {
   @Field(() => Publisher, { nullable: true })
   @ManyToOne(() => Publisher, (publisher) => publisher.books)
   public publisher: Publisher;
+
+  @Field(() => Category, { nullable: true })
+  @ManyToOne(() => Category, (category) => category.books)
+  public category: Category;
+
+  @ManyToMany(() => Tag, (tag) => tag.books)
+  public tags: Tag[];
 
   @ManyToMany(() => Author, (author) => author.books)
   public authors: Author[];

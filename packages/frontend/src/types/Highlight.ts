@@ -1,12 +1,12 @@
 import { gql } from "@apollo/client";
-import { EPub } from "Types/EPub";
+import { Lecture } from "Types/Lecture";
 import { User } from "Types/User";
 
 export interface Highlight {
   id: string;
   content: string;
   cfiRange: string;
-  epub: EPub;
+  lecture: Lecture;
   createdBy: User;
   createdAt: Date;
   updatedAt: Date;

@@ -1,7 +1,7 @@
 import { ObjectType } from "type-graphql";
 
 import { ConnectionType } from "Relay/generics/Connection";
-import { EPubEdge } from "Modules/epubs/EPub.edge";
+import { TagEdge } from "Modules/tags/Tag.edge";
 
 @ObjectType()
-export class EPubConnection extends ConnectionType(EPubEdge) {}
+export class TagConnection extends ConnectionType(TagEdge) {}

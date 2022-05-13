@@ -4,7 +4,7 @@ import { useQuery, useMutation } from "@apollo/client";
 import { useTheme } from "@material-ui/core";
 
 import { ReaderLayout } from "Layouts/ReaderLayout";
-import { EPUB_BYID_QUERY, UPDATE_EPUB_MUTATION } from "Graph/queries/epubs";
+import { LECTURE_BYID_QUERY, UPDATE_LECTURE_MUTATION } from "Graph/queries/lectures";
 import { loadFileFromCache } from "Utils/File";
 
 const EPubReader = React.lazy(() => import("Components/EPubReader"));
@@ -17,29 +17,29 @@ export default function ReaderPage(): React.ReactElement {
   const [location, setLocation] = useState(null);
   const [progress, setProgress] = useState(0);
   const [file, setFile] = useState(null)
-  const { epubId } = useParams();
+  const { lectureId } = useParams();
   const theme = useTheme();
-  const { loading, error, data } = useQuery(EPUB_BYID_QUERY, {
+  const { loading, error, data } = useQuery(LECTURE_BYID_QUERY, {
     nextFetchPolicy: "cache-first",
-    variables: { epubId },
-    onCompleted({ epub }) {
-      setLocation(epub.location);
-      setProgress(epub.progress);
+    variables: { lectureId },
+    onCompleted({ lecture }) {
+      setLocation(lecture.location);
+      setProgress(lecture.progress);
     },
   });
 
-  const [updateEPub] = useMutation(UPDATE_EPUB_MUTATION);
+  const [updateEPub] = useMutation(UPDATE_LECTURE_MUTATION);
 
   useEffect(() => {
     async function loadFunction() {
-      setFile(await loadFileFromCache('cached-epubs', data?.epub?.filePath))
+      setFile(await loadFileFromCache('cached-epubs', data?.lecture?.filePath))
     }
     loadFunction()
-  }, [data?.epub?.filePath])
+  }, [data?.lecture?.filePath])
 
   return (
     <ReaderLayout
-      title={data?.epub?.book?.title}
+      title={data?.lecture?.book?.title}
       loading={loading}
       error={!data && error}
       progress={progress}
@@ -65,7 +65,7 @@ export default function ReaderPage(): React.ReactElement {
 
             updateEPub({
               variables: {
-                epubId,
+                lectureId,
                 data: {
                   location,
                   progress,

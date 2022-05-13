@@ -22,8 +22,10 @@ import { UserInputError } from "apollo-server";
 import Context from "Interfaces/Context";
 import Book from "Modules/books/Book.entity";
 import Publisher from "Modules/publishers/Publisher.entity";
+import Category from "Modules/categories/Category.entity";
 import { BookConnection } from "Modules/books/Book.connection";
 import { AuthorConnection } from "Modules/authors/Author.connection";
+import { TagConnection } from "Modules/tags/Tag.connection";
 
 @Resolver(() => Book)
 export default class BookResolver {
@@ -41,6 +43,29 @@ export default class BookResolver {
       .relation(Book, "publisher")
       .of(book)
       .loadOne();
+  }
+
+  @Authorized(["ADMIN", "USER"])
+  @FieldResolver(() => Category)
+  async category(
+    @Root() book: Book,
+    @Ctx() { db }: Context
+  ): Promise<Category> {
+    return await db.manager
+      .createQueryBuilder()
+      .relation(Book, "category")
+      .of(book)
+      .loadOne();
+  }
+
+  @Authorized(["ADMIN", "USER"])
+  @FieldResolver(() => TagConnection)
+  async tags(
+    @Root() book: Book,
+    @Args() args: ConnectionArguments,
+    @Ctx() { db }: Context
+  ): Promise<TagConnection> {
+    return connectionFromRelation(args, db, Book, "tags", book);
   }
 
   @Authorized(["ADMIN", "USER"])

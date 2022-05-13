@@ -10,7 +10,7 @@ import {
   getConnection,
 } from "typeorm";
 import { Node } from "Relay/interfaces/Node";
-import EPub from "Modules/epubs/EPub.entity";
+import Lecture from "Modules/lectures/Lecture.entity";
 
 @Entity()
 @ObjectType({ implements: Node })
@@ -47,8 +47,8 @@ export default class Metadata extends Node {
   @Column("datetime", { nullable: true })
   public publishedAt: Date;
 
-  @OneToOne(() => EPub, (epub) => epub.metadata)
-  public epub: EPub;
+  @OneToOne(() => Lecture, (lecture) => lecture.metadata)
+  public lecture: Lecture;
 
   @Field(() => Date)
   @CreateDateColumn()

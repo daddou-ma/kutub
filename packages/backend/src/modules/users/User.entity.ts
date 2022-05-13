@@ -15,7 +15,7 @@ import jwt from "jsonwebtoken";
 import { Node } from "Relay/interfaces/Node";
 import Quote from "Modules/quotes/Quote.entity";
 import UserRole from "Enums/UserRole";
-import EPub from "Modules/epubs/EPub.entity";
+import Lecture from "Modules/lectures/Lecture.entity";
 
 @Entity()
 @ObjectType({ implements: Node })
@@ -62,8 +62,8 @@ export default class User extends Node {
   public deletedAt: Date;
 
   @Field(() => Date)
-  @OneToMany(() => EPub, (epub) => epub.createdBy)
-  public epubs: EPub[];
+  @OneToMany(() => Lecture, (lecture) => lecture.createdBy)
+  public lectures: Lecture[];
 
   @ManyToMany(() => Quote, (quote) => quote.favoredBy)
   @JoinTable()

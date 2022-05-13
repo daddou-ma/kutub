@@ -1,16 +1,16 @@
 import { Field, InputType } from "type-graphql";
 import { MaxLength } from "class-validator";
-import EPub from "Modules/epubs/EPub.entity";
+import Lecture from "Modules/lectures/Lecture.entity";
 import { CreateMetadataInput } from "Modules/metadatas/Metadata.inputs";
 
-@InputType({ description: "Create EPub data" })
-export class CreateEPubInput {
+@InputType({ description: "Create Lecture data" })
+export class CreateLectureInput {
   @Field((type) => CreateMetadataInput)
   metadata: CreateMetadataInput;
 }
 
-@InputType({ description: "Update EPub data" })
-export class UpdateEPubInput implements Partial<EPub> {
+@InputType({ description: "Update Lecture data" })
+export class UpdateLectureInput implements Partial<Lecture> {
   @Field()
   @MaxLength(256)
   location?: string;
