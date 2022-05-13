@@ -1,5 +1,21 @@
 version: '3'
 services:
+    nginx:
+        container_name: "nginx-proxy"
+        build: ./nginx
+        restart: always
+        ports:
+            - ${PORT}:${PORT}
+        volumes:
+            - ./nginx/templates:/etc/nginx/templates
+            - ./logs:${NGINX_LOG_DIR}
+        environment:
+            - NGINX_DEFAULT_HOST=${DOMAIN}
+            - NGINX_LOG_DIR=${NGINX_LOG_DIR}
+            - PORT=${PORT}
+        depends_on:
+            - frontend
+            - backend
     db:
       image: mysql:5.7
       restart: always
@@ -14,8 +30,8 @@ services:
         - 3306:3306
       volumes:
         - database:/var/lib/mysql
-    server:
-        container_name: "kutub-server"
+    backend:
+        container_name: "kutub-backend"
         build: ./packages/backend
         restart: always
         user: "node"
@@ -23,18 +39,26 @@ services:
         environment:
             - NODE_ENV=${NODE_ENV}
             - PORT=${PORT}
-            - DB_HOST=${DB_HOST}
-            - DB_NAME=${DB_NAME}
-            - DB_USER=${DB_USER}
-            - DB_PASS=${DB_PASS}
-        ports:
-            - ${PORT}:${PORT}
         volumes:
             - ./packages/backend:/home/node/app
-            - ./packages/frontend:/home/node/app/.frontend
-            - node_modules:/home/node/app/node_modules
+            - backend_node_modules:/home/node/app/node_modules
             - .env:/home/node/app/.env:ro
-            - .env:/home/node/app/.frontend/.env:ro
+        command: yarn start:dev
+    frontend:
+        container_name: "kutub-frontend"
+        build: ./packages/frontend
+        restart: always
+        user: "node"
+        working_dir: /home/node/app
+        environment:
+            - NODE_ENV=${NODE_ENV}
+            - PORT=${PORT}
+        volumes:
+            - ./packages/frontend:/home/node/app
+            - frontend_node_modules:/home/node/app/node_modules
+            - .env:/home/node/app/.env:ro
+
 volumes:
   database:
-  node_modules:
+  frontend_node_modules:
+  backend_node_modules:

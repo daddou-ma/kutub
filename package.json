@@ -8,17 +8,11 @@
   "license": "UNLICENSED",
   "private": true,
   "scripts": {
-    "seed:config": "npx lerna run --scope @kutub/backend seed:config --stream",
-    "seed:run": "npx lerna run --scope @kutub/backend seed:run --stream",
-    "schema:drop": "npx lerna run --scope @kutub/backend schema:drop --stream",
-    "schema:sync": "npx lerna run --scope @kutub/backend schema:sync --stream",
-    "ui:dev": "npx lerna run --scope @kutub/frontend start --stream",
-    "ui:build": "npx lerna run --scope @kutub/frontend build --stream",
-    "ui:i18n": "npx lerna run --scope @kutub/frontend i18next-ext --stream",
-    "server:dev": "npx lerna run --scope @kutub/backend server:dev --stream",
-    "server:start": "npx lerna run --scope @kutub/backend server:start --stream",
-    "server:stop": "npx lerna run --scope @kutub/backend server:stop --stream",
-    "lint": "npx eslint '*/**/*.{js,ts,tsx}' --quiet --fix"
+    "lint": "npx eslint '*/**/*.{js,ts,tsx}' --quiet --fix",
+    "start:dev": "docker-compose up",
+    "start:prod": "docker-compose -f docker-compose.prod.yml up",
+    "stop:dev": "docker-compose down",
+    "stop:prod": "docker-compose -f docker-compose.prod.yml down"
   },
   "dependencies": {},
   "devDependencies": {

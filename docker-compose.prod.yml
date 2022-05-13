@@ -1,0 +1,41 @@
+version: '3'
+services:
+    db:
+      image: mysql:5.7
+      restart: always
+      environment:
+        MYSQL_DATABASE: ${DB_NAME}
+        MYSQL_USER: ${DB_USER}
+        MYSQL_PASSWORD: ${DB_PASS}
+        MYSQL_ROOT_PASSWORD: ${DB_PASS}
+      expose:
+        - '3306'
+      ports:
+        - 3306:3306
+      volumes:
+        - database:/var/lib/mysql
+    server:
+        container_name: "kutub-server"
+        build: ./packages/backend
+        restart: always
+        user: "node"
+        working_dir: /home/node/app
+        environment:
+            - NODE_ENV=${NODE_ENV}
+            - PORT=${PORT}
+            - DB_HOST=${DB_HOST}
+            - DB_NAME=${DB_NAME}
+            - DB_USER=${DB_USER}
+            - DB_PASS=${DB_PASS}
+        ports:
+            - ${PORT}:${PORT}
+        volumes:
+            - ./packages/backend:/home/node/app
+            - ./packages/frontend:/home/node/app/.frontend
+            - node_modules:/home/node/app/node_modules
+            - .env:/home/node/app/.env:ro
+            - .env:/home/node/app/.frontend/.env:ro
+        command: yarn start:all
+volumes:
+  database:
+  node_modules:
