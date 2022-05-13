@@ -1,7 +1,7 @@
 import ePub from 'epubjs';
 
 export function getEPubFileCover(file) {
-  const book = ePub(file);
+  const book = ePub(file) as any;
 
   return book.loaded.cover.then(() => {
    if (!book.cover) {

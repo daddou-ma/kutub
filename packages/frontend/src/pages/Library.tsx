@@ -2,11 +2,11 @@ import React, { useState, useRef } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { useTranslation } from "react-i18next";
 import { List, IconButton } from "@material-ui/core";
-import { EPubFragment } from "Types/index";
+import { LectureFragment } from "Types/index";
 
 import { LibraryItem } from "Components/LibraryItem";
 import { BasicLayout } from "Layouts/BasicLayout";
-import { EPUB_QUERY, CREATE_EPUB_MUTATION } from "Graph/queries/epubs";
+import { LECTURE_QUERY, CREATE_LECTURE_MUTATION } from "Graph/queries/lectures";
 import { useSnackbar } from "Hooks/useSnackbar";
 import { Add as AddIcon } from "@material-ui/icons";
 import { UploadProgress } from "Components/UploadProgress";
@@ -19,9 +19,9 @@ export default function LibraryPage(): React.ReactElement {
   const { showSnackbar } = useSnackbar();
   const { t } = useTranslation();
   const fileRef = useRef(null);
-  const { loading, error, data } = useQuery(EPUB_QUERY);
-  const [createEPub] = useMutation(CREATE_EPUB_MUTATION, {
-    onCompleted: async ({ epub: { filePath, coverPath }}) => {
+  const { loading, error, data } = useQuery(LECTURE_QUERY);
+  const [createEPub] = useMutation(CREATE_LECTURE_MUTATION, {
+    onCompleted: async ({ lecture: { filePath, coverPath }}) => {
 
       saveFileToCache(file, 'cached-epubs', filePath)
       saveFileToCache(await getEPubFileCover(file), 'cached-covers', coverPath)
@@ -40,14 +40,14 @@ export default function LibraryPage(): React.ReactElement {
     },
   });
 
-  function handleCacheUpdate(cache, { data: { epub } }) {
+  function handleCacheUpdate(cache, { data: { lecture } }) {
     cache.modify({
       fields: {
         library({ existingLibrary }) {
           cache.writeFragment({
-            id: `EPub:${epub?.id}`,
-            fragment: EPubFragment,
-            data: epub,
+            id: `Lecture:${lecture?.id}`,
+            fragment: LectureFragment,
+            data: lecture,
           });
           return existingLibrary;
         },
@@ -92,7 +92,7 @@ export default function LibraryPage(): React.ReactElement {
       <List>
         {data &&
           data.library.edges.map(({ node }) => (
-            <LibraryItem epub={node} key={node.id} />
+            <LibraryItem lecture={node} key={node.id} />
           ))}
       </List>
     </BasicLayout>

@@ -63,7 +63,7 @@ export function Routes(): React.ReactElement {
       <CustomRoute path="/favorites" role={Role.USER} redirect="/login">
         <FavoriteQuotesPage />
       </CustomRoute>
-      <CustomRoute path="/reader/:epubId" role={Role.USER} redirect="/login">
+      <CustomRoute path="/reader/:lectureId" role={Role.USER} redirect="/login">
         <ReaderPage />
       </CustomRoute>
       <CustomRoute path="/settings/language" role={Role.USER} redirect="/login">

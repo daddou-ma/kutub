@@ -8,8 +8,8 @@ export { AuthorFragment } from "Types/Author";
 export { Book } from "Types/Book";
 export { BookFragment } from "Types/Book";
 
-export { EPub } from "Types/EPub";
-export { EPubFragment } from "Types/EPub";
+export { Lecture } from "Types/Lecture";
+export { LectureFragment } from "Types/Lecture";
 
 export { Metadata } from "Types/Metadata";
 export { MetadataFragment } from "Types/Metadata";

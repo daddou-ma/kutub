@@ -4,7 +4,7 @@ import { Highlight } from "Types/Highlight";
 import { User } from "Types/User";
 import { Metadata } from "Types/Metadata";
 
-export abstract class EPub {
+export abstract class Lecture {
   id: string;
   filename: string;
   filePath: string;
@@ -19,8 +19,8 @@ export abstract class EPub {
   deletedAt: Date;
 }
 
-export const EPubFragment = gql`
-  fragment EPubFragment on EPub {
+export const LectureFragment = gql`
+  fragment LectureFragment on Lecture {
     id
     filename
     filePath

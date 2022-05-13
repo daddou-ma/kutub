@@ -107,7 +107,7 @@ export function App(): React.ReactElement {
           Query: {
             fields: {
               quotes: relayStylePagination(),
-              epubs: relayStylePagination(),
+              lectures: relayStylePagination(),
               books: relayStylePagination(),
             },
           },
