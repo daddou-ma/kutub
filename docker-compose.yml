@@ -3,7 +3,6 @@ services:
     nginx:
         container_name: "nginx-proxy"
         build: ./nginx
-        restart: always
         ports:
             - ${PORT}:${PORT}
         volumes:
@@ -18,7 +17,6 @@ services:
             - backend
     db:
       image: mysql:5.7
-      restart: always
       environment:
         MYSQL_DATABASE: ${DB_NAME}
         MYSQL_USER: ${DB_USER}
@@ -33,7 +31,6 @@ services:
     backend:
         container_name: "kutub-backend"
         build: ./packages/backend
-        restart: always
         user: "node"
         working_dir: /home/node/app
         environment:
@@ -47,7 +44,6 @@ services:
     frontend:
         container_name: "kutub-frontend"
         build: ./packages/frontend
-        restart: always
         user: "node"
         working_dir: /home/node/app
         environment:
