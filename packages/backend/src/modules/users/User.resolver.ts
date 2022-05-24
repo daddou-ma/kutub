@@ -20,7 +20,8 @@ import {
   connectionFromRepository,
 } from "Relay/Connection.factory";
 import { QuoteConnection } from "Modules/quotes/Quote.connection";
-import { UserConnection } from "./User.connection";
+import { UserConnection } from "Modules/users/User.connection";
+import Device from "Modules/devices/Device.entity";
 import { InjectRepository } from "typeorm-typedi-extensions";
 import { Repository } from "typeorm";
 
@@ -28,6 +29,12 @@ import { Repository } from "typeorm";
 export default class UserResolver {
   @InjectRepository(User, "prod")
   private readonly repository!: Repository<User>;
+
+  @Authorized(["USER"])
+  @FieldResolver(() => Device, { nullable: true })
+  async currentDevice(@Ctx() { device }: Context): Promise<Device> {
+    return device
+  }
 
   @Authorized(["USER"])
   @FieldResolver(() => LectureConnection)

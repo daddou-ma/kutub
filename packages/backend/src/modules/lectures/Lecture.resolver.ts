@@ -14,7 +14,7 @@ import { Repository } from "typeorm";
 import { InjectRepository } from "typeorm-typedi-extensions";
 
 import { ConnectionArguments } from "Relay/generics/ConnectionsArguments";
-import { connectionFromRelation, connectionFromRepository } from "Relay/Connection.factory";
+import { connectionFromEntities, connectionFromRepository } from "Relay/Connection.factory";
 import { CreateLectureInput, UpdateLectureInput } from "Modules/lectures/Lecture.inputs";
 import { UserInputError } from "apollo-server";
 
@@ -23,6 +23,7 @@ import User from "Modules/users/User.entity";
 import Metadata from "Modules/metadatas/Metadata.entity";
 import { LectureConnection } from "Modules/lectures/Lecture.connection";
 import Context from "Interfaces/Context";
+import { LectureRepository } from './Lecture.repository';
 
 @Resolver(() => Lecture)
 export default class LectureResolver {
@@ -52,13 +53,16 @@ export default class LectureResolver {
   @Authorized("ADMIN")
   @Query(() => LectureConnection)
   async lectures(@Args() args: ConnectionArguments): Promise<LectureConnection> {
+
     return connectionFromRepository(args, this.repository);
   }
 
   @Authorized(["ADMIN", "USER"])
   @Query(() => LectureConnection)
-  async library(@Args() args: ConnectionArguments, @Ctx() { db, user }: Context): Promise<LectureConnection> {
-    return connectionFromRelation(args, db, User, "lectures", user);
+  async library(@Args() args: ConnectionArguments, @Ctx() { db, user, device }: Context): Promise<LectureConnection> {
+
+    return connectionFromEntities(await LectureRepository
+      .getLecturesForUserDevice(user, device), args)
   }
 
   @Authorized(["ADMIN", "USER"])
@@ -89,7 +93,7 @@ export default class LectureResolver {
       publisher,
       publishedAt,
     } }: CreateLectureInput,
-    @Ctx() { user }: Context
+    @Ctx() { user, device }: Context
   ): Promise<Lecture> {
     const uuid = uuidv4();
     const filename = `${uuid}.epub`;
@@ -111,7 +115,8 @@ export default class LectureResolver {
       filePath,
       coverPath,
       metadata,
-      createdBy: user
+      createdBy: user,
+      device,
     });
 
     await this.repository.save(lecture);

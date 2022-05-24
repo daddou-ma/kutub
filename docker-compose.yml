@@ -40,7 +40,8 @@ services:
             - ./packages/backend:/home/node/app
             - backend_node_modules:/home/node/app/node_modules
             - .env:/home/node/app/.env:ro
-        command: yarn start:dev
+        command: yarn schema:sync
+        command: yarn start:dev 
     frontend:
         container_name: "kutub-frontend"
         build: ./packages/frontend

@@ -74,7 +74,7 @@
 		"@material-ui/icons": "^4.11.2",
 		"apollo-server-core": "^3.6.7",
 		"apollo-upload-client": "^15.0.0",
-		"apollo3-cache-persist": "^0.9.1",
+		"apollo3-cache-persist": "^0.14.0",
 		"epubjs": "^0.3.93",
 		"graphql": "^15.5.0",
 		"graphql-tag": "^2.12.4",

@@ -87,10 +87,12 @@ const httpLink = createUploadLink({
 
 const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem("token");
+  const deviceId = localStorage.getItem("device-id");
   return {
     headers: {
       ...headers,
       authorization: token ? `Bearer ${token}` : "",
+      'device-id': deviceId,
     },
   };
 });
