@@ -12,8 +12,10 @@ import { graphqlUploadKoa } from "graphql-upload";
 import { createConnection, useContainer } from "typeorm";
 import { Container } from "typeorm-typedi-extensions";
 import jwt from "jsonwebtoken";
+import platform from 'platform'
 
 import User from "Modules/users/User.entity";
+import Device from "Modules/devices/Device.entity";
 import Context from "Interfaces/Context";
 
 export const customAuthChecker: AuthChecker<Context> = (
@@ -50,6 +52,36 @@ async function main() {
     authChecker: customAuthChecker,
   });
 
+  async function getCurrentDevice({ request }, user) {
+    const deviceid = request?.headers?.['device-id'];
+    const ua = request?.headers?.['user-agent'];
+  
+    let device = await connection.getRepository(Device).findOne(deviceid);
+  
+    if (device) {
+      return device
+    }
+  
+    const {
+      name: browserName,
+      version: browserVersion,
+      os,
+      description
+    } = platform.parse(ua);
+    
+    try {
+      return await Device.findOrCreate({
+        browserName,
+        browserVersion,
+        os: os.toString(),
+        description,
+        user
+      })
+    } catch (exception) {
+      return null;
+    }
+  }
+
   const server = new ApolloServer({
     schema,
     playground: true,
@@ -60,8 +92,21 @@ async function main() {
       try {
         const { id } = jwt.verify(token.replace(/^Bearer\s/, ""), "secret");
         const user = await connection.getRepository(User).findOne(id);
-        return { db: connection, repositories: {}, user };
+
+        if (!user) {
+          return { db: connection, repositories: {} }
+        }
+
+        let device = await getCurrentDevice(ctx, user)
+        
+        return { 
+          db: connection,
+          repositories: {},
+          user,
+          device,
+        };
       } catch (exception) {
+        console.log(exception)
         return { db: connection, repositories: {} };
       }
     },

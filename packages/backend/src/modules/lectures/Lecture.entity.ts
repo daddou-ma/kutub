@@ -13,6 +13,7 @@ import {
 import User from "Modules/users/User.entity";
 import Metadata from "Modules/metadatas/Metadata.entity";
 import { Node } from "Relay/interfaces/Node";
+import Device from "Modules/devices/Device.entity";
 
 @Entity()
 @ObjectType({ implements: Node })
@@ -47,6 +48,9 @@ export default class Lecture extends Node {
   @OneToOne(() => Metadata, (metadata) => metadata.lecture)
   @JoinColumn()
   public metadata?: Metadata;
+
+  @ManyToOne(() => Device, (device) => device.lectures)
+  public device?: Device;
 
   @Field(() => Date)
   @CreateDateColumn()

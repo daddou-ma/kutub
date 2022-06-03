@@ -2,6 +2,7 @@ import { gql } from "@apollo/client";
 import { AuthorFragment } from "Types/Author";
 import { UserFragment } from "Types/User";
 import { QuoteFragment } from "Types/Quote";
+import { DeviceFragment } from "Types/Device";
 
 export const ME_QUERY = gql`
   query ME {
@@ -19,11 +20,15 @@ export const ME_QUERY = gql`
         }
         totalCount
       }
+      currentDevice {
+        ...DeviceFragment
+      }
     }
   }
   ${AuthorFragment}
   ${QuoteFragment}
   ${UserFragment}
+  ${DeviceFragment}
 `;
 
 export const REGISTER_MUTATION = gql`

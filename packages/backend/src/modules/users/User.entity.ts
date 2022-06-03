@@ -16,6 +16,7 @@ import { Node } from "Relay/interfaces/Node";
 import Quote from "Modules/quotes/Quote.entity";
 import UserRole from "Enums/UserRole";
 import Lecture from "Modules/lectures/Lecture.entity";
+import Device from "Modules/devices/Device.entity";
 
 @Entity()
 @ObjectType({ implements: Node })
@@ -61,7 +62,9 @@ export default class User extends Node {
   @DeleteDateColumn()
   public deletedAt: Date;
 
-  @Field(() => Date)
+  @OneToMany(() => Device, (device) => device.user)
+  public devices: Device[];
+
   @OneToMany(() => Lecture, (lecture) => lecture.createdBy)
   public lectures: Lecture[];
 

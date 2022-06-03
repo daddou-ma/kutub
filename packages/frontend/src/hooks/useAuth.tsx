@@ -33,9 +33,13 @@ export function useAuth(): AuthContext {
 export function useAuthProvider(): AuthContext {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem("token"));
+  const [deviceId, setDeviceId] = useState(localStorage.getItem("device-id"));
 
   useQuery(ME_QUERY, {
-    onCompleted: ({ me }) => setUser(me),
+    onCompleted: ({ me }: { me: User}) => {
+      setUser(me)
+      localStorage.setItem("device-id", me?.currentDevice?.id)
+    },
   });
 
   let isConnected = false;
