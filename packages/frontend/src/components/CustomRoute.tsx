@@ -11,8 +11,8 @@ export enum Role {
 interface CustomRouteProps {
   path: string;
   role: Role;
-  redirect: string;
-  children: React.ReactElement;
+  redirect: string | undefined;
+  children: any;
 }
 
 export function CustomRoute({
@@ -30,7 +30,7 @@ export function CustomRoute({
   return (
     <>
       {allowed ? (
-        <Route exact path={path}>
+        <Route exact path={path} key={Math.random()}>
           {children}
         </Route>
       ) : (

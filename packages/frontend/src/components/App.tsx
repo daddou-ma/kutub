@@ -12,7 +12,7 @@ import { ThemeProvider } from "Hooks/useTheme";
 
 import { AuthProvider } from "Hooks/useAuth";
 import { SnackbarProvider } from "Hooks/useSnackbar";
-import { Routes } from "Components/Routes";
+import Routes from "Components/Routes";
 import { LoadingPage } from "Pages/Loading";
 
 const GRAPH_PATH = process.env.GRAPHQL_URL;
@@ -99,7 +99,7 @@ const authLink = setContext((_, { headers }) => {
 
 const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
 
-export function App(): React.ReactElement {
+function App(): React.ReactElement {
   const [client, setClient] = useState(null);
 
   useEffect(() => {
@@ -161,3 +161,5 @@ export function App(): React.ReactElement {
     </ApolloProvider>
   );
 }
+
+export default App

@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { App } from "./components/App";
+import App from "./components/App";
 import i18n from "i18next";
 import { initReactI18next, I18nextProvider } from "react-i18next";
 import ReactGA from "react-ga";
@@ -18,7 +18,7 @@ const resources = {
 i18n.use(initReactI18next).init(
   {
     resources,
-    lng: localStorage.getItem("lang") || "ar",
+    lng: localStorage.getItem("lang") || process.env.DEFAULT_LANGUAGE,
     keySeparator: false,
     interpolation: {
       escapeValue: false,
@@ -47,7 +47,7 @@ i18n.on("languageChanged", function (language) {
 
 ReactDOM.render(
   <I18nextProvider i18n={i18n}>
-    <App />
+      <App />
   </I18nextProvider>,
   document.getElementById("output")
 );
