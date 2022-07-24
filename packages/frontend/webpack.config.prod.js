@@ -1,19 +1,21 @@
 const path = require("path");
+const CompressionPlugin = require("compression-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 const Dotenv = require("dotenv-webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+// const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
-const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
-const smp = new SpeedMeasurePlugin();
-
-module.exports = smp.wrap({
+module.exports = {
+  entry: "./src/index.tsx",
   entry: {
-    main: ['react-hot-loader/patch', "./src/index.tsx"],
+    main: "./src/index.tsx",
     sw: "./src/serviceWorker.ts",
   },
   target: "web",
-  mode: "development",
+  mode: "production",
   output: {
     // path: path.resolve(__dirname, "../backend/build"),
     path: path.resolve(__dirname, "build"),
@@ -21,9 +23,6 @@ module.exports = smp.wrap({
     publicPath: "/",
   },
   resolve: {
-    alias: {
-      'react-dom': '@hot-loader/react-dom',
-    },
     extensions: [".js", ".jsx", ".json", ".ts", ".tsx"],
     plugins: [new TsconfigPathsPlugin({ configFile: "./tsconfig.json" })],
   },
@@ -31,9 +30,7 @@ module.exports = smp.wrap({
     rules: [
       {
         test: /\.(ts|tsx)$/,
-        exclude: /node_modules/,
         use: [
-          'react-hot-loader/webpack',
           {
             loader: "ts-loader",
             options: {
@@ -69,22 +66,28 @@ module.exports = smp.wrap({
     ],
   },
   optimization: {
-    runtimeChunk: 'single'
-  },
-  devtool: "eval",
-  devServer: {
-    historyApiFallback: true,
-    disableHostCheck: true,
-    host: '0.0.0.0',
-    port: process.env.PORT,
-    hot: true,
+    minimize: true,
+    minimizer: [
+      new TerserPlugin({
+        parallel: true,
+        terserOptions: {
+          // https://github.com/webpack-contrib/terser-webpack-plugin#terseroptions
+        },
+      }),
+    ],
+    removeAvailableModules: true,
+    usedExports: true,
   },
   plugins: [
     new Dotenv(),
     new HtmlWebpackPlugin({
-      inject: true,
+      minify: false,
       template: path.resolve(__dirname, "src", "index.html"),
     }),
+    // new MiniCssExtractPlugin({
+    //   filename: "./src/css/yourfile.css",
+    // }),
+    new CompressionPlugin(),
     new CopyPlugin({
       patterns: [
         {
@@ -102,4 +105,4 @@ module.exports = smp.wrap({
       ],
     }),
   ],
-});
+};

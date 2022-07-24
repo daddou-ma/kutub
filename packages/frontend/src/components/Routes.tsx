@@ -1,3 +1,4 @@
+import { hot } from 'react-hot-loader/root';
 import React, { useEffect } from "react";
 import { Switch, useHistory } from "react-router-dom";
 import loadable from "@loadable/component";
@@ -37,13 +38,12 @@ import { CustomRoute, Role } from "Components/CustomRoute";
 
 import ReactGA from "react-ga";
 
-export function Routes(): React.ReactElement {
+function Routes(): React.ReactElement {
   const history = useHistory();
 
   useEffect(
     () =>
       history.listen((location) => {
-        console.log(location.pathname + location.search);
         ReactGA.pageview(location.pathname + location.search);
       }),
     []
@@ -81,3 +81,5 @@ export function Routes(): React.ReactElement {
     </Switch>
   );
 }
+
+export default hot(Routes)
