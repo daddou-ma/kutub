@@ -3,10 +3,10 @@ const CompressionPlugin = require("compression-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 const Dotenv = require("dotenv-webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+// const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
   entry: "./src/index.tsx",
@@ -34,7 +34,7 @@ module.exports = {
           {
             loader: "ts-loader",
             options: {
-              transpileOnly: false,
+              transpileOnly: true,
             },
           },
         ],
@@ -104,6 +104,5 @@ module.exports = {
         },
       ],
     }),
-    new BundleAnalyzerPlugin(),
   ],
 };
