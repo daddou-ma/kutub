@@ -2,9 +2,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import {
-  Typography,
   SwipeableDrawer,
-  Divider,
   List,
   ListItem,
   ListItemIcon,
@@ -51,10 +49,7 @@ export function SideMenu({
       <div style={{ width: 250 }} role="presentation">
         <Box p={2}>
           <Avatar alt={user?.name} src={user?.picture} />
-          <Typography variant="h6">{user?.name}</Typography>
-          <Typography variant="overline">{user?.email}</Typography>
         </Box>
-        <Divider />
         <List>
           <ListItem button onClick={() => handleClick("/library")}>
             <ListItemIcon>

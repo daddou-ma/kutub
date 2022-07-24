@@ -1,23 +1,29 @@
 import React from "react";
-import { Container, Box, CircularProgress } from "@material-ui/core";
+import { Container, Box, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useTranslation } from "react-i18next";
 
-import { EmptyLayout } from "Layouts/EmptyLayout";
+import { BasicLayout } from "Layouts/BasicLayout";
 import logo from "../../public/img/logo.128.png";
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    height: "100vh",
     display: "flex",
+    height: '100%',
     flexDirection: "column",
     alignItems: "center",
-    justifyContent: "center",
   },
   logo: {
     margin: theme.spacing(6, 0, 6, 0),
     textAlign: "center",
   },
+  information: {
+    marginBottom: 32,
+  },
+  designedBy: {
+    fontStyle: 'italic',
+    textAlign: 'center'
+  }
 }));
 
 export default function AboutPage(): React.ReactElement {
@@ -25,13 +31,18 @@ export default function AboutPage(): React.ReactElement {
   const { t } = useTranslation();
 
   return (
-    <EmptyLayout title={t("Login")}>
+    <BasicLayout title={t("About")}>
       <Container className={classes.container}>
         <Box className={classes.logo}>
           <img src={logo} alt="logo" />
         </Box>
-        <CircularProgress />
+        <Typography className={classes.information}>
+          Kutub is a Reading App
+        </Typography>
+        <Typography className={classes.designedBy}>
+          Developed By<br /><b>Mohamed El Amine DADDOU</b>
+        </Typography>
       </Container>
-    </EmptyLayout>
+    </BasicLayout>
   );
 }
