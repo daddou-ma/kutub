@@ -47,5 +47,21 @@
       "url": "/settings",
       "description": "Settings & Preferences"
     }
+  ],
+  "file_handlers": [
+    {
+      "action": "/open-epub",
+      "accept": {
+        "application/epub+zip": [".epub"]
+      },
+      "icons": [
+        {
+          "src": "img/logo.256.png",
+          "sizes": "256x256",
+          "type": "image/png"
+        }
+      ],
+      "launch_type": "single-client"
+    }
   ]
  }
