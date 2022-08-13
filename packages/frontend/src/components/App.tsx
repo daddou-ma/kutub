@@ -14,6 +14,7 @@ import { AuthProvider } from "Hooks/useAuth";
 import { SnackbarProvider } from "Hooks/useSnackbar";
 import Routes from "Components/Routes";
 import { LoadingPage } from "Pages/Loading";
+import { ReaderSettingsProvider } from "Hooks/useReaderSettings";
 
 const GRAPH_PATH = process.env.GRAPHQL_URL;
 
@@ -151,9 +152,11 @@ function App(): React.ReactElement {
         <StylesProvider jss={jss}>
           <ThemeProvider>
             <SnackbarProvider>
-              <Router>
-                <Routes />
-              </Router>
+              <ReaderSettingsProvider>
+                <Router>
+                  <Routes />
+                </Router>
+              </ReaderSettingsProvider>
             </SnackbarProvider>
           </ThemeProvider>
         </StylesProvider>

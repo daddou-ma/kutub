@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSwipeable } from "react-swipeable";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -35,32 +35,46 @@ export default function EPubReader({
   location,
   locationChanged,
   styles,
+  theme,
   tocChanged,
   getRendition,
+  onTap,
 }): React.ReactElement {
   const [rendition, setRendition] = useState(null);
-
   function handleGetRendition(rendition) {
     setRendition(rendition);
     getRendition(rendition);
   }
+
+  useEffect(() => {
+    if (!rendition) {
+      return;
+    }
+
+    rendition.themes.font(theme.font)
+    rendition.themes.fontSize(`${theme.fontSize}px`)
+    rendition.start()
+  }, [theme])
+
   return (
-    <Swipeable
-      onSwipedRight={() => rendition.prev()}
-      onSwipedLeft={() => rendition.next()}
-      trackMouse
-    >
-      <EpubView
-        url={url}
-        location={location}
-        locationChanged={locationChanged}
-        styles={{
-          ...EpubViewStyle,
-          ...styles,
-        }}
-        tocChanged={tocChanged}
-        getRendition={handleGetRendition}
-      />
-    </Swipeable>
+    <>
+      <Swipeable
+        onSwipedRight={() => rendition.prev()}
+        onSwipedLeft={() => rendition.next()}
+        onTap={onTap}
+      >
+        <EpubView
+          url={url}
+          location={location}
+          locationChanged={locationChanged}
+          styles={{
+            ...EpubViewStyle,
+            ...styles,
+          }}
+          tocChanged={tocChanged}
+          getRendition={handleGetRendition}
+        />
+      </Swipeable>
+    </>
   );
 }

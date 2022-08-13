@@ -25,7 +25,6 @@ i18n.use(initReactI18next).init(
     },
   },
   () => {
-    console.log(i18n.language);
     if (i18n.language === "ar") {
       window.document.dir = "rtl";
     } else {
