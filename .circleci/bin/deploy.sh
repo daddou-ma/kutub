@@ -10,7 +10,7 @@ yarn stop:prod
 git reset --hard
 
 # pull from the branch
-git pull origin main
+GIT_SSH_COMMAND='ssh -i /home/circleci/.ssh/id_rsa_git -o IdentitiesOnly=yes' git pull origin main
 
 # Stop Container
 yarn start:prod
