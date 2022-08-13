@@ -54,12 +54,3 @@ export function useReaderSettingsProvider(): SettingsContext {
     setBackground: (value) => setTheme({ ...theme, background: value })
   };
 }
-
-export function toStyles(theme: ReaderTheme) {
-  console.log({
-    'font-size': `${theme.fontSize}px`
-  })
-  return {
-    'font-size': `${theme.fontSize}px`
-  }
-}

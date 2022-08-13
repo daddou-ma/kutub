@@ -6,7 +6,7 @@ import { useTheme } from "@material-ui/core";
 import { ReaderLayout } from "Layouts/ReaderLayout";
 import { LECTURE_BYID_QUERY, UPDATE_LECTURE_MUTATION } from "Graph/queries/lectures";
 import { loadFileFromCache } from "Utils/File";
-import { ReaderSettingsProvider } from "Hooks/useReaderSettings";
+import { useReaderSettings } from "Hooks/useReaderSettings";
 
 const EPubReader = React.lazy(() => import("Components/EPubReader"));
 
@@ -15,11 +15,14 @@ const styles = {};
 export default function ReaderPage(): React.ReactElement {
   const [rendition, setRendition] = useState(null);
   const [chapters, setChapters] = useState([]);
+  const [currentChapter, setCurrentChapter] = useState(null);
   const [location, setLocation] = useState(null);
   const [progress, setProgress] = useState(0);
+  const [showOptions, setShowOptions] = useState(false); 
   const [file, setFile] = useState(null)
   const { lectureId } = useParams();
   const theme = useTheme();
+  const { theme: readerTheme } = useReaderSettings()
   const { loading, error, data } = useQuery(LECTURE_BYID_QUERY, {
     nextFetchPolicy: "cache-first",
     variables: { lectureId },
@@ -54,10 +57,11 @@ export default function ReaderPage(): React.ReactElement {
       error={!data && error}
       progress={progress}
       chapters={chapters}
+      currentChapter={currentChapter}
       handleChapterClick={setLocation}
+      showOptions={showOptions}
     >
       <Suspense fallback={<div>Loading...</div>}>
-        <ReaderSettingsProvider>
           <EPubReader
             url={file}
             location={rendition ? location : null}
@@ -74,6 +78,13 @@ export default function ReaderPage(): React.ReactElement {
 
               setProgress(progress);
 
+              let getChapter = cfi => {
+                let spineItem = rendition.book.spine.get(cfi);
+                return rendition.book.navigation.get(spineItem.href).label;
+              }  
+
+              setCurrentChapter(getChapter(location))
+
               updateEPub({
                 variables: {
                   lectureId,
@@ -84,6 +95,7 @@ export default function ReaderPage(): React.ReactElement {
                 },
               });
             }}
+            theme={readerTheme}
             styles={styles}
             tocChanged={(cs) => setChapters(cs as any)}
             getRendition={(rendition) => {
@@ -104,8 +116,8 @@ export default function ReaderPage(): React.ReactElement {
                 rendition.annotations.highlight(cfiRange);
               });
             }}
+            onTap={() => setShowOptions(!showOptions)}
           />
-        </ReaderSettingsProvider>
       </Suspense>
     </ReaderLayout>
   );

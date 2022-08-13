@@ -4,15 +4,6 @@ import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    drop: {
-      background: '#000000a8',
-      position: 'fixed',
-      inset: 0,
-      display: 'flex',
-      alignItems: 'flex-end',
-      padding: 32,
-      zIndex: 9,
-    },
     container: {
       display: 'block',
       padding: 32,
@@ -23,12 +14,12 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default function ReaderSettings({ theme: { font, fontSize }, onFontSizeChange, onFontChange, onClose }) : React.ReactElement {
+export default function TypographySettings({ theme: { font, fontSize }, onFontSizeChange, onFontChange }) : React.ReactElement {
   const classes = useStyles()
   const { t } = useTranslation();
 
-  return <Box className={classes.drop} onClick={onClose}>
-    <Box className={classes.container} onClick={e => e.stopPropagation()}>
+
+  return <Box className={classes.container} onClick={e => e.stopPropagation()}>
       <Box>
         <Typography>{t('Font Size')}</Typography>
         <Slider
@@ -61,5 +52,4 @@ export default function ReaderSettings({ theme: { font, fontSize }, onFontSizeCh
         </ButtonGroup>
       </Box>
     </Box>
-  </Box>
 }
