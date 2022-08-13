@@ -16,6 +16,12 @@ jobs:
             cd packages/frontend
             yarn install
             yarn test
+  pull-and-build:
+    docker:
+      - image: arvindr226/alpine-ssh
+    steps:
+      - checkout
+      - run: ssh -oStrictHostKeyChecking=no -v circleci@read.kutub.app "./bin/deploy.sh"
 workflows:
   frontend:
     jobs:
