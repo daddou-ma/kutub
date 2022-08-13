@@ -53,7 +53,7 @@ export function ReaderChapters({
 
   return (
     <SwipeableDrawer
-      anchor="left"
+      anchor="right"
       open={open}
       onOpen={() => handleOpen()}
       onClose={() => handleClose()}
