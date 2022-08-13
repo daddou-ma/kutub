@@ -73,7 +73,7 @@ export function FileImportProvider({
       console.log(fileHandle)
       handleImport({
         target: {
-          validity: true,
+          validity: { valid: true },
           files: [await fileHandle.getFile()]
         }
       })
