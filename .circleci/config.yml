@@ -26,3 +26,6 @@ workflows:
   frontend:
     jobs:
       - frontend-unit-tests
+  deploy-prod:
+    jobs:
+      - pull-and-build
