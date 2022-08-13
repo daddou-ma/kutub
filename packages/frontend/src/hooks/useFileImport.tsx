@@ -69,19 +69,22 @@ export function FileImportProvider({
   }
 
   useEffect(() => {
+    async function loadFile(fileHandle) {
+      console.log(fileHandle)
+      handleImport({
+        target: {
+          validity: true,
+          files: [await fileHandle.getFile()]
+        }
+      })
+    }
     if ('launchQueue' in window && 'files' in (window as any).LaunchParams.prototype) {
       (window as any).launchQueue.setConsumer((launchParams) => {
         if (!launchParams.files.length) {
           return;
         }
         for (const fileHandle of launchParams.files) {
-          console.log(fileHandle)
-          handleImport({
-            target: {
-              validity: true,
-              files: [fileHandle.getFile()]
-            }
-          })
+          loadFile(fileHandle)
         }
       });
     }
