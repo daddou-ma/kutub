@@ -42,6 +42,9 @@ export default function AboutPage(): React.ReactElement {
         <Typography className={classes.designedBy}>
           Developed By<br /><b>Mohamed El Amine DADDOU</b>
         </Typography>
+        <Typography className={classes.information}>
+          Version 0.1.0
+        </Typography>
       </Container>
     </BasicLayout>
   );
