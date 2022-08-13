@@ -73,6 +73,7 @@ export function FileImportProvider({
           return;
         }
         for (const fileHandle of launchParams.files) {
+          console.log(fileHandle)
           handleImport({
             target: {
               validity: true,

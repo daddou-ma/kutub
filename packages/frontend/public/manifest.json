@@ -50,7 +50,7 @@
   ],
   "file_handlers": [
     {
-      "action": "/open-epub",
+      "action": "/library",
       "accept": {
         "application/epub+zip": [".epub"]
       },
