@@ -1,6 +1,6 @@
 import { useMutation } from "@apollo/client";
 import { CREATE_LECTURE_MUTATION } from "Graph/queries/lectures";
-import React, { useState, useContext, createContext, useRef, useEffect } from "react";
+import React, { useState, useContext, createContext, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { LectureFragment } from "Types/Lecture";
 import { getEPubFileCover, getEPubFileMetaData } from "Utils/EPub";
@@ -13,7 +13,8 @@ interface FileImportProviderProps {
 
 interface FileImportContext {
   file: File;
-  importFile: CallableFunction;
+  selectFile: CallableFunction;
+  handleFileImport: CallableFunction;
 }
 
 const fileImportContext = createContext(null);
@@ -53,43 +54,14 @@ export function FileImportProvider({
     });
   }
 
-  async function handleImport({
-    target: {
-      validity,
-      files: [file],
-    },
-  }: any): Promise<void> {
-    if (!validity.valid) return;
+  async function handleFileImport(file: File): Promise<void> {
     setFile(file);
     createEPub({ variables: { data: {
       metadata: await getEPubFileMetaData(file)
     }}});
   }
 
-  useEffect(() => {
-    async function loadFile(fileHandle) {
-      handleImport({
-        target: {
-          validity: { valid: true },
-          files: [await fileHandle.getFile()]
-        }
-      })
-    }
-    if ('launchQueue' in window && 'files' in (window as any).LaunchParams.prototype) {
-      (window as any).launchQueue.setConsumer((launchParams) => {
-        if (!launchParams.files.length) {
-          return;
-        }
-        for (const fileHandle of launchParams.files) {
-          loadFile(fileHandle)
-        }
-
-        launchParams.files = []
-      });
-    }
-  }, [])
-
-  function importFile() {
+  function selectFile() {
     if(!fileRef.current) {
       return
     }
@@ -97,7 +69,7 @@ export function FileImportProvider({
     (fileRef.current as any).click()
   }
   return (
-    <fileImportContext.Provider value={{ file, importFile }}>
+    <fileImportContext.Provider value={{ file, selectFile, handleFileImport }}>
       <>
         {children}
         <input
@@ -105,7 +77,7 @@ export function FileImportProvider({
           accept=".epub"
           style={{ display: "none" }}
           ref={fileRef}
-          onChange={handleImport}
+          onChange={({ target: { validity, files }}) => validity.valid && handleFileImport(files[0])}
         />
       </>
     </fileImportContext.Provider>

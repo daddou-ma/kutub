@@ -12,7 +12,7 @@ import { useFileImport } from "Hooks/useFileImport";
 
 export default function LibraryPage(): React.ReactElement {
   const { t } = useTranslation();
-  const { file, importFile } = useFileImport()
+  const { file, handleFileImport } = useFileImport()
   const { loading, error, data } = useQuery(LECTURE_QUERY);
 
   return (
@@ -21,7 +21,7 @@ export default function LibraryPage(): React.ReactElement {
       loading={loading}
       error={!data && error}
       actions={
-        <IconButton onClick={() => importFile()}>
+        <IconButton onClick={() => handleFileImport()}>
           <AddIcon />
         </IconButton>
       }

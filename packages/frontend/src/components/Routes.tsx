@@ -32,6 +32,10 @@ const AboutPage = loadable(() => import("Pages/About"), {
   fallback: <LoadingPage />,
 });
 
+const FileHandlerPage = loadable(() => import("Pages/FileHandler"), {
+  fallback: <LoadingPage />,
+});
+
 import { LoadingPage } from "Pages/Loading";
 
 import { CustomRoute, Role } from "Components/CustomRoute";
@@ -74,6 +78,9 @@ function Routes(): React.ReactElement {
       </CustomRoute>
       <CustomRoute path="/about" role={Role.USER} redirect="/login">
         <AboutPage />
+      </CustomRoute>
+      <CustomRoute path="/file-handler" role={Role.USER} redirect="/login">
+        <FileHandlerPage />
       </CustomRoute>
       <CustomRoute path="/" role={Role.USER} redirect="/login">
         <LibraryPage />
