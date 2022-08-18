@@ -29,7 +29,6 @@ export function FileImportProvider({
   const [createEPub] = useMutation(CREATE_LECTURE_MUTATION, {
     onCompleted: async ({ lecture: { filePath, coverPath }}) => {
 
-      console.log(filePath, file)
       saveFileToCache(file, 'cached-epubs', filePath)
       saveFileToCache(await getEPubFileCover(file), 'cached-covers', coverPath)
 
@@ -60,7 +59,6 @@ export function FileImportProvider({
       files: [file],
     },
   }: any): Promise<void> {
-    console.log(validity, file)
     if (!validity.valid) return;
     setFile(file);
     createEPub({ variables: { data: {
@@ -70,7 +68,6 @@ export function FileImportProvider({
 
   useEffect(() => {
     async function loadFile(fileHandle) {
-      console.log(fileHandle)
       handleImport({
         target: {
           validity: { valid: true },
@@ -86,6 +83,8 @@ export function FileImportProvider({
         for (const fileHandle of launchParams.files) {
           loadFile(fileHandle)
         }
+
+        launchParams.files = []
       });
     }
   }, [])
